@@ -1,0 +1,7 @@
+@mixin font-face($path, $weight) {
+  @font-face {
+    font-family: 'Heebo';
+    src: url($path);
+    font-weight: $weight;
+  }
+}
