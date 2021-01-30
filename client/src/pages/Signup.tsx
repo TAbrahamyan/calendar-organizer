@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginSignupBackground from '../components/LoginSignupBackground';
+import LoginSignupBackground from '../components/LoginSignup/Background';
 
 export const Signup = () => {
   React.useEffect(() => {
