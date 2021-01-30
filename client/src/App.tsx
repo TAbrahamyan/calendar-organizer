@@ -1,7 +1,3 @@
-export const App = () => {
-  return (
-    <div>
-      <h1>adasdadsadsa</h1>
-    </div>
-  );
-};
+import { Routes } from './Routes';
+
+export const App = () => <Routes />;
