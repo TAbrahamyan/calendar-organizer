@@ -9,7 +9,7 @@
   z-index: 1;
 
   .welcome {
-    @include asd(#6930C3, 25px, 0, 0, 25px);
+    @include login-signup-section(#6930C3, 25px, 0, 0, 25px);
     @include center-content;
     flex-direction: $column;
 
@@ -42,14 +42,14 @@
   }
 
   .form-fields {
-    @include asd($white, 0, 25px, 25px, 0);
+    @include login-signup-section($white, 0, 25px, 25px, 0);
     display: $flex;
     justify-content: $center;
     flex-direction: $column;
 
-    .ant-input { border-radius: 25px }
-    .login { font-size: 2.5em; margin-bottom: 24px }
-    .ant-btn { border-radius: 25px; width: 120px }
+    p { font-size: 2.5em; margin-bottom: 24px }
+    .ant-input, .ant-input-password { border-radius: 25px }
+    .ant-btn { width: 120px; border-radius: 25px }
     .go, .forgot {
       width: fit-content;
       &:hover { text-decoration: underline; cursor: pointer }

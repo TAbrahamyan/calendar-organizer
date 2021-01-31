@@ -12,10 +12,10 @@
   align-items: $center;
 }
 
-@mixin asd($background, $topRight, $topLeft, $bottomRight, $bottomLeft) {
+@mixin login-signup-section($background, $topLeft, $topRight, $bottomRight, $bottomLeft) {
   background: $background;
   height: 500px;
   width: 450px;
   padding: 2rem;
-  border-radius: $topRight $topLeft $bottomRight $bottomLeft;
+  border-radius: $topLeft $topRight $bottomRight $bottomLeft;
 }
