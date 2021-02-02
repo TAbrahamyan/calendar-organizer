@@ -3,14 +3,14 @@ import TopRight from '../../assets/images/login-signup-top-right.png';
 import BottomRight from '../../assets/images/login-signup-bottom-right.png';
 import BottomLeft from '../../assets/images/login-signup-bottom-left.png';
 
-interface ICssPropertiesValue {
+interface ICSSPropertiesValue {
   bottom: string;
   right: string;
   height: string;
 }
 
 export default () => {
-  const imagesStyle = (cssPropertiesValue: ICssPropertiesValue): React.CSSProperties => ({
+  const imagesStyle = (cssPropertiesValue: ICSSPropertiesValue): React.CSSProperties => ({
     position: 'fixed',
     bottom: cssPropertiesValue.bottom,
     right: cssPropertiesValue.right,

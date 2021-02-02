@@ -48,8 +48,9 @@
     flex-direction: $column;
 
     p { font-size: 2.5em; margin-bottom: 24px }
-    .ant-input, .ant-input-password { border-radius: 25px }
+    .ant-input-affix-wrapper { border-radius: 25px }
     .ant-btn { width: 120px; border-radius: 25px }
+    .ant-input-prefix { opacity: 0.25 }
     .go, .forgot {
       width: fit-content;
       &:hover { text-decoration: underline; cursor: pointer }

@@ -7,7 +7,7 @@ import { validationResult } from 'express-validator';
 export class UserController {
   static async signup(req, res) {
     const errors = validationResult(req);
-    if (!errors.isEmpty) {
+    if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -19,15 +19,20 @@ export class UserController {
       }
 
       const hashedPassword: string = await bcrypt.hash(password, 10);
-      const newUser: IUser = new User({ fullName, email, password: hashedPassword });
+      const newUser: IUser = new User({ fullName, email, password: hashedPassword, isVerified: false });
       await newUser.save();
-      res.status(201).json({ msg: 'Successfull registration' });
+      res.status(201).json({ msg: 'Successful registration' });
     } catch {
       res.status(500).json({ msg: 'Error on creating user' });
     }
   }
 
   static async login(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       const { email, password } = req.body;
       const user: IUser = await User.findOne({ email });
@@ -41,9 +46,9 @@ export class UserController {
       }
 
       const token = jwt.sign(
-        { userId: user._id },
+        { userId: user.id },
         config.jwtSecret,
-        { expiresIn: 1000 },
+        { expiresIn: '1h' },
       );
 
       res.json(token);

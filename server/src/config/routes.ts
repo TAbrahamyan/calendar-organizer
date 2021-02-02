@@ -10,5 +10,5 @@ export default (app: express.Application) => {
 
   app.post('/api/user/signup', validations.signup, UserController.signup);
   app.post('/api/user/login', validations.login, UserController.login);
-  app.get('/api/user/me', checkAuth, UserController.login);
+  app.get('/api/user/me', checkAuth, UserController.me);
 };
