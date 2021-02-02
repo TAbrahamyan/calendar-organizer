@@ -1,13 +1,9 @@
 {
-  "extends": [ "tslint-react", "tslint:latest" ],
-  "linterOptions": {
-    "exclude": [
-      "config/**/*.js",
-      "node_modules/**/*.ts",
-      "coverage/lcov-report/*.js"
-    ]
-  },
+  "defaultSeverity": "error",
+  "extends": [ "tslint:recommended" ],
   "rules": {
+    "no-console": false,
+    "no-any": true,
     "no-var-keyword": true,
     "no-unused-variable": true,
     "no-duplicate-variable": true,
@@ -15,7 +11,6 @@
     "no-require-imports": true,
     "no-submodule-imports": false,
     "no-implicit-dependencies": false,
-    "jsx-no-lambda": false,
     "whitespace": true,
     "only-arrow-functions": true,
     "quotemark": false,

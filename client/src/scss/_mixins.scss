@@ -5,3 +5,17 @@
     font-weight: $weight;
   }
 }
+
+@mixin center-content {
+  display: $flex;
+  justify-content: $center;
+  align-items: $center;
+}
+
+@mixin login-signup-section($background, $topLeft, $topRight, $bottomRight, $bottomLeft) {
+  background: $background;
+  height: 500px;
+  width: 450px;
+  padding: 2rem;
+  border-radius: $topLeft $topRight $bottomRight $bottomLeft;
+}
