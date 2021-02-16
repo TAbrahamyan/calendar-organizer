@@ -1,8 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import AddTaskForm from '../components/Home/AddTaskForm';
-import Calendar from '../components/Home/Calendar';
+import { Layout } from 'antd';
 import Header from '../components/Home/Header';
+import Calendar from '../components/Home/Calendar';
+import AddTaskForm from '../components/Home/AddTaskForm';
+import Footer from '../components/Home/Footer';
 import userApi from '../utils/api/user';
 
 export const Home: React.FC = () => {
@@ -28,6 +30,7 @@ export const Home: React.FC = () => {
       <Header fullName={user?.fullName} />
       <Calendar />
       <AddTaskForm />
+      <Footer />
     </div>
   );
 };

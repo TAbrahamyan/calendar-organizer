@@ -8,6 +8,7 @@
     "server": "nodemon --exec node --inspect -r ts-node/register ./src/index.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.5.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
