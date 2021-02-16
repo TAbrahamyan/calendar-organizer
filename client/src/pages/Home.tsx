@@ -1,6 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import AddTaskForm from '../components/Home/AddTaskForm';
 import Calendar from '../components/Home/Calendar';
+import Header from '../components/Home/Header';
 import userApi from '../utils/api/user';
 
 export const Home: React.FC = () => {
@@ -23,7 +25,9 @@ export const Home: React.FC = () => {
 
   return (
     <div className="home">
+      <Header fullName={user?.fullName} />
       <Calendar />
+      <AddTaskForm />
     </div>
   );
 };

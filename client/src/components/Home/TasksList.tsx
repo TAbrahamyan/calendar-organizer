@@ -1,5 +1,7 @@
 export default () => {
   return (
-    <footer>Footer</footer>
+    <ul>
+      <li>asdsad</li>
+    </ul>
   );
 };

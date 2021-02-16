@@ -33,39 +33,43 @@ const daysOfMonth = (): (string | number)[][] => {
   return days;
 };
 
+const calendar = {
+  year: new Date().getFullYear(),
+  month: new Date().toLocaleString('default', { month: 'long' }),
+  weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+  days: daysOfMonth(),
+};
+
 export default () => {
   const [ selectedDay, setSelectedDay ] = React.useState<string | number>(new Date().getDate());
-  const [ date, setDate ] = React.useState({
-    year: new Date().getFullYear(),
-    month: new Date().toLocaleString('default', { month: 'long' }),
-    weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-    days: daysOfMonth(),
-  });
 
   return (
-    <div className="calendar">
-      <table>
-        <thead>
-          <tr>
-            {date.weekdays.map((weekday, index) => <td key={index}>{weekday}</td>)}
-          </tr>
-        </thead>
-
-        <tbody>
-          {date.days.map((week, weekIndex) => (
-            <tr key={weekIndex}>
-              {week.map((day, dayIndex) => (
-                <td
-                  key={dayIndex}
-                  onClick={() => setSelectedDay(week[dayIndex])}
-                  style={day === new Date().getDate() ? { borderTop: '3px solid rgb(24, 144, 255)' } : {}}
-                  className={day === selectedDay || day === '' ? 'selected' : ''}
-                >{day}</td>
-              ))}
+    <section className="calendar">
+      <div className="calendar__content">
+        <h1>{calendar.month} {calendar.year}</h1>
+        <table>
+          <thead>
+            <tr>
+              {calendar.weekdays.map((weekday, index) => <td key={index}>{weekday}</td>)}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+
+          <tbody>
+            {calendar.days.map((week, weekIndex) => (
+              <tr key={weekIndex}>
+                {week.map((day, dayIndex) => (
+                  <td
+                    key={dayIndex}
+                    onClick={() => day !== '' && setSelectedDay(week[dayIndex])}
+                    style={day === new Date().getDate() ? { borderTop: '3px solid rgb(24, 144, 255)' } : {}}
+                    className={day === selectedDay || day === '' ? 'selected' : ''}
+                  >{day}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 };

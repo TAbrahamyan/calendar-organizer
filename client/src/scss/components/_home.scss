@@ -1,32 +1,46 @@
 .home {
   .calendar {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
 
-    td {
-      width: 100px;
-      height: 75px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.4s ease-in;
+    &__content {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
 
-      &:hover {
+      tbody > tr > td {
+        width: 100px;
+        height: 60px;
         transition: 0.4s ease-in;
-        background: rgba(0,0,0,0.05);
+        cursor: pointer;
+        &:hover { transition: 0.4s ease-in; background: rgba(0,0,0,0.05) }
+      }
+
+      .selected {
+        border-radius: 12px;
+        background: rgba(24, 144, 255, 0.2);
+        color: #1890ff;
+        font-weight: bold;
+        &:hover { transition: 0; background: rgba(24, 144, 255, 0.2) }
       }
     }
+  }
 
-    .selected {
-      background: rgba(24, 144, 255, 0.2);
-      color: #1890ff;
-      font-weight: bold;
+  .add-tasks {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
 
-      &:hover {
-        transition: 0;
-        background: rgba(24, 144, 255, 0.2);
-      }
+    form {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      input { width: 600px }
     }
   }
 }
