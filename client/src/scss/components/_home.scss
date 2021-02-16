@@ -1,0 +1,32 @@
+.home {
+  .calendar {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    td {
+      width: 100px;
+      height: 75px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.4s ease-in;
+
+      &:hover {
+        transition: 0.4s ease-in;
+        background: rgba(0,0,0,0.05);
+      }
+    }
+
+    .selected {
+      background: rgba(24, 144, 255, 0.2);
+      color: #1890ff;
+      font-weight: bold;
+
+      &:hover {
+        transition: 0;
+        background: rgba(24, 144, 255, 0.2);
+      }
+    }
+  }
+}

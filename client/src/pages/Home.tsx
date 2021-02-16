@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Calendar from '../components/Home/Calendar';
 import userApi from '../utils/api/user';
 
 export const Home: React.FC = () => {
@@ -21,8 +22,8 @@ export const Home: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Hello <strong>{user?.fullName}</strong>!</h1>
+    <div className="home">
+      <Calendar />
     </div>
   );
 };
