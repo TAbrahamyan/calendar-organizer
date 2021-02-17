@@ -1,4 +1,14 @@
-import React from 'react';
+interface ICalendarProps {
+  selectedDay: string | number;
+  setSelectedDay: (selectedDay: string | number) => void;
+}
+
+interface ICALENDAR {
+  year: number;
+  month: string;
+  weekdays: string[];
+  days: (string | number)[][];
+}
 
 const daysOfMonth = (): (string | number)[][] => {
   const date: Date = new Date();
@@ -23,7 +33,7 @@ const daysOfMonth = (): (string | number)[][] => {
     }
   }
 
-  const lastWeek: (string | number)[] = days[days.length -1];
+  const lastWeek: (string | number)[] = days[days.length - 1];
   if (lastWeek.length !== 7) {
     for (let i = lastWeek.length; i < 7; i++) {
       lastWeek.push('');
@@ -33,29 +43,27 @@ const daysOfMonth = (): (string | number)[][] => {
   return days;
 };
 
-const calendar = {
+const CALENDAR: ICALENDAR = {
   year: new Date().getFullYear(),
   month: new Date().toLocaleString('default', { month: 'long' }),
   weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   days: daysOfMonth(),
 };
 
-export default () => {
-  const [ selectedDay, setSelectedDay ] = React.useState<string | number>(new Date().getDate());
-
+export default ({ selectedDay, setSelectedDay }: ICalendarProps) => {
   return (
     <section className="calendar">
       <div className="calendar__content">
-        <h1>{calendar.month} {calendar.year}</h1>
+        <h1>{CALENDAR.month} {CALENDAR.year}</h1>
         <table>
           <thead>
             <tr>
-              {calendar.weekdays.map((weekday, index) => <td key={index}>{weekday}</td>)}
+              {CALENDAR.weekdays.map((weekday, index) => <td key={index}>{weekday}</td>)}
             </tr>
           </thead>
 
           <tbody>
-            {calendar.days.map((week, weekIndex) => (
+            {CALENDAR.days.map((week, weekIndex) => (
               <tr key={weekIndex}>
                 {week.map((day, dayIndex) => (
                   <td
