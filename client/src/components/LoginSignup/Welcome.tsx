@@ -4,12 +4,12 @@ import { GoogleSquareFilled, FacebookFilled } from '@ant-design/icons';
 export default () => {
   return (
     <section className="welcome">
-      <div className="welcome__text">
-        <p style={{ fontSize: '3.3em' }}>Welcome to</p>
-        <p style={{ fontSize: '2.5em' }}>Calendar Organizer</p>
+      <div className="text">
+        <b style={{ fontSize: '3.3em', textAlign: 'center' }}>Welcome to</b>
+        <b style={{ fontSize: '2.5em' }}>Calendar Organizer</b>
       </div>
 
-      <div className="welcome__login-with">
+      <div className="login-with">
         <Button type="primary">
           <GoogleSquareFilled style={{ marginLeft: '-1rem' }} /> Login with google
         </Button>

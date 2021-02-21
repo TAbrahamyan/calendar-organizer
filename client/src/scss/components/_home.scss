@@ -1,63 +1,8 @@
+@import '../variables';
+
 .home {
-  .calendar {
-    text-align: center;
-    margin: 1rem;
-
-    &__content {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-
-      tbody > tr > td {
-        width: 222px;
-        height: 60px;
-        transition: 0.4s ease-in;
-        cursor: pointer;
-        &:hover { transition: 0.4s ease-in; background: rgba(0,0,0,0.05) }
-      }
-
-      .selected {
-        background: rgba(24, 144, 255, 0.2);
-        color: #1890ff;
-        font-weight: bold;
-        &:hover { transition: 0; background: rgba(24,144,255,0.2) }
-      }
-    }
-  }
-
-  .create-task {
-    margin: 1rem;
-    width: 100%;
-
-    &__content {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-    }
-  }
-
-  .tasks {
-    background: white;
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 12px;
-    li { padding: 0.7rem; margin: 0.5rem 0 }
-    .delete, .edit { font-size: 1.5em; cursor: pointer }
-    .delete { color: red; }
-    .edit { color: #1890ff }
-
-    .completed {
-      background: #F4F7FA;
-      border-radius: 12px;
-      transition: 0.2s ease-out;
-    }
-  }
-
-  footer {
-    background: #6930C3;
-    width: 100%;
-    padding: 16px 24px;
-    text-align: center;
-    h1 { margin: 0; color: white !important }
-  }
+  @import './home/_calendar';
+  @import './home/_create-task.scss';
+  @import './home/_tasks.scss';
+  @import './home/_footer.scss';
 }

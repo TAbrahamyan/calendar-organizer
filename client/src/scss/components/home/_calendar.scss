@@ -1,0 +1,25 @@
+.calendar {
+  text-align: $center;
+  margin: 1rem;
+
+  &__content {
+    background: $white;
+    padding: 1rem;
+    border-radius: 12px;
+
+    tbody > tr > td {
+      width: 222px;
+      height: 60px;
+      transition: 0.4s ease-in;
+      cursor: $pointer;
+      &:hover { transition: 0.4s ease-in; background: rgba(0,0,0,0.05) }
+    }
+
+    .selected {
+      background: rgba(24, 144, 255, 0.2);
+      color: #1890ff;
+      font-weight: bold;
+      &:hover { transition: 0; background: rgba(24,144,255,0.2) }
+    }
+  }
+}

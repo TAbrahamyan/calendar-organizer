@@ -68,8 +68,8 @@ export default ({ selectedDay, setSelectedDay }: ICalendarProps) => {
                   <td
                     key={dayIndex}
                     onClick={() => (day !== '' && day !== selectedDay) && setSelectedDay(week[dayIndex])}
-                    style={+day === new Date().getDate() ? { borderTop: '3px solid rgb(24, 144, 255)' } : {}}
-                    className={day === selectedDay || day === '' ? 'selected' : ''}
+                    style={(+day === new Date().getDate()) ? { borderTop: '3px solid rgb(24, 144, 255)' } : {}}
+                    className={(day === selectedDay || day === '') ? 'selected' : ''}
                   >{day}</td>
                 ))}
               </tr>

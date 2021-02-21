@@ -31,10 +31,12 @@ export const Home: React.FC = () => {
     <div className="home">
       <div style={{ minHeight: 'calc(100vh - 4.75rem)' }}>
         <Header fullName={user?.fullName} />
+
         <div style={{ display: 'flex' }}>
           <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
           <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
         </div>
+
         <Tasks tasks={tasks} setTasks={setTasks} selectedDay={selectedDay} />
       </div>
 

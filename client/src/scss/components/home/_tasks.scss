@@ -1,0 +1,16 @@
+.tasks {
+  background: $white;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  li { padding: 0.7rem; margin: 0.5rem 0 }
+  .delete, .edit { font-size: 1.5em; cursor: $pointer }
+  .delete { color: red }
+  .edit { color: #1890ff }
+
+  .completed {
+    background: #F4F7FA;
+    border-radius: 12px;
+    transition: 0.2s ease-out;
+  }
+}
