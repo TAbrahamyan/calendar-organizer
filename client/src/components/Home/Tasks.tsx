@@ -1,12 +1,17 @@
-import { List } from 'antd';
+import { List, Checkbox } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
-export default ({ tasks }: { tasks: any }) => {
+interface ITasksProps {
+  tasks: any;
+  selectedDay: string;
+}
+
+export default ({ tasks, selectedDay }: ITasksProps) => {
   return (
     <List
       className="tasks"
       itemLayout="horizontal"
-      dataSource={tasks}
+      dataSource={tasks.filter((task: any) => task.createdDay === selectedDay)}
       renderItem={(task: any) => (
         <List.Item
           key={task.id}
@@ -15,7 +20,11 @@ export default ({ tasks }: { tasks: any }) => {
             <CloseCircleOutlined key="delete" className="delete" />,
           ]}
         >
-          <List.Item.Meta title={task.title} description={task.description} />
+          <List.Item.Meta
+            avatar={<Checkbox style={{ marginTop: '1rem' }} />}
+            title={task.title}
+            description={task.description}
+          />
         </List.Item>
       )}
     />

@@ -3,7 +3,6 @@ import { Form, Input, Button } from 'antd';
 
 interface ICreateTaskFormProps {
   selectedDay: (string | number);
-  tasks: any;
   setTasks: (tasks: any) => void;
 }
 
@@ -13,16 +12,22 @@ const RULES = {
   description: [{ required: true, message: 'Description is required' }],
 };
 
-export default ({ selectedDay, tasks, setTasks }: ICreateTaskFormProps) => {
+export default ({ setTasks, selectedDay }: ICreateTaskFormProps) => {
   const [ form ] = Form.useForm();
-  const formRef: any = React.useRef();
   const [ createTaskForm, setCreateTaskForm ] = React.useState({ title: '', description: '' });
+  const formRef = React.useRef<any>();
 
   const onChange = ({ target: t }: any) => setCreateTaskForm({ ...createTaskForm, [t.name]: t.value });
 
   const createTaskHandler = (): void => {
-    const newTask = { id: Date.now(), title: createTaskForm.title, description: createTaskForm.description };
-    setTasks([ ...tasks, newTask ]);
+    const newTask = {
+      id: Date.now(),
+      title: createTaskForm.title,
+      description: createTaskForm.description,
+      createdDay: selectedDay,
+    };
+
+    setTasks((prevTasks: any) => [ ...prevTasks, newTask ]);
     formRef.current.resetFields();
   };
 

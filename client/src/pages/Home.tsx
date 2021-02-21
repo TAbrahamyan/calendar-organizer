@@ -10,31 +10,33 @@ import userApi from '../utils/api/user';
 export const Home: React.FC = () => {
   const history = useHistory();
   const [ user, setUser ] = React.useState<any>();
-  const [ selectedDay, setSelectedDay ] = React.useState<string | number>(new Date().getDate());
-  const [ tasks, setTasks ] = React.useState<any>([]);
+  const [ selectedDay, setSelectedDay ] = React.useState<string>(`${new Date().getDate()}`);
+  const [ tasks, setTasks ] = React.useState([]);
 
   React.useEffect(() => {
     document.title = 'Calendar Organizer';
 
-    userApi.getMe({ token: localStorage.getItem('token') })
-      .then(({ data }) => setUser(data))
-      .catch(err => {
-        if (err.response.status === 500) {
-          localStorage.clear();
-          history.push('/login');
-          window.location.reload();
-        }
-      });
+    userApi.getMe({ token: localStorage.getItem('token') }).then(({ data }) => {
+      setUser(data);
+    }).catch(err => {
+      if (err.response.status === 500) {
+        localStorage.clear();
+        history.push('/login');
+        window.location.reload();
+      }
+    });
   }, []);
 
   return (
     <div className="home">
       <Header fullName={user?.fullName} />
+
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-        <CreateTaskForm selectedDay={selectedDay} tasks={tasks} setTasks={setTasks} />
+        <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
       </div>
-      <Tasks tasks={tasks} />
+
+      <Tasks tasks={tasks} selectedDay={selectedDay} />
       <Footer />
     </div>
   );
