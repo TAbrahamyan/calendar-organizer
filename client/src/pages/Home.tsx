@@ -29,14 +29,15 @@ export const Home: React.FC = () => {
 
   return (
     <div className="home">
-      <Header fullName={user?.fullName} />
-
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-        <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
+      <div style={{ minHeight: 'calc(100vh - 4.75rem)' }}>
+        <Header fullName={user?.fullName} />
+        <div style={{ display: 'flex' }}>
+          <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+          <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
+        </div>
+        <Tasks tasks={tasks} setTasks={setTasks} selectedDay={selectedDay} />
       </div>
 
-      <Tasks tasks={tasks} setTasks={setTasks} selectedDay={selectedDay} />
       <Footer />
     </div>
   );

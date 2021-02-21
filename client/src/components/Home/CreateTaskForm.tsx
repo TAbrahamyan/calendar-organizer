@@ -25,6 +25,7 @@ export default ({ setTasks, selectedDay }: ICreateTaskFormProps) => {
       title: createTaskForm.title,
       description: createTaskForm.description,
       createdDay: selectedDay,
+      completed: false,
     };
 
     setTasks((prevTasks: any) => [ ...prevTasks, newTask ]);
