@@ -36,7 +36,7 @@ export const Home: React.FC = () => {
         <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
       </div>
 
-      <Tasks tasks={tasks} selectedDay={selectedDay} />
+      <Tasks tasks={tasks} setTasks={setTasks} selectedDay={selectedDay} />
       <Footer />
     </div>
   );
