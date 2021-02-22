@@ -1,25 +1,31 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Input, Button } from 'antd';
 
 interface ICreateTaskFormProps {
+  createTaskForm: any;
+  setCreateTaskForm: (createTaskForm: any) => void;
   selectedDay: (string | number);
   setTasks: (tasks: any) => void;
+  taskEditedMode: any;
+  setTaskEditedMode: (taskEditedMode: any) => void;
 }
 
 const CURRENT_MONTH: string = (new Date().toLocaleString('default', { month: 'long' }));
-const RULES = {
-  title: [{ required: true, message: 'Title is required' }],
-  description: [{ required: true, message: 'Description is required' }],
-};
 
-export default ({ setTasks, selectedDay }: ICreateTaskFormProps) => {
-  const [ form ] = Form.useForm();
-  const [ createTaskForm, setCreateTaskForm ] = React.useState({ title: '', description: '' });
-  const formRef = React.useRef<any>();
-
+export default ({
+  createTaskForm,
+  setCreateTaskForm,
+  setTasks,
+  selectedDay,
+  taskEditedMode,
+  setTaskEditedMode,
+}: ICreateTaskFormProps) => {
   const onChange = ({ target: t }: any) => setCreateTaskForm({ ...createTaskForm, [t.name]: t.value });
 
   const createTaskHandler = (): void => {
+    const { title, description } = createTaskForm;
+    if (!title && !description) return;
+
     const newTask = {
       id: Date.now(),
       title: createTaskForm.title,
@@ -29,7 +35,24 @@ export default ({ setTasks, selectedDay }: ICreateTaskFormProps) => {
     };
 
     setTasks((prevTasks: any) => [ ...prevTasks, newTask ]);
-    formRef.current.resetFields();
+    setCreateTaskForm({ title: '', description: '' });
+  };
+
+  const save = (): void => {
+    setTasks((prevTasks: any) => {
+      const findTask = prevTasks.find((task: any) => task.id === taskEditedMode.taskId);
+      findTask.title = createTaskForm.title;
+      findTask.description = createTaskForm.description;
+
+      return prevTasks;
+    });
+
+    cancel();
+  };
+
+  const cancel = (): void => {
+    setCreateTaskForm({ title: '', description: '' });
+    setTaskEditedMode({ mode: false, taskId: -1 });
   };
 
   return (
@@ -37,39 +60,28 @@ export default ({ setTasks, selectedDay }: ICreateTaskFormProps) => {
       <div className="create-task__content">
         <p>Create task on <b>{selectedDay} {CURRENT_MONTH}</b></p>
 
-        <Form form={form} ref={formRef}>
-          <Form.Item name="title" rules={RULES.title}>
-            <Input
-              placeholder="Title"
-              name="title"
-              value={createTaskForm.title}
-              onChange={onChange}
-            />
-          </Form.Item>
+        <Input
+          placeholder="Title"
+          name="title"
+          value={createTaskForm.title}
+          onChange={onChange}
+        />
 
-          <Form.Item name="description" rules={RULES.description}>
-            <Input.TextArea
-              rows={4}
-              placeholder="Description"
-              name="description"
-              value={createTaskForm.description}
-              onChange={onChange}
-            />
-          </Form.Item>
+        <Input.TextArea
+          rows={4}
+          placeholder="Description"
+          name="description"
+          value={createTaskForm.description}
+          onChange={onChange}
+        />
 
-          <Form.Item>
-            <Button
-              type="primary"
-              onClick={createTaskHandler}
-              disabled={
-                !form.isFieldsTouched(true) ||
-                !!form.getFieldsError().filter(({ errors }) => errors.length).length
-              }
-            >
-              Create
-            </Button>
-          </Form.Item>
-        </Form>
+        {taskEditedMode.mode
+        ? (<>
+            <Button type="primary" onClick={save}>Save</Button>
+            <Button type="primary" danger={true} onClick={cancel}>Cancel</Button>
+          </>)
+        : <Button type="primary" onClick={createTaskHandler}>Create</Button>
+        }
       </div>
     </section>
   );

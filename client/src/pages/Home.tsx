@@ -11,7 +11,9 @@ export const Home: React.FC = () => {
   const history = useHistory();
   const [ user, setUser ] = React.useState<any>();
   const [ selectedDay, setSelectedDay ] = React.useState<string>(`${new Date().getDate()}`);
+  const [ createTaskForm, setCreateTaskForm ] = React.useState({ title: '', description: '' });
   const [ tasks, setTasks ] = React.useState([]);
+  const [ taskEditedMode, setTaskEditedMode ] = React.useState<any>({ mode: false, taskId: -1 });
 
   React.useEffect(() => {
     document.title = 'Calendar Organizer';
@@ -34,10 +36,25 @@ export const Home: React.FC = () => {
 
         <div style={{ display: 'flex' }}>
           <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-          <CreateTaskForm selectedDay={selectedDay} setTasks={setTasks} />
+          <CreateTaskForm
+            createTaskForm={createTaskForm}
+            setCreateTaskForm={setCreateTaskForm}
+            selectedDay={selectedDay}
+            setTasks={setTasks}
+            taskEditedMode={taskEditedMode}
+            setTaskEditedMode={setTaskEditedMode}
+          />
         </div>
 
-        <Tasks tasks={tasks} setTasks={setTasks} selectedDay={selectedDay} />
+        <Tasks
+          createTaskForm={createTaskForm}
+          setCreateTaskForm={setCreateTaskForm}
+          tasks={tasks}
+          setTasks={setTasks}
+          taskEditedMode={taskEditedMode}
+          setTaskEditedMode={setTaskEditedMode}
+          selectedDay={selectedDay}
+        />
       </div>
 
       <Footer />
