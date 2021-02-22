@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
+import store from './utils/store/store';
 import './scss/components/_all.scss';
 import 'antd/dist/antd.css';
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root'),
 );
 

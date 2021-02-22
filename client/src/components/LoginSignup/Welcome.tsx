@@ -10,13 +10,8 @@ export default () => {
       </div>
 
       <div className="login-with">
-        <Button type="primary">
-          <GoogleSquareFilled style={{ marginLeft: '-1rem' }} /> Login with google
-        </Button>
-
-        <Button type="primary">
-          <FacebookFilled /> Login with facebook
-        </Button>
+        <Button type="primary"><GoogleSquareFilled /> Login with google</Button>
+        <Button type="primary"><FacebookFilled /> Login with facebook</Button>
       </div>
     </section>
   );

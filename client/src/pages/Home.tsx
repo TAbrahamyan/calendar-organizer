@@ -11,50 +11,32 @@ export const Home: React.FC = () => {
   const history = useHistory();
   const [ user, setUser ] = React.useState<any>();
   const [ selectedDay, setSelectedDay ] = React.useState<string>(`${new Date().getDate()}`);
-  const [ createTaskForm, setCreateTaskForm ] = React.useState({ title: '', description: '' });
-  const [ tasks, setTasks ] = React.useState([]);
-  const [ taskEditedMode, setTaskEditedMode ] = React.useState<any>({ mode: false, taskId: -1 });
 
   React.useEffect(() => {
     document.title = 'Calendar Organizer';
 
-    userApi.getMe({ token: localStorage.getItem('token') }).then(({ data }) => {
-      setUser(data);
-    }).catch(err => {
-      if (err.response.status === 500) {
-        localStorage.clear();
-        history.push('/login');
-        window.location.reload();
-      }
-    });
+    userApi.getMe({ token: localStorage.getItem('token') })
+      .then(({ data }) => setUser(data))
+      .catch(({ response: { status } }) => status === 500 && logout());
   }, []);
+
+  const logout = (): void => {
+    localStorage.clear();
+    history.push('/login');
+    window.location.reload();
+  };
 
   return (
     <div className="home">
       <div style={{ minHeight: 'calc(100vh - 4.75rem)' }}>
-        <Header fullName={user?.fullName} />
+        <Header fullName={user?.fullName} logout={logout} />
 
         <div style={{ display: 'flex' }}>
           <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-          <CreateTaskForm
-            createTaskForm={createTaskForm}
-            setCreateTaskForm={setCreateTaskForm}
-            selectedDay={selectedDay}
-            setTasks={setTasks}
-            taskEditedMode={taskEditedMode}
-            setTaskEditedMode={setTaskEditedMode}
-          />
+          <CreateTaskForm selectedDay={selectedDay} />
         </div>
 
-        <Tasks
-          createTaskForm={createTaskForm}
-          setCreateTaskForm={setCreateTaskForm}
-          tasks={tasks}
-          setTasks={setTasks}
-          taskEditedMode={taskEditedMode}
-          setTaskEditedMode={setTaskEditedMode}
-          selectedDay={selectedDay}
-        />
+        <Tasks selectedDay={selectedDay} />
       </div>
 
       <Footer />

@@ -1,15 +1,11 @@
-import { useHistory } from 'react-router-dom';
 import { PageHeader, Button } from 'antd';
 
-export default ({ fullName }: { fullName: string }) => {
-  const history = useHistory();
+interface IHeader {
+  fullName: string;
+  logout: () => void;
+}
 
-  const logout = (): void => {
-    localStorage.clear();
-    history.push('/login');
-    window.location.reload();
-  };
-
+export default ({ fullName, logout }: IHeader) => {
   return (
     <PageHeader
       ghost={false}
