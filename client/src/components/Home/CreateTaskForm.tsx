@@ -1,24 +1,25 @@
 import React from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { Input, Button } from 'antd';
-import { connect } from 'react-redux';
-import {
-  ON_INPUT_CHANGE,
-  CREATE_TASK,
-  CANCEL_EDIT_MODE,
-  SAVE_EDITED_TASK,
-} from '../../utils/constants/actionTypes';
+import { fetchCreateTask } from '../../utils/store/actions/task';
+import { ON_INPUT_CHANGE, CANCEL_EDIT_MODE, SAVE_EDITED_TASK } from '../../utils/constants/actionTypes';
 
 const CreateTaskForm = ({
   createTaskForm,
   taskEditedMode,
   selectedDay,
-  create,
   onInputChange,
   cancelEditMode,
   saveEditedTask,
 }: any) => {
-  const disableButton = !(createTaskForm.title && createTaskForm.description);
+  const dispatch = useDispatch();
+  const disableButton: boolean = !(createTaskForm.title && createTaskForm.description);
   const currentMonth: string = (new Date().toLocaleString('default', { month: 'long' }));
+
+  const createTaskHandler = (): void => {
+    const { title, description } = createTaskForm;
+    dispatch(fetchCreateTask({ title, description, selectedDay }));
+  };
 
   return (
     <section className="create-task">
@@ -43,7 +44,7 @@ const CreateTaskForm = ({
             <Button type="primary" onClick={saveEditedTask} disabled={disableButton}>Save</Button>
             <Button type="primary" onClick={cancelEditMode} danger={true}>Cancel</Button>
           </>)
-        : <Button type="primary" onClick={() => create({ selectedDay })} disabled={disableButton}>Create</Button>
+        : <Button type="primary" onClick={createTaskHandler} disabled={disableButton}>Create</Button>
         }
       </div>
     </section>
@@ -61,7 +62,6 @@ const mapStateToProps = (state: any, ownProps: IOwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  create: (payload: any) => dispatch({ type: CREATE_TASK, payload }),
   onInputChange: (payload: any) => dispatch({ type: ON_INPUT_CHANGE, payload }),
   cancelEditMode: () => dispatch({ type: CANCEL_EDIT_MODE }),
   saveEditedTask: () => dispatch({ type: SAVE_EDITED_TASK }),

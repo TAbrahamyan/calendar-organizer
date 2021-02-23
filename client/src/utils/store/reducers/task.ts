@@ -1,7 +1,7 @@
 import {
   ON_INPUT_CHANGE,
+  GET_ALL_TASKS,
   CREATE_TASK,
-  REMOVE_TASK,
   COMPLETE_TASK,
   EDIT_MODE,
   SAVE_EDITED_TASK,
@@ -21,30 +21,21 @@ export default (state: any = initialState, action: any) => {
         ...state,
         createTaskForm: { ...state.createTaskForm, [action.payload.name]: action.payload.value },
       };
-    case CREATE_TASK:
-      const newTask = {
-        id: Date.now(),
-        title: state.createTaskForm.title,
-        description: state.createTaskForm.description,
-        createdDay: action.payload.selectedDay,
-        completed: false,
+    case GET_ALL_TASKS:
+      return {
+        ...state,
+        tasks: action.payload.tasks,
       };
-
+    case CREATE_TASK:
       return {
         ...state,
         createTaskForm: { title: '', description: '' },
-        tasks: [ newTask, ...state.tasks ],
-      };
-    case REMOVE_TASK:
-      return {
-        ...state,
-        tasks: state.tasks.filter((task: any) => task.id !== action.payload.taskId),
       };
     case COMPLETE_TASK:
       return {
         ...state,
         tasks: state.tasks.map((task: any) => {
-          if (task.id === action.payload.taskId) {
+          if (task._id === action.payload.taskId) {
             task.completed = !task.completed;
           }
 
@@ -54,7 +45,7 @@ export default (state: any = initialState, action: any) => {
     case EDIT_MODE:
       return {
         ...state,
-        taskEditedMode: { mode: true, taskId: action.payload.task.id },
+        taskEditedMode: { mode: true, taskId: action.payload.task._id },
         createTaskForm: { title: action.payload.task.title, description: action.payload.task.description },
       };
     case CANCEL_EDIT_MODE:
@@ -68,7 +59,7 @@ export default (state: any = initialState, action: any) => {
         taskEditedMode: { mode: false, taskId: -1 },
         createTaskForm: { title: '', description: '' },
         tasks: state.tasks.map((task: any) => {
-          if (task.id === state.taskEditedMode.taskId) {
+          if (task._id === state.taskEditedMode.taskId) {
             task.title = state.createTaskForm.title;
             task.description = state.createTaskForm.description;
           }

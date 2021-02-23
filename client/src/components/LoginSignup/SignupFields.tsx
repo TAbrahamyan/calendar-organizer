@@ -13,6 +13,12 @@ const RULES: any = {
   ],
 };
 
+function Asd(a: number): number {
+  const b: number = 5;
+
+  return b + a + 20;
+}
+
 export default () => {
   const history = useHistory();
   const [ form ] = Form.useForm();

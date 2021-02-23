@@ -9,6 +9,7 @@
   },
   "rules": {
     "no-var-keyword": true,
+    "@typescript-eslint/no-explicit-any": "off",
     "no-unused-variable": true,
     "no-duplicate-variable": true,
     "no-duplicate-imports": true,
