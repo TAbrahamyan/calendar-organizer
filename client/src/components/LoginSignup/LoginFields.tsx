@@ -53,7 +53,7 @@ export default () => {
           />
         </Form.Item>
 
-        <Form.Item shouldUpdate={true}>
+        <Form.Item shouldUpdate>
           {() => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Button

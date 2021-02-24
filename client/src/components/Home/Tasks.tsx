@@ -1,50 +1,56 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { List, Checkbox } from 'antd';
+import { List, Checkbox, Spin } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { fetchDeleteTask } from '../../utils/store/actions/task';
-import { EDIT_MODE, COMPLETE_TASK } from '../../utils/constants/actionTypes';
+import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
 
-const Tasks = ({
-  tasks,
-  taskEditedMode,
-  selectedDay,
-  edit,
-  complete,
-}: any) => {
+const Tasks: React.FC<any> = ({ tasks, taskEditedMode, isLoaded, selectedDay}) => {
   const dispatch = useDispatch();
 
-  const removeHandler = (taskId: string): void => {
-    dispatch(fetchDeleteTask(taskId));
-  };
+  const editTaskHandler = React.useCallback((task: any) => {
+    dispatch(setEditTask(task));
+  }, []);
+
+  const deleteTaskHandler = React.useCallback((id: string) => {
+    dispatch(fetchDeleteTask(id));
+  }, []);
+
+  const completeTaskHandler = React.useCallback((completed: boolean, id: string) => {
+    dispatch(fetchCompleteTask({ completed, id}));
+  }, []);
 
   return <>
-    {!taskEditedMode.mode &&
-      <List
-        className="tasks"
-        itemLayout="horizontal"
-        dataSource={tasks.filter((task: any) => task.taskCreatedDay === selectedDay)}
-        renderItem={(task: any) => (
-          <List.Item
-            key={task.id}
-            className={task.completed ? 'completed' : undefined}
-            actions={[
-              <EditOutlined key="edit" className="edit" onClick={() => edit({ task })} />,
-              <CloseCircleOutlined key="delete" className="delete" onClick={() => removeHandler(task._id)} />,
-            ]}
-          >
-            <List.Item.Meta
-              avatar={<Checkbox
-                style={{ marginTop: '1rem' }}
-                checked={task.completed}
-                onChange={() => complete({ taskId: task._id })}
-              />}
-              title={task.title}
-              description={task.description}
-            />
-          </List.Item>
-        )}
-      />
+    {(taskEditedMode.mode === false && isLoaded === true)
+      ? <List
+          className="tasks"
+          itemLayout="horizontal"
+          dataSource={tasks.filter((task: any) => task.createdDay === selectedDay)}
+          renderItem={(task: any) => (
+            <List.Item
+              key={task._id}
+              className={task.completed ? 'completed' : undefined}
+              actions={[
+                <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />,
+                <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
+              ]}
+            >
+              <List.Item.Meta
+                avatar={<Checkbox
+                  style={{ marginTop: '1rem' }}
+                  checked={task.completed}
+                  onChange={() => completeTaskHandler(task.completed, task._id)}
+                />}
+                title={task.title}
+                description={task.description}
+              />
+            </List.Item>
+          )}
+        />
+      : (taskEditedMode.mode === true && isLoaded === true)
+      ? <h1 style={{ textAlign: 'center' }}>Task editing process...</h1>
+      : (taskEditedMode.mode === false && isLoaded === false)
+      ? <Spin style={{ margin: '0 auto', width: '100%' }} size="large" />
+      : <></>
     }
   </>;
 };
@@ -56,12 +62,8 @@ interface IOwnProps {
 const mapStateToProps = (state: any, ownProps: IOwnProps) => ({
   tasks: state.tasks,
   taskEditedMode: state.taskEditedMode,
+  isLoaded: state.isLoaded,
   selectedDay: ownProps.selectedDay,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  edit: (payload: any) => dispatch({ type: EDIT_MODE, payload }),
-  complete: (payload: { taskId: number }) => dispatch({ type: COMPLETE_TASK, payload }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
+export default connect(mapStateToProps)(Tasks);

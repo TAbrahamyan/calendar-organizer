@@ -4,14 +4,15 @@ export interface ITask extends Document {
   owner: any;
   title: string;
   description: string;
-  taskCreatedDay: string;
+  createdDay: string;
+  completed: boolean;
 }
 
 const TaskSchema = new Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   title: String,
   description: String,
-  taskCreatedDay: String,
+  createdDay: String,
   completed: Boolean,
 }, { timestamps: true });
 

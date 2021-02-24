@@ -5,7 +5,7 @@ import { checkAuth, validations } from '../middlewares';
 import { UserController } from '../controllers/UserController';
 import { TaskController } from '../controllers/TaskController';
 
-export default (app: express.Application) => {
+export default (app: express.Application): void => {
   app.use(morgan('dev'));
   app.use(cors());
   app.use(express.json());
@@ -19,6 +19,7 @@ export default (app: express.Application) => {
   // Task api
   app.post('/api/task/create', checkAuth, TaskController.create);
   app.get('/api/task/getAll', checkAuth, TaskController.getAll);
-  app.patch('/api/task/:id', TaskController.edit);
   app.delete('/api/task/:id', TaskController.delete);
+  app.patch('/api/task/edit/:id', TaskController.edit);
+  app.patch('/api/task/complete/:id', TaskController.complete);
 };

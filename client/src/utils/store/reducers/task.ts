@@ -4,14 +4,15 @@ import {
   CREATE_TASK,
   COMPLETE_TASK,
   EDIT_MODE,
-  SAVE_EDITED_TASK,
   CANCEL_EDIT_MODE,
+  IS_LOADED,
 } from '../../constants/actionTypes';
 
 const initialState = {
   tasks: [],
   taskEditedMode: { mode: false, taskId: -1 },
   createTaskForm: { title: '', description: '' },
+  isLoaded: false,
 };
 
 export default (state: any = initialState, action: any) => {
@@ -24,7 +25,7 @@ export default (state: any = initialState, action: any) => {
     case GET_ALL_TASKS:
       return {
         ...state,
-        tasks: action.payload.tasks,
+        tasks: action.payload,
       };
     case CREATE_TASK:
       return {
@@ -32,21 +33,12 @@ export default (state: any = initialState, action: any) => {
         createTaskForm: { title: '', description: '' },
       };
     case COMPLETE_TASK:
-      return {
-        ...state,
-        tasks: state.tasks.map((task: any) => {
-          if (task._id === action.payload.taskId) {
-            task.completed = !task.completed;
-          }
-
-          return task;
-        }),
-      };
+      return state;
     case EDIT_MODE:
       return {
         ...state,
-        taskEditedMode: { mode: true, taskId: action.payload.task._id },
-        createTaskForm: { title: action.payload.task.title, description: action.payload.task.description },
+        taskEditedMode: { mode: true, taskId: action.payload._id },
+        createTaskForm: { title: action.payload.title, description: action.payload.description },
       };
     case CANCEL_EDIT_MODE:
       return {
@@ -54,18 +46,10 @@ export default (state: any = initialState, action: any) => {
         taskEditedMode: { mode: false, taskId: -1 },
         createTaskForm: { title: '', description: '' },
       };
-    case SAVE_EDITED_TASK:
+    case IS_LOADED:
       return {
-        taskEditedMode: { mode: false, taskId: -1 },
-        createTaskForm: { title: '', description: '' },
-        tasks: state.tasks.map((task: any) => {
-          if (task._id === state.taskEditedMode.taskId) {
-            task.title = state.createTaskForm.title;
-            task.description = state.createTaskForm.description;
-          }
-
-          return task;
-        }),
+        ...state,
+        isLoaded: action.payload,
       };
     default:
       return state;

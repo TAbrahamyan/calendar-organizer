@@ -18,6 +18,7 @@
     "no-implicit-dependencies": false,
     "prefer-conditional-expression": false,
     "jsx-no-lambda": false,
+    "jsx-boolean-value": false,
     "no-default-export": false,
     "whitespace": true,
     "only-arrow-functions": true,

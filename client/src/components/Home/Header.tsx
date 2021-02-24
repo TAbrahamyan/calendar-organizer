@@ -11,7 +11,7 @@ export default ({ fullName, logout }: IHeader) => {
       ghost={false}
       title="Hello"
       subTitle={fullName}
-      extra={<Button type="primary" danger={true} onClick={logout}>Log out</Button>}
+      extra={<Button type="primary" danger onClick={logout}>Log out</Button>}
     />
   );
 };
