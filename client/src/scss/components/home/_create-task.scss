@@ -1,0 +1,12 @@
+.create-task {
+  margin: 1rem;
+  width: 100%;
+
+  &__content {
+    background: $white;
+    padding: 2rem;
+    border-radius: 12px;
+    input, textarea { margin: 0.8rem 0 }
+    button { margin-right: 0.8rem; margin-top: 0.8rem; }
+  }
+}

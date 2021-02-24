@@ -31,7 +31,6 @@ export default () => {
     }).catch(({ response: { data } }) => data.msg && message.error(data.msg));
   };
 
-
   return (
     <section className="form-fields">
       <p>Signup</p>
@@ -81,7 +80,7 @@ export default () => {
           </Form.Item>
         </div>
 
-        <Form.Item shouldUpdate={true}>
+        <Form.Item shouldUpdate>
           {() => (
             <Button
               type="primary"

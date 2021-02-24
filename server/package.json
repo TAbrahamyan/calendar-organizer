@@ -5,16 +5,18 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node ./dist/index.js",
-    "dev": "nodemon --exec node --inspect -r ts-node/register ./src/index.ts"
+    "server": "nodemon --exec node --inspect -r ts-node/register ./src/index.ts"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.5.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.14"
+    "mongoose": "^5.11.14",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
