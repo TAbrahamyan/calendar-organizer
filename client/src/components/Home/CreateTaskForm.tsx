@@ -1,15 +1,14 @@
-import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Input, Button } from 'antd';
 import { fetchCreateTask, fetchEditTask, setCancelEditMode } from '../../utils/store/actions/task';
 import { ON_INPUT_CHANGE } from '../../utils/constants/actionTypes';
 
-const CreateTaskForm = ({
+const CreateTaskForm: React.FC<any> = ({
   createTaskForm,
   taskEditedMode,
   selectedDay,
   onInputChange,
-}: any) => {
+}) => {
   const dispatch = useDispatch();
   const disableButton: boolean = !(createTaskForm.title && createTaskForm.description);
   const currentMonth: string = (new Date().toLocaleString('default', { month: 'long' }));
@@ -26,6 +25,10 @@ const CreateTaskForm = ({
     dispatch(fetchEditTask({ title, description, taskId: taskEditedMode.taskId }));
   };
 
+  const cancelEditMode = (): void => {
+    dispatch(setCancelEditMode());
+  };
+
   return (
     <section className="create-task">
       <div className="create-task__content">
@@ -37,7 +40,7 @@ const CreateTaskForm = ({
         {taskEditedMode.mode
         ? (<>
             <Button type="primary" onClick={saveEditedTaskHandler} disabled={disableButton}>Save</Button>
-            <Button type="primary" onClick={() => dispatch(setCancelEditMode())} danger>Cancel</Button>
+            <Button type="primary" onClick={cancelEditMode} danger>Cancel</Button>
           </>)
         : <Button type="primary" onClick={createTaskHandler} disabled={disableButton}>Create</Button>
         }
