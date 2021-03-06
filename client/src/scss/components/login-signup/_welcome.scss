@@ -1,9 +1,9 @@
 .welcome {
   @include login-signup-section(#6930C3, 25px, 0, 0, 25px);
   @include center-content;
-  flex-direction: $column;
+  flex-direction: column;
   b { color: $white !important }
-  .text, .login-with { display: $flex; flex-direction: $column }
+  .text, .login-with { display: flex; flex-direction: column }
 
   .ant-btn {
     @include center-content;

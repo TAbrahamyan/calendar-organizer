@@ -4,12 +4,12 @@
   margin: 1rem;
   border-radius: 12px;
   li { padding: 0.7rem; margin: 0.5rem 0 }
-  .delete, .edit { font-size: 1.5em; cursor: $pointer }
-  .delete { color: red }
+  .delete, .edit { font-size: 1.5em; cursor: pointer }
+  .delete { color: #ff4d4f }
   .edit { color: #1890ff }
 
   .completed {
-    background: #F4F7FA;
+    background: $gray;
     border-radius: 12px;
     transition: 0.2s ease-out;
   }

@@ -10,8 +10,8 @@ import userApi from '../utils/api/user';
 import { fetchTasks } from '../utils/store/actions/task';
 
 export const Home: React.FC = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [ user, setUser ] = React.useState<any>();
   const [ selectedDay, setSelectedDay ] = React.useState<string>(`${new Date().getDate()}`);
 

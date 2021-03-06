@@ -7,9 +7,9 @@
 }
 
 @mixin center-content {
-  display: $flex;
-  justify-content: $center;
-  align-items: $center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @mixin login-signup-section($background, $topLeft, $topRight, $bottomRight, $bottomLeft) {

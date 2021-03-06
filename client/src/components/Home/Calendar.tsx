@@ -1,3 +1,6 @@
+import React from 'react';
+import { nanoid } from 'nanoid';
+
 interface ICalendarProps {
   selectedDay: string;
   setSelectedDay: (selectedDay: string) => void;
@@ -49,7 +52,19 @@ const CALENDAR: ICALENDAR = {
   days: daysOfMonth([]),
 };
 
-export default ({ selectedDay, setSelectedDay }: ICalendarProps) => {
+export default React.memo(({ selectedDay, setSelectedDay }: ICalendarProps) => {
+  const daysClasses = (day: string): string => {
+    if (day === selectedDay) {
+      return 'selected';
+    }
+
+    if (new Date().getDate() > +day || day === '') {
+      return 'invalid-days';
+    }
+
+    return '';
+  };
+
   return (
     <section className="calendar">
       <div className="calendar__content">
@@ -57,19 +72,18 @@ export default ({ selectedDay, setSelectedDay }: ICalendarProps) => {
         <table>
           <thead>
             <tr>
-              {CALENDAR.weekdays.map((weekday: string, index: number) => <td key={index}>{weekday}</td>)}
+              {CALENDAR.weekdays.map((weekday: string) => <td key={nanoid()}>{weekday}</td>)}
             </tr>
           </thead>
 
           <tbody>
-            {CALENDAR.days.map((week: any, weekIndex: number) => (
-              <tr key={weekIndex}>
+            {CALENDAR.days.map((week: any) => (
+              <tr key={nanoid()}>
                 {week.map((day: string, dayIndex: number) => (
                   <td
-                    key={dayIndex}
-                    onClick={() => (day !== '' && day !== selectedDay) && setSelectedDay(week[dayIndex])}
-                    style={(+day === new Date().getDate()) ? { borderTop: '3px solid rgb(24, 144, 255)' } : {}}
-                    className={(day === selectedDay || day === '') ? 'selected' : ''}
+                    key={nanoid()}
+                    onClick={() => (day !== selectedDay && day !== '') && setSelectedDay(week[dayIndex])}
+                    className={daysClasses(day)}
                   >{day}</td>
                 ))}
               </tr>
@@ -79,4 +93,4 @@ export default ({ selectedDay, setSelectedDay }: ICalendarProps) => {
       </div>
     </section>
   );
-};
+});

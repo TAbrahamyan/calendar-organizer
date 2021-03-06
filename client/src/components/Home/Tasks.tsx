@@ -4,7 +4,12 @@ import { List, Checkbox, Spin } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
 
-const Tasks: React.FC<any> = ({ tasks, taskEditedMode, isLoaded, selectedDay}) => {
+const Tasks: React.FC<any> = ({
+  tasks,
+  taskEditedMode,
+  isLoaded,
+  selectedDay,
+}) => {
   const dispatch = useDispatch();
 
   const editTaskHandler = React.useCallback((task: any) => {
