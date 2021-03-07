@@ -54,8 +54,8 @@ interface IOwnProps {
 }
 
 const mapStateToProps = (state: any, ownProps: IOwnProps) => ({
-  taskEditedMode: state.taskEditedMode,
-  createTaskForm: state.createTaskForm,
+  taskEditedMode: state.task.taskEditedMode,
+  createTaskForm: state.task.createTaskForm,
   selectedDay: ownProps.selectedDay,
 });
 

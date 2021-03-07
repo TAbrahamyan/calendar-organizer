@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, MailOutlined, LockOutlined } from '@ant-design/icons';
-import userApi from '../../utils/api/user';
+import { fetchUserLogin } from '../../utils/store/actions/user';
 
 const RULES: any = {
   email: [{ required: true, type: 'email', message: 'Invalid email' }],
@@ -13,18 +14,14 @@ const RULES: any = {
 };
 
 export default () => {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const [ form ] = Form.useForm();
-  const [ login, setLogin ] = React.useState({ email: '', password: '' });
+  const [ loginForm, setLoginForm ] = React.useState({ email: '', password: '' });
 
-  const onChange = ({ target: t }: any) => setLogin({ ...login, [t.name]: t.value });
+  const onChange = ({ target: t }: any) => setLoginForm({ ...loginForm, [t.name]: t.value });
 
-  const loginHandler = () => {
-    userApi.login(login).then(({ data }) => {
-      localStorage.setItem('token', data);
-      history.push('/');
-      window.location.reload();
-    }).catch(err => message.error(err.response.data.msg));
+  const loginHandler = (): void => {
+    dispatch(fetchUserLogin({ loginForm, message }));
   };
 
   return (
@@ -36,7 +33,7 @@ export default () => {
           <Input
             name="email"
             placeholder="email"
-            value={login.email}
+            value={loginForm.email}
             onChange={onChange}
             prefix={<MailOutlined />}
           />
@@ -46,7 +43,7 @@ export default () => {
           <Input.Password
             name="password"
             placeholder="password"
-            value={login.email}
+            value={loginForm.email}
             onChange={onChange}
             prefix={<LockOutlined />}
             iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}

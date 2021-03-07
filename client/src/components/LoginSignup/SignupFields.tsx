@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import userApi from '../../utils/api/user';
+import { fetchUserSignup } from '../../utils/store/actions/user';
 
 const RULES: any = {
   email: [{ required: true, type: 'email', message: 'Invalid email' }],
@@ -14,21 +15,18 @@ const RULES: any = {
 };
 
 export default () => {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const [ form ] = Form.useForm();
-  const [ signup, setSignup ] = React.useState({ email: '', fullName: '', password: '', confirmPassword: '' });
+  const [ signupForm, setSignupForm ] = React.useState({ email: '', fullName: '', password: '', confirmPassword: '' });
 
-  const onChange = ({ target: t }: any) => setSignup({ ...signup, [t.name]: t.value });
+  const onChange = ({ target: t }: any) => setSignupForm({ ...signupForm, [t.name]: t.value });
 
   const signupHandler = () => {
-    if (signup.password !== signup.confirmPassword) {
+    if (signupForm.password !== signupForm.confirmPassword) {
       return message.error('Password confirmation is incorrect');
     }
 
-    userApi.signup(signup).then(({ data }) => {
-      message.success(data.msg);
-      history.push('/login');
-    }).catch(({ response: { data } }) => data.msg && message.error(data.msg));
+    dispatch(fetchUserSignup({ signupForm, message }));
   };
 
   return (
@@ -40,7 +38,7 @@ export default () => {
           <Input
             name="email"
             placeholder="Email"
-            value={signup.email}
+            value={signupForm.email}
             onChange={onChange}
             prefix={<MailOutlined />}
           />
@@ -50,7 +48,7 @@ export default () => {
           <Input
             name="fullName"
             placeholder="Full name"
-            value={signup.fullName}
+            value={signupForm.fullName}
             onChange={onChange}
             prefix={<UserOutlined />}
           />
@@ -61,7 +59,7 @@ export default () => {
             <Input.Password
               name="password"
               placeholder="Password"
-              value={signup.password}
+              value={signupForm.password}
               onChange={onChange}
               prefix={<LockOutlined />}
               iconRender={(visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -72,7 +70,7 @@ export default () => {
             <Input.Password
               name="confirmPassword"
               placeholder="Confirm password"
-              value={signup.confirmPassword}
+              value={signupForm.confirmPassword}
               onChange={onChange}
               prefix={<LockOutlined />}
               iconRender={(visible: boolean) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}

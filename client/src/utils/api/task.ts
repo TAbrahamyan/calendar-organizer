@@ -1,11 +1,9 @@
-import axios from 'axios';
+import axios from '../axios';
 
 export default {
-  create: (bodyData: any, headers: any) =>
-    axios.post('http://localhost:8000/api/task/create', bodyData, { headers }),
-  getAll: (headers: any) => axios.get('http://localhost:8000/api/task/getAll', { headers }),
-  delete: (taskId: string) => axios.delete(`http://localhost:8000/api/task/${taskId}`),
-  edit: (bodyData: any, taskId: string) => axios.patch(`http://localhost:8000/api/task/edit/${taskId}`, bodyData),
-  complete: (bodyData: any, taskId: string) =>
-    axios.patch(`http://localhost:8000/api/task/complete/${taskId}`, bodyData),
+  getAll: () => axios.get('/api/task/getAll'),
+  create: (bodyData: any) => axios.post('/api/task/create', bodyData),
+  delete: (id: string) => axios.delete(`/api/task/${id}`),
+  edit: (bodyData: any, id: string) => axios.patch(`/api/task/edit/${id}`, bodyData),
+  complete: (bodyData: any, id: string) => axios.patch(`/api/task/complete/${id}`, bodyData),
 };

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from '../axios';
 
 export default {
-  signup: (postData: any) => axios.post('http://localhost:8000/api/user/signup', postData),
-  login: (postData: any) => axios.post('http://localhost:8000/api/user/login', postData),
-  getMe: (headers: any) => axios.get('http://localhost:8000/api/user/me', { headers }),
+  signup: (bodyData: any) => axios.post('/api/user/signup', bodyData),
+  login: (bodyData: any) => axios.post('/api/user/login', bodyData),
+  getMe: () => axios.get('/api/user/me'),
 };

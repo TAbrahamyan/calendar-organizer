@@ -15,15 +15,7 @@
       &:hover { transition: 0.4s ease-in; background: $tableItemColor }
     }
 
-    .selected {
-      background: $tableItemColor;
-      font-weight: bold;
-      &:hover { transition: 0; background: $tableItemColor }
-    }
-
-    .invalid-days {
-      pointer-events: none;
-      background: $gray;
-    }
+    .selected { background: $tableItemColor }
+    .invalid-days { background: $gray; pointer-events: none }
   }
 }

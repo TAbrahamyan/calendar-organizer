@@ -1,17 +1,24 @@
+import { connect, useDispatch } from 'react-redux';
 import { PageHeader, Button } from 'antd';
+import { fetchUserLogout } from '../../utils/store/actions/user';
 
-interface IHeader {
-  fullName: string;
-  logout: () => void;
-}
+export const Header: React.FC<any> = ({ user }) => {
+  const dispatch = useDispatch();
 
-export default ({ fullName, logout }: IHeader) => {
+  const logout = (): void => {
+    dispatch(fetchUserLogout());
+  };
+
   return (
     <PageHeader
       ghost={false}
       title="Hello"
-      subTitle={fullName}
-      extra={<Button type="primary" danger onClick={logout}>Log out</Button>}
+      subTitle={user?.fullName}
+      extra={<Button danger type="primary" onClick={logout}>Log out</Button>}
     />
   );
 };
+
+export default connect(
+  (state: any) => ({ user: state.user.user }),
+)(Header);

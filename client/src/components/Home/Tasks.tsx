@@ -21,7 +21,7 @@ const Tasks: React.FC<any> = ({
   }, []);
 
   const completeTaskHandler = React.useCallback((completed: boolean, id: string) => {
-    dispatch(fetchCompleteTask({ completed, id}));
+    dispatch(fetchCompleteTask({ completed, id }));
   }, []);
 
   return <>
@@ -65,9 +65,9 @@ interface IOwnProps {
 }
 
 const mapStateToProps = (state: any, ownProps: IOwnProps) => ({
-  tasks: state.tasks,
-  taskEditedMode: state.taskEditedMode,
-  isLoaded: state.isLoaded,
+  tasks: state.task.tasks,
+  taskEditedMode: state.task.taskEditedMode,
+  isLoaded: state.task.isLoaded,
   selectedDay: ownProps.selectedDay,
 });
 

@@ -1,16 +1,20 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
+import history from './utils/history';
 import store from './utils/store/store';
+
 import './scss/components/_all.scss';
 import 'antd/dist/antd.css';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Router history={history}>
+      <App />
+    </Router>
   </Provider>,
   document.getElementById('root'),
 );
