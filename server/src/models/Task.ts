@@ -4,6 +4,7 @@ export interface ITask extends Document {
   owner: any;
   title: string;
   description: string;
+  createdMonth: string;
   createdDay: string;
   completed: boolean;
 }
@@ -12,6 +13,7 @@ const TaskSchema = new Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
   title: String,
   description: String,
+  createdMonth: String,
   createdDay: String,
   completed: Boolean,
 }, { timestamps: true });

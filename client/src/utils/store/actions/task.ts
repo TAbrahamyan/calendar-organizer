@@ -21,6 +21,7 @@ export const fetchCreateTask = (bodyData: any) => (dispatch: any): void => {
   const newTask = {
     title: bodyData.title,
     description: bodyData.description,
+    createdMonth: bodyData.selectedMonth,
     createdDay: bodyData.selectedDay,
   };
 

@@ -7,6 +7,18 @@
     padding: 1rem;
     border-radius: 12px;
 
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .anticon {
+        cursor: pointer;
+        font-size: 22px;
+        color: #42526E;
+      }
+    }
+
     tbody > tr > td {
       width: 222px;
       height: 60px;

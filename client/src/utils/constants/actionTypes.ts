@@ -1,6 +1,10 @@
 // User
 export const GET_ME = 'GET_ME';
 
+// Calendar
+export const SELECT_DAY = 'SELECT_DAY';
+export const CHANGE_MONTH = 'CHANGE_MONTH';
+
 // Tasks
 export const ON_INPUT_CHANGE = 'ON_INPUT_CHANGE';
 export const GET_ALL_TASKS = 'GET_ALL_TASKS';

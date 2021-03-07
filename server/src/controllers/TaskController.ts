@@ -3,8 +3,16 @@ import Task, { ITask } from '../models/Task';
 export class TaskController {
   static async create(req, res) {
     try {
-      const { title, description, createdDay } = req.body;
-      const newTask: ITask = new Task({ title, description, createdDay, completed: false, owner: req.userId });
+      const { title, description, createdMonth, createdDay } = req.body;
+      const newTask: ITask = new Task({
+        title,
+        description,
+        createdMonth,
+        createdDay,
+        completed: false,
+        owner: req.userId,
+      });
+
       await newTask.save();
       res.status(201).json({ msg: 'Task succesfuly created' });
     } catch {

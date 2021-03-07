@@ -1,89 +1,43 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { nanoid } from 'nanoid';
+import { LeftCircleFilled, RightCircleFilled } from '@ant-design/icons';
+import { SELECT_DAY, CHANGE_MONTH } from '../../utils/constants/actionTypes';
 
-interface ICalendarProps {
-  selectedDay: string;
-  setSelectedDay: (selectedDay: string) => void;
-}
+const Calendar: React.FC<any> = ({ calendar, selectDay, changeMonth }) => {
+  const [ month, setMonth ] = React.useState<number>(new Date().getMonth());
 
-interface ICALENDAR {
-  year: number;
-  month: string;
-  weekdays: string[];
-  days: string[];
-}
-
-const daysOfMonth = (days: any): string[] => {
-  const date: Date = new Date();
-  const lastDayOfMOnth: number = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  let week: number = 0;
-  days[week] = [];
-
-  for (let i = 1; i <= lastDayOfMOnth; i++) {
-    if (new Date(date.getFullYear(), date.getMonth(), i).getDay() !== 1) {
-      days[week].push(`${i}`);
-    } else {
-      week++;
-      days[week] = [];
-      days[week].push(`${i}`);
-    }
-  }
-
-  if (days[0].length > 0) {
-    for (let i = days[0].length; i < 7; i++) {
-      days[0].unshift('');
-    }
-  }
-
-  const lastWeek: string[] = days[days.length - 1];
-  if (lastWeek.length !== 7) {
-    for (let i = lastWeek.length; i < 7; i++) {
-      lastWeek.push('');
-    }
-  }
-
-  return days;
-};
-
-const CALENDAR: ICALENDAR = {
-  year: new Date().getFullYear(),
-  month: new Date().toLocaleString('default', { month: 'long' }),
-  weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-  days: daysOfMonth([]),
-};
-
-export default React.memo(({ selectedDay, setSelectedDay }: ICalendarProps) => {
-  const daysClasses = (day: string): string => {
-    if (day === selectedDay) {
-      return 'selected';
-    }
-
-    if (new Date().getDate() > +day || day === '') {
-      return 'invalid-days';
-    }
-
-    return '';
+  const changeMonthHandler = (newMonthIndex: number): void => {
+    const newMonth: number = newMonthIndex;
+    setMonth(newMonth);
+    changeMonth(newMonth);
+    selectDay('1');
   };
 
   return (
     <section className="calendar">
       <div className="calendar__content">
-        <h1>{CALENDAR.month} {CALENDAR.year}</h1>
+        <div>
+          {month > 0 && <LeftCircleFilled onClick={() => changeMonthHandler(month - 1)} />}
+          <h1 style={{ margin: '0 auto' }}>{calendar.month} {calendar.year}</h1>
+          {month < 11 && <RightCircleFilled onClick={() => changeMonthHandler(month + 1)} />}
+        </div>
+
         <table>
           <thead>
             <tr>
-              {CALENDAR.weekdays.map((weekday: string) => <td key={nanoid()}>{weekday}</td>)}
+              {calendar.weekdays.map((weekday: string) => <td key={nanoid()}>{weekday}</td>)}
             </tr>
           </thead>
 
           <tbody>
-            {CALENDAR.days.map((week: any) => (
+            {calendar.days.map((week: any) => (
               <tr key={nanoid()}>
                 {week.map((day: string, dayIndex: number) => (
                   <td
                     key={nanoid()}
-                    onClick={() => (day !== selectedDay && day !== '') && setSelectedDay(week[dayIndex])}
-                    className={daysClasses(day)}
+                    onClick={() => (day !== calendar.selectedDay && day !== '') && selectDay(week[dayIndex])}
+                    className={day === calendar.selectedDay ? 'selected' : day === '' ? 'invalid-days' : ''}
                   >{day}</td>
                 ))}
               </tr>
@@ -93,4 +47,15 @@ export default React.memo(({ selectedDay, setSelectedDay }: ICalendarProps) => {
       </div>
     </section>
   );
+};
+
+const mapStateToProps = (state: any) => ({
+  calendar: state.calendar,
 });
+
+const mapDispatchToProps = (dispatch: any) => ({
+  selectDay: (payload: any) => dispatch({ type: SELECT_DAY, payload }),
+  changeMonth: (payload: any) => dispatch({ type: CHANGE_MONTH, payload }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar);

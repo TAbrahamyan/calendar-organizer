@@ -10,7 +10,6 @@ import { fetchUserData } from '../utils/store/actions/user';
 
 export const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const [ selectedDay, setSelectedDay ] = React.useState<string>(`${new Date().getDate()}`);
 
   React.useEffect(() => {
     document.title = 'Calendar Organizer';
@@ -24,11 +23,11 @@ export const Home: React.FC = () => {
         <Header />
 
         <div style={{ display: 'flex' }}>
-          <Calendar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-          <CreateTaskForm selectedDay={selectedDay} />
+          <Calendar />
+          <CreateTaskForm />
         </div>
 
-        <Tasks selectedDay={selectedDay} />
+        <Tasks />
       </div>
 
       <Footer />
