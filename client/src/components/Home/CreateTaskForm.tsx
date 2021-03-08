@@ -2,31 +2,27 @@ import { connect, useDispatch } from 'react-redux';
 import { Input, Button } from 'antd';
 import { fetchCreateTask, fetchEditTask, setCancelEditMode } from '../../utils/store/actions/task';
 import { ON_INPUT_CHANGE } from '../../utils/constants/actionTypes';
+import { checkInvalidDays } from '../../utils/helpers/calendar';
 
-const CreateTaskForm: React.FC<any> = ({
-  createTaskForm,
-  taskEditedMode,
-  calendar,
-  onInputChange,
-}) => {
+const CreateTaskForm: React.FC<any> = ({ taskStore, calendarStore, onInputChange }) => {
   const dispatch = useDispatch();
-  const disableButton: boolean = !(createTaskForm.title && createTaskForm.description);
+  const disableButton: boolean = !(taskStore.createTaskForm.title && taskStore.createTaskForm.description);
 
   const onChange = ({ target: t }: any) => onInputChange({ value: t.value, name: t.name });
 
   const createTaskHandler = (): void => {
-    const { title, description } = createTaskForm;
+    const { title, description } = taskStore.createTaskForm;
     dispatch(fetchCreateTask({
       title,
       description,
-      selectedDay: calendar.selectedDay,
-      selectedMonth: calendar.month,
+      selectedDay: calendarStore.selectedDay,
+      selectedMonth: calendarStore.month,
     }));
   };
 
   const saveEditedTaskHandler = (): void => {
-    const { title, description } = createTaskForm;
-    dispatch(fetchEditTask({ title, description, taskId: taskEditedMode.taskId }));
+    const { title, description } = taskStore.createTaskForm;
+    dispatch(fetchEditTask({ title, description, taskId: taskStore.taskEditedMode.taskId }));
   };
 
   const cancelEditMode = (): void => {
@@ -36,14 +32,14 @@ const CreateTaskForm: React.FC<any> = ({
   return (
     <section className="create-task">
       <div className="create-task__content">
-        {(new Date(`${calendar.month} ${calendar.selectedDay} ${calendar.year}`).getTime() >= new Date(new Date().toDateString()).getTime())
+        {checkInvalidDays(calendarStore)
           ? <>
-              <p>Create task on <b>{calendar.selectedDay} {calendar.month}</b></p>
+              <p>Create task on <b>{calendarStore.selectedDay} {calendarStore.month}</b></p>
 
               <Input
                 placeholder="Title"
                 name="title"
-                value={createTaskForm.title}
+                value={taskStore.createTaskForm.title}
                 onChange={onChange}
               />
 
@@ -51,11 +47,11 @@ const CreateTaskForm: React.FC<any> = ({
                 rows={4}
                 placeholder="Description"
                 name="description"
-                value={createTaskForm.description}
+                value={taskStore.createTaskForm.description}
                 onChange={onChange}
               />
 
-              {taskEditedMode.mode
+              {taskStore.taskEditedMode.mode
               ? (<>
                   <Button type="primary" onClick={saveEditedTaskHandler} disabled={disableButton}>Save</Button>
                   <Button type="primary" onClick={cancelEditMode} danger>Cancel</Button>
@@ -64,7 +60,7 @@ const CreateTaskForm: React.FC<any> = ({
               }
             </>
           : <h1>
-              Sorry you don't have opportunity to add task on the <b>{calendar.selectedDay} {calendar.month}</b>,
+              Sorry you don't have opportunity to add task on the <b>{calendarStore.selectedDay} {calendarStore.month}</b>,
               because this day already passed.
             </h1>
         }
@@ -74,10 +70,8 @@ const CreateTaskForm: React.FC<any> = ({
 };
 
 const mapStateToProps = (state: any) => ({
-  taskEditedMode: state.task.taskEditedMode,
-  createTaskForm: state.task.createTaskForm,
-  calendar: state.calendar,
-  month: state.calendar.month,
+  taskStore: state.task,
+  calendarStore: state.calendar,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

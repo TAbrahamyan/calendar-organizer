@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { List, Checkbox, Spin } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
+import { checkInvalidDays } from '../../utils/helpers/calendar';
 
 const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
                   key={task._id}
                   className={task.completed ? 'completed' : undefined}
                   actions={[
-                    <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />,
+                    checkInvalidDays(calendarStore)
+                    && <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />,
                     <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
                   ]}
                 >
