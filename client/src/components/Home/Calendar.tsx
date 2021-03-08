@@ -23,7 +23,7 @@ const Calendar: React.FC<any> = ({ calendar, tasks, selectDay, changeMonth }) =>
       return 'invalid-days';
     }
 
-    if (tasks.some((task: any) => task.createdDay === day)) {
+    if (tasks.some((task: any) => task.createdDay === day && task.createdMonth === calendar.month)) {
       return 'task-days';
     }
 

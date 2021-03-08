@@ -11,7 +11,6 @@
 
       span {
         font-size: 1.5em;
-        margin: 0;
         cursor: pointer;
         transition: 0.3s ease-in-out;
         &:hover { color: $pinkColor }
@@ -24,6 +23,7 @@
       background: $pinkColor;
       color: $white;
       padding: 0.3rem 1.7rem;
+      border-radius: 5px;
       border: none;
       outline: none;
       cursor: pointer;
@@ -32,7 +32,7 @@
       &:disabled { background: #dddddd; cursor: inherit }
     }
 
-    button, input { margin-top: 1rem; width: 100%; }
+    button, input { margin-top: 1rem }
     .error { margin: 0; color: red }
   }
 }

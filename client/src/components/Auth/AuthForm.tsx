@@ -46,8 +46,8 @@ export default () => {
     <section className="form-fields">
       <div className="form-fields__content">
         <div className="header">
-          <span onClick={() => isShowLoginFormHandler(true)} className={isShowLoginForm ? 'active' : ''}>Login</span>
-          <span onClick={() => isShowLoginFormHandler(false)} className={isShowLoginForm ? '' : 'active'}>Signup</span>
+          <span onClick={() => isShowLoginFormHandler(true)} className={isShowLoginForm ? 'active' : undefined}>Login</span>
+          <span onClick={() => isShowLoginFormHandler(false)} className={isShowLoginForm ? undefined : 'active'}>Signup</span>
         </div>
 
         <form onSubmit={handleSubmit(isShowLoginForm ? loginHandler : signupHandler)}>

@@ -1,9 +1,20 @@
 @import '../fonts';
+@import '../variables';
 
 body {
   margin: 0;
   font-family: 'Heebo' !important;
   background: #F4F7FA !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+
+  &-thumb {
+    border-radius: 6px;
+    background: $greenColor;
+    &:hover { background: $pinkColor }
+  }
 }
 
 h1, p, td { color: #42526E !important }

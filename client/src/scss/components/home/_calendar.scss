@@ -29,6 +29,6 @@
 
     .selected { background: $tableItemColor }
     .invalid-days { background: $gray; pointer-events: none }
-    .task-days { background: #28df99 }
+    .task-days { background: $greenColor }
   }
 }
