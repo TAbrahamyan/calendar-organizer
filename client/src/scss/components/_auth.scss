@@ -1,6 +1,6 @@
 @import '../variables';
 
-.login-signup {
+.auth {
   display: flex;
   position: absolute;
   top: 50%;
@@ -8,6 +8,6 @@
   transform: translate(-50%, -50%);
   z-index: 1;
 
-  @import './login-signup/welcome';
-  @import './login-signup/form-fields';
+  @import './auth/welcome';
+  @import './auth/auth-form-fields';
 }

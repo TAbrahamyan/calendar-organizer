@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
 
   return (
     <div className="home">
-      <div style={{ minHeight: 'calc(100vh - 4.75rem)' }}>
+      <div style={{ minHeight: 'calc(100vh - 4.25rem)' }}>
         <Header />
 
         <div style={{ display: 'flex' }}>

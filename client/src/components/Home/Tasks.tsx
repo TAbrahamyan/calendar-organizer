@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { List, Checkbox, Spin } from 'antd';
-import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { List, Spin } from 'antd';
 import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
-import { checkInvalidDays } from '../../utils/helpers/calendar';
+import ListItem from './ListItem';
 
 const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => {
   const dispatch = useDispatch();
@@ -20,44 +19,36 @@ const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => 
     dispatch(fetchCompleteTask({ completed, id }));
   }, []);
 
-  return <>
-    {!taskEditedMode.mode
-      ? <>
-          {isLoaded
-          ? <List
+  return (
+    <>
+      {!taskEditedMode.mode ? (
+        <>
+          {isLoaded ? (
+            <List
               className="tasks"
               itemLayout="horizontal"
               dataSource={tasks.filter((task: any) => {
                 return task.createdDay === calendar.selectedDay && task.createdMonth === calendar.month;
               })}
               renderItem={(task: any) => (
-                <List.Item
-                  key={task._id}
-                  className={task.completed ? 'completed' : undefined}
-                  actions={[
-                    (checkInvalidDays(calendar) &&
-                    <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />),
-                    <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={<Checkbox
-                      style={{ marginTop: '1rem' }}
-                      checked={task.completed}
-                      onChange={() => completeTaskHandler(task.completed, task._id)}
-                    />}
-                    title={task.title}
-                    description={task.description}
-                  />
-                </List.Item>
+                <ListItem
+                  calendar={calendar}
+                  task={task}
+                  editTaskHandler={editTaskHandler}
+                  deleteTaskHandler={deleteTaskHandler}
+                  completeTaskHandler={completeTaskHandler}
+                />
               )}
             />
-          : <Spin style={{ margin: '0 auto', width: '100%' }} size="large" />
-          }
+          ) : (
+            <Spin style={{ margin: '0 auto', width: '100%' }} size="large" />
+          )}
         </>
-      : <h1 style={{ textAlign: 'center' }}>Task editing process...</h1>
-    }
-  </>;
+      ) : (
+        <h1 style={{ textAlign: 'center' }}>Task editing process...</h1>
+      )}
+    </>
+  );
 };
 
 const mapStateToProps = (state: any) => ({

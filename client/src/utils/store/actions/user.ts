@@ -1,23 +1,24 @@
 import { GET_ME } from '../../constants/actionTypes';
 import userApi from '../../api/user';
 import history from '../../history';
+import { notification } from '../../helpers/notification';
 
-export const fetchUserLogin = (bodyData: any) => (): void => {
-  userApi.login(bodyData.loginForm)
+export const fetchUserLogin = (formData: any) => (): void => {
+  userApi.login(formData)
     .then(({ data }) => {
       localStorage.setItem('token', data);
       (history as any).go('/');
     })
-    .catch(err => bodyData.message.error(err.response.data.msg));
+    .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchUserSignup = (bodyData: any) => (): void => {
-  userApi.signup(bodyData.signupForm)
+export const fetchUserSignup = (formData: any) => (): void => {
+  userApi.signup(formData)
     .then(({ data }) => {
-      bodyData.message.success(data.msg);
-      (history as any).go('/login');
+      notification({ type: 'success', msg: data.msg });
+      window.location.reload();
     })
-    .catch(({ response: { data } }) => data.msg && bodyData.message.error(data.msg));
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchUserData = () => (dispatch: any): void => {
@@ -28,5 +29,5 @@ export const fetchUserData = () => (dispatch: any): void => {
 
 export const fetchUserLogout = (): void => {
   localStorage.removeItem('token');
-  (history as any).go('/login');
+  (history as any).go('/auth');
 };
