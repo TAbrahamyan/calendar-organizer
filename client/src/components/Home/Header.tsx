@@ -5,16 +5,12 @@ import { fetchUserLogout } from '../../utils/store/actions/user';
 export const Header: React.FC<any> = ({ user }) => {
   const dispatch = useDispatch();
 
-  const logout = (): void => {
-    dispatch(fetchUserLogout());
-  };
-
   return (
     <PageHeader
-      ghost={false}
+      className="header"
       title="Hello"
       subTitle={user?.fullName}
-      extra={<Button danger type="primary" onClick={logout}>Log out</Button>}
+      extra={<Button danger type="primary" onClick={() => dispatch(fetchUserLogout())}>Log out</Button>}
     />
   );
 };

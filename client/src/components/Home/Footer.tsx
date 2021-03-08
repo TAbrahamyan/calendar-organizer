@@ -1,6 +1,7 @@
+import React from 'react';
 import { GithubOutlined } from '@ant-design/icons';
 
-export default () => {
+export default React.memo(() => {
   return (
     <footer>
       <h1>
@@ -8,4 +9,4 @@ export default () => {
       </h1>
     </footer>
   );
-};
+});

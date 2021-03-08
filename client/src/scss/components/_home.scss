@@ -1,8 +1,9 @@
 @import '../variables';
 
 .home {
-  @import './home/_calendar';
-  @import './home/_create-task.scss';
-  @import './home/_tasks.scss';
-  @import './home/_footer.scss';
+  @import './home/header';
+  @import './home/calendar';
+  @import './home/create-task';
+  @import './home/tasks';
+  @import './home/footer';
 }

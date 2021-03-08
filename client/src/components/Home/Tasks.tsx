@@ -5,7 +5,7 @@ import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
 import { checkInvalidDays } from '../../utils/helpers/calendar';
 
-const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
+const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => {
   const dispatch = useDispatch();
 
   const editTaskHandler = React.useCallback((task: any): void => {
@@ -21,21 +21,21 @@ const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
   }, []);
 
   return <>
-    {!taskStore.taskEditedMode.mode
+    {!taskEditedMode.mode
       ? <>
-          {taskStore.isLoaded
+          {isLoaded
           ? <List
               className="tasks"
               itemLayout="horizontal"
-              dataSource={taskStore.tasks.filter((task: any) => {
-                return task.createdDay === calendarStore.selectedDay && task.createdMonth === calendarStore.month;
+              dataSource={tasks.filter((task: any) => {
+                return task.createdDay === calendar.selectedDay && task.createdMonth === calendar.month;
               })}
               renderItem={(task: any) => (
                 <List.Item
                   key={task._id}
                   className={task.completed ? 'completed' : undefined}
                   actions={[
-                    (checkInvalidDays(calendarStore) &&
+                    (checkInvalidDays(calendar) &&
                     <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />),
                     <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
                   ]}
@@ -61,8 +61,10 @@ const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
 };
 
 const mapStateToProps = (state: any) => ({
-  taskStore: state.task,
-  calendarStore: state.calendar,
+  taskEditedMode: state.task.taskEditedMode,
+  isLoaded: state.task.isLoaded,
+  tasks: state.task.tasks,
+  calendar: state.calendar,
 });
 
 export default connect(mapStateToProps)(Tasks);

@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import { LeftCircleFilled, RightCircleFilled } from '@ant-design/icons';
 import { SELECT_DAY, CHANGE_MONTH } from '../../utils/constants/actionTypes';
 
-const Calendar: React.FC<any> = ({ calendarStore, taskStore, selectDay, changeMonth }) => {
+const Calendar: React.FC<any> = ({ calendar, tasks, selectDay, changeMonth }) => {
   const [ month, setMonth ] = React.useState<number>(new Date().getMonth());
 
   const changeMonthHandler = (newMonthIndex: number): void => {
@@ -15,7 +15,7 @@ const Calendar: React.FC<any> = ({ calendarStore, taskStore, selectDay, changeMo
   };
 
   const daysClasses = (day: string): string => {
-    if (day === calendarStore.selectedDay) {
+    if (day === calendar.selectedDay) {
       return 'selected';
     }
 
@@ -23,7 +23,7 @@ const Calendar: React.FC<any> = ({ calendarStore, taskStore, selectDay, changeMo
       return 'invalid-days';
     }
 
-    if (taskStore.tasks.some((task: any) => task.createdDay === day)) {
+    if (tasks.some((task: any) => task.createdDay === day)) {
       return 'task-days';
     }
 
@@ -35,24 +35,24 @@ const Calendar: React.FC<any> = ({ calendarStore, taskStore, selectDay, changeMo
       <div className="calendar__content">
         <div>
           {month > 0 && <LeftCircleFilled onClick={() => changeMonthHandler(month - 1)} />}
-          <h1 style={{ margin: '0 auto' }}>{calendarStore.month} {calendarStore.year}</h1>
+          <h1 style={{ margin: '0 auto' }}>{calendar.month} {calendar.year}</h1>
           {month < 11 && <RightCircleFilled onClick={() => changeMonthHandler(month + 1)} />}
         </div>
 
         <table>
           <thead>
             <tr>
-              {calendarStore.weekdays.map((weekday: string) => <td key={nanoid()}>{weekday}</td>)}
+              {calendar.weekdays.map((weekday: string) => <td key={nanoid()}>{weekday}</td>)}
             </tr>
           </thead>
 
           <tbody>
-            {calendarStore.days.map((week: any) => (
+            {calendar.days.map((week: any) => (
               <tr key={nanoid()}>
                 {week.map((day: string, dayIndex: number) => (
                   <td
                     key={nanoid()}
-                    onClick={() => (day !== calendarStore.selectedDay && day !== '') && selectDay(week[dayIndex])}
+                    onClick={() => (day !== calendar.selectedDay && day !== '') && selectDay(week[dayIndex])}
                     className={daysClasses(day)}
                   >{day}</td>
                 ))}
@@ -66,8 +66,8 @@ const Calendar: React.FC<any> = ({ calendarStore, taskStore, selectDay, changeMo
 };
 
 const mapStateToProps = (state: any) => ({
-  calendarStore: state.calendar,
-  taskStore: state.task,
+  calendar: state.calendar,
+  tasks: state.task.tasks,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
