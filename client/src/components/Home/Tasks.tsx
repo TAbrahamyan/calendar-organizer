@@ -35,8 +35,8 @@ const Tasks: React.FC<any> = ({ taskStore, calendarStore }) => {
                   key={task._id}
                   className={task.completed ? 'completed' : undefined}
                   actions={[
-                    checkInvalidDays(calendarStore)
-                    && <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />,
+                    (checkInvalidDays(calendarStore) &&
+                    <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />),
                     <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
                   ]}
                 >
