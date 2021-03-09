@@ -35,6 +35,9 @@ export default () => {
     }
 
     dispatch(fetchUserSignup(formData));
+    notification({ type: 'success', msg: 'Successful registration' });
+    setIsShowLoginForm(true);
+    reset();
   };
 
   const isShowLoginFormHandler = (bool: boolean): void => {

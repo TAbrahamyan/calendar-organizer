@@ -1,10 +1,15 @@
 .header {
   padding: 12px 24px;
-  background: $headerFooterColor;
+  background: $darkBlueColor;
   span { color: $white }
 
   .ant-page-header-heading-extra {
     margin: auto 0;
     font-size: 24px;
+
+    .anticon {
+      transition: 0.2s ease-in;
+      &:hover { color: $greenColor }
+    }
   }
 }

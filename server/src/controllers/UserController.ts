@@ -1,8 +1,9 @@
-import User, { IUser } from '../models/User';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { config } from '../config';
 import { validationResult } from 'express-validator';
+import User, { IUser } from '../models/User';
+import Task from '../models/Task';
+import { config } from '../config';
 
 export class UserController {
   static async signup(req, res) {
@@ -63,6 +64,17 @@ export class UserController {
       res.json(user);
     } catch {
       res.status(401).json({ msg: 'Error in geting user' });
+    }
+  }
+
+  static async destroy(req, res) {
+    try {
+      const userId: string = req.params.id;
+      await User.findByIdAndRemove(userId);
+      await Task.deleteMany({ owner: userId });
+      res.json({ msg: 'Account is succesfully destroyed' });
+    } catch {
+      res.status(500).json({ msg: 'Failed on account destroying' });
     }
   }
 }

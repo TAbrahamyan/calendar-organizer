@@ -15,6 +15,7 @@ export default (app: express.Application): void => {
   app.post('/api/user/signup', validations.signup, UserController.signup);
   app.post('/api/user/login', validations.login, UserController.login);
   app.get('/api/user/me', checkAuth, UserController.me);
+  app.delete('/api/user/:id', UserController.destroy);
 
   // Task api
   app.post('/api/task/create', checkAuth, TaskController.create);

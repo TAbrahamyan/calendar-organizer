@@ -1,7 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Row, Col, Modal, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { fetchDestroyAccount } from '../../utils/store/actions/user';
 
 interface IProfileModal {
   user: any;
@@ -10,8 +11,12 @@ interface IProfileModal {
 }
 
 const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) => {
+  const dispatch = useDispatch();
+  const [ destroyLoading, setDestroyLoading ] = React.useState<boolean>(false);
+
   const destroyAccount = (): void => {
-    setModalVisible(false);
+    setDestroyLoading(true);
+    dispatch(fetchDestroyAccount(user._id));
   };
 
   return (
@@ -38,7 +43,7 @@ const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) =>
         <Col>{user?.createdAt}</Col>
       </Row>
 
-      <Button onClick={destroyAccount} danger>
+      <Button onClick={destroyAccount} loading={destroyLoading} danger>
         Destroy account
       </Button>
     </Modal>
