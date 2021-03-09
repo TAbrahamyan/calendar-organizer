@@ -67,6 +67,29 @@ export class UserController {
     }
   }
 
+  static async changePassword(req, res) {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const user: IUser = await User.findOne({ _id: req.params.id });
+      const isMatch: boolean = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({ msg: 'Wrong old password!' });
+      }
+
+      const passwordChangedUser = await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { password: await bcrypt.hash(newPassword, 10) } },
+        { new: true },
+      );
+
+      await passwordChangedUser.save();
+      res.json({ msg: 'Password is succesfully changed' });
+    } catch {
+      res.status(500).json({ msg: 'Failed on password changing' });
+    }
+  }
+
   static async destroy(req, res) {
     try {
       const userId: string = req.params.id;

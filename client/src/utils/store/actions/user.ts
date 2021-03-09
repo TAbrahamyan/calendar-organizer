@@ -1,7 +1,7 @@
 import { GET_ME } from '../../constants/actionTypes';
+import { notification } from '../../helpers/notification';
 import userApi from '../../api/user';
 import history from '../../history';
-import { notification } from '../../helpers/notification';
 
 export const fetchUserLogin = (formData: any) => (): void => {
   userApi.login(formData)
@@ -21,6 +21,12 @@ export const fetchUserData = () => (dispatch: any): void => {
   userApi.getMe()
     .then(({ data }) => dispatch({ type: GET_ME, payload: data }))
     .catch(({ response }) => (response.status === 500 && fetchUserLogout()));
+};
+
+export const fetchChangePassword = (formData: any, id: string) => (): void => {
+  userApi.changePassword(formData, id)
+    .then(({ data }) => notification({ type: 'success', msg: data.msg }))
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchDestroyAccount = (id: string) => (): void => {

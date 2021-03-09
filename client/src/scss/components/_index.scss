@@ -17,8 +17,6 @@ body {
   }
 }
 
-h1, h4, td, p { color: #42526E !important }
-
 .header-menu {
   width: 150px;
 
@@ -26,4 +24,20 @@ h1, h4, td, p { color: #42526E !important }
     padding: 0.6rem 1rem;
     &:hover { color: $greenColor !important }
   }
+}
+
+h1, h4, td, p { color: #42526E !important }
+.error { margin: 0; color: red }
+
+.custom-btn {
+  background: $pinkColor;
+  color: $white;
+  padding: 0.3rem 1.7rem;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover { background: #6930c3 }
+  &:disabled { background: #dddddd; cursor: inherit }
 }
