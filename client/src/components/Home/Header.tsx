@@ -1,17 +1,28 @@
-import { connect, useDispatch } from 'react-redux';
-import { PageHeader, Button } from 'antd';
-import { fetchUserLogout } from '../../utils/store/actions/user';
+import React from 'react';
+import { connect } from 'react-redux';
+import { PageHeader, Dropdown } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import HeaderMenu from './HeaderMenu';
+import ProfileModal from './ProfileModal';
 
-export const Header: React.FC<any> = ({ user }) => {
-  const dispatch = useDispatch();
+const Header: React.FC<any> = ({ user }) => {
+  const [ modalVisible, setModalVisible ] = React.useState<boolean>(false);
 
   return (
-    <PageHeader
-      className="header"
-      title="Hello"
-      subTitle={user?.fullName}
-      extra={<Button danger type="primary" onClick={() => dispatch(fetchUserLogout())}>Log out</Button>}
-    />
+    <>
+      <PageHeader
+        className="header"
+        title="Hello"
+        subTitle={user?.fullName}
+        extra={!modalVisible && (
+          <Dropdown trigger={['click']} overlay={<HeaderMenu setModalVisible={setModalVisible} />}>
+            <UserOutlined />
+          </Dropdown>
+        )}
+      />
+
+      <ProfileModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+    </>
   );
 };
 

@@ -1,5 +1,10 @@
 .header {
-  background: $headerFooterColor;
   padding: 12px 24px;
+  background: $headerFooterColor;
   span { color: $white }
+
+  .ant-page-header-heading-extra {
+    margin: auto 0;
+    font-size: 24px;
+  }
 }

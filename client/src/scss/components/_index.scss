@@ -17,4 +17,13 @@ body {
   }
 }
 
-h1, p, td { color: #42526E !important }
+h1, h4, td, p { color: #42526E !important }
+
+.header-menu {
+  width: 150px;
+
+  li {
+    padding: 0.6rem 1rem;
+    &:hover { color: $greenColor !important }
+  }
+}

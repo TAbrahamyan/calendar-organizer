@@ -19,20 +19,25 @@
       .active { color: $pinkColor }
     }
 
-    button {
-      background: $pinkColor;
-      color: $white;
-      padding: 0.3rem 1.7rem;
-      border-radius: 5px;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: 0.3s ease-in-out;
-      &:hover { background: #6930c3 }
-      &:disabled { background: #dddddd; cursor: inherit }
-    }
+    form {
+      display: flex;
+      flex-direction: column;
 
-    button, input { margin-top: 1rem }
-    .error { margin: 0; color: red }
+      button {
+        background: $pinkColor;
+        color: $white;
+        padding: 0.3rem 1.7rem;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+        &:hover { background: #6930c3 }
+        &:disabled { background: #dddddd; cursor: inherit }
+      }
+
+      button, input { margin-top: 1rem }
+      .error { margin: 0; color: red }
+    }
   }
 }
