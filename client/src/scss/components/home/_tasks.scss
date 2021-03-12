@@ -1,12 +1,12 @@
 .tasks {
-  background: $white;
+  background: $whiteColor;
   padding: 1rem;
   margin: 1rem;
   border-radius: 12px;
   li { padding: 0.7rem; margin: 0.5rem 0 }
-  .delete, .edit { font-size: 1.5em; cursor: pointer }
-  .delete { color: #ff4d4f }
-  .edit { color: #1890ff }
+  .delete-icon, .edit-icon { font-size: 1.5em; cursor: pointer }
+  .delete-icon { color: $redColor }
+  .edit-icon { color: $blueColor }
 
   .completed {
     background: $gray;

@@ -2,7 +2,7 @@
   @include login-signup-section(#6930C3, 25px, 0, 0, 25px);
   @include center-content;
   flex-direction: column;
-  b { color: $white }
+  b { color: $whiteColor }
   .text, .login-with { display: flex; flex-direction: column }
 
   .ant-btn {

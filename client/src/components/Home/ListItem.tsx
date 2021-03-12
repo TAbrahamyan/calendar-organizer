@@ -8,8 +8,8 @@ export default React.memo(({ calendar, task, editTaskHandler, deleteTaskHandler,
     key={task._id}
     className={task.completed ? 'completed' : undefined}
     actions={[
-      (checkInvalidDays(calendar) && <EditOutlined key="edit" className="edit" onClick={() => editTaskHandler(task)} />),
-      <CloseCircleOutlined key="delete" className="delete" onClick={() => deleteTaskHandler(task._id)} />,
+      (checkInvalidDays(calendar) && <EditOutlined key="edit" className="edit-icon" onClick={() => editTaskHandler(task)} />),
+      <CloseCircleOutlined key="delete" className="delete-icon" onClick={() => deleteTaskHandler(task._id)} />,
     ]}
   >
     <List.Item.Meta

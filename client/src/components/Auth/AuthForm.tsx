@@ -102,7 +102,7 @@ export default () => {
             </>
           )}
 
-          <button className="custom-btn" disabled={!formState.isValid}>
+          <button disabled={!formState.isValid}>
             {isShowLoginForm ? 'Login' : 'Signup'}
           </button>
         </form>

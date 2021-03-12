@@ -3,7 +3,7 @@
   margin: 1rem;
 
   &__content {
-    background: $white;
+    background: $whiteColor;
     padding: 1rem;
     border-radius: 12px;
 
@@ -24,11 +24,16 @@
       height: 60px;
       transition: 0.4s ease-in;
       cursor: pointer;
-      &:hover { transition: 0.4s ease-in; background: $tableItemColor }
+
+      &:hover {
+        transition: 0.4s ease-in;
+        background: $blueColor;
+        color: $whiteColor !important;
+      }
     }
 
-    .selected { background: $tableItemColor }
+    .selected { background: $blueColor; color: $whiteColor !important }
+    .task-days { background: $greenColor; color: $whiteColor !important }
     .invalid-days { background: $gray; pointer-events: none }
-    .task-days { background: $greenColor }
   }
 }

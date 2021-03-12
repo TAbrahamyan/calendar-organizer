@@ -13,7 +13,7 @@ body {
   &-thumb {
     border-radius: 6px;
     background: $greenColor;
-    &:hover { background: $darkBlueColor }
+    &:hover { background: $blueColor }
   }
 }
 
@@ -26,18 +26,13 @@ body {
   }
 }
 
-h1, h4, td, p { color: #42526E !important }
-.error { margin: 0; color: red }
+h1, h4, td, p, .ant-col { color: #42526E !important }
+.error { margin: 0; color: $redColor }
 
-.custom-btn {
-  background: $pinkColor;
-  color: $white;
-  padding: 0.3rem 1.7rem;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover { background: #6930c3 }
-  &:disabled { background: #dddddd; cursor: inherit }
+.change-btn {
+  @include custom-btn(#fb743e, $pinkColor);
+}
+
+.cancel-btn {
+  @include custom-btn($greenColor, $redColor);
 }

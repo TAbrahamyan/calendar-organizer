@@ -16,6 +16,6 @@ const TaskSchema = new Schema({
   createdMonth: String,
   createdDay: String,
   completed: Boolean,
-}, { timestamps: true });
+});
 
 export default model<ITask>('Task', TaskSchema);

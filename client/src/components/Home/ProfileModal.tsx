@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
-import { Row, Col, Modal, Button, Input } from 'antd';
+import { Row, Col, Modal, Button, Input, Popconfirm } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { fetchChangePassword, fetchDestroyAccount } from '../../utils/store/actions/user';
 import { notification } from '../../utils/helpers/notification';
@@ -19,26 +19,29 @@ const RULES = {
 const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) => {
   const dispatch = useDispatch();
   const { control, errors, formState, handleSubmit } = useForm({ mode: 'onChange' });
-  const [ destroyLoading, setDestroyLoading ] = React.useState<boolean>(false);
-  const [ visibleChangePasswordForm, setVisibleChangePasswordForm ] = React.useState<boolean>(false);
+  const [ visibleForm, setVisibleForm ] = React.useState<boolean>(false);
   const profileInfo = [
     { id: 1, text: 'Email', data: user?.email },
     { id: 2, text: 'Full Name', data: user?.fullName },
     { id: 3, text: 'Account created', data: user?.createdAt },
   ];
 
-  const destroyAccount = (): void => {
-    setDestroyLoading(true);
-    dispatch(fetchDestroyAccount(user._id));
-  };
+  const cancelModalHandler = React.useCallback((): void => {
+    setModalVisible(false);
+    setVisibleForm(false);
+  }, []);
 
   const changePassword = (formData: any): void => {
     if (formData.newPassword !== formData.confirmNewPassword) {
       return notification({ type: 'error', msg: 'Password confirmation is incorrect' });
     }
 
-    setVisibleChangePasswordForm(false);
+    setVisibleForm(false);
     dispatch(fetchChangePassword(formData, user._id));
+  };
+
+  const destroyAccount = (): void => {
+    dispatch(fetchDestroyAccount(user._id));
   };
 
   return (
@@ -49,12 +52,12 @@ const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) =>
       maskClosable={false}
       title={<p style={{ margin: '0' }}><UserOutlined/> Profile</p>}
       footer={[
-        <button key="cancel" className="custom-btn" onClick={() => setModalVisible(false)}>
+        <button key="cancel" className="cancel-btn" onClick={cancelModalHandler}>
           Cancel
         </button>,
-        <Button key="destroy" onClick={destroyAccount} loading={destroyLoading} danger>
-          Destroy account
-        </Button>,
+        <Popconfirm key="destroy" placement="top" title="Are you sure?" onConfirm={destroyAccount} okText="Yes" cancelText="No">
+          <Button type="primary" danger>Destroy account</Button>
+        </Popconfirm>,
       ]}
     >
       {profileInfo.map((info: any) => (
@@ -64,13 +67,13 @@ const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) =>
         </Row>
       ))}
 
-      {!visibleChangePasswordForm && (
-        <button className="custom-btn" onClick={() => setVisibleChangePasswordForm(true)}>
+      {!visibleForm && (
+        <button className="change-btn" onClick={() => setVisibleForm(true)}>
           Change password
         </button>
       )}
 
-      {visibleChangePasswordForm && (
+      {visibleForm && (
         <form onSubmit={handleSubmit(changePassword)}>
           <Controller
             control={control}
@@ -107,11 +110,11 @@ const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) =>
             {errors.confirmNewPassword && <span className="error">Password minimum length is 3</span>}
           </div>
 
-          <button className="custom-btn" disabled={!formState.isValid}>
+          <button className="change-btn" disabled={!formState.isValid}>
             Change
           </button>
 
-          <button className="custom-btn" style={{ marginLeft: '1rem' }} onClick={() => setVisibleChangePasswordForm(false)}>
+          <button style={{ marginLeft: '1rem' }} className="cancel-btn" onClick={() => setVisibleForm(false)}>
             Cancel
           </button>
         </form>
