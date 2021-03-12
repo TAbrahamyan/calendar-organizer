@@ -1,6 +1,6 @@
 import Task, { ITask } from '../models/Task';
 
-export class TaskController {
+class TaskController {
   static async create(req, res) {
     try {
       const { title, description, createdMonth, createdDay } = req.body;
@@ -66,3 +66,5 @@ export class TaskController {
     }
   }
 }
+
+export default TaskController;

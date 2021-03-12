@@ -6,6 +6,7 @@ import {
   CANCEL_EDIT_MODE,
   COMPLETE_TASK,
   IS_LOADED,
+  ON_INPUT_CHANGE,
 } from '../../constants/actionTypes';
 
 export const fetchTasks = () => (dispatch: any): void => {
@@ -32,7 +33,7 @@ export const fetchCreateTask = (bodyData: any) => (dispatch: any): void => {
     });
 };
 
-export const fetchEditTask = (bodyData: any) => (dispatch: any) => {
+export const fetchEditTask = (bodyData: any) => (dispatch: any): void => {
   const fetchEditedData = { newTitle: bodyData.title, newDescription: bodyData.description };
 
   taskApi.edit(fetchEditedData, bodyData.taskId)
@@ -42,7 +43,7 @@ export const fetchEditTask = (bodyData: any) => (dispatch: any) => {
     });
 };
 
-export const fetchCompleteTask = (bodyData: any) => (dispatch: any) => {
+export const fetchCompleteTask = (bodyData: any) => (dispatch: any): void => {
   taskApi.complete({ completed: bodyData.completed }, bodyData.id)
     .then(() => {
       dispatch({ type: COMPLETE_TASK });
@@ -50,7 +51,7 @@ export const fetchCompleteTask = (bodyData: any) => (dispatch: any) => {
     });
 };
 
-export const fetchDeleteTask = (id: string) => (dispatch: any) => {
+export const fetchDeleteTask = (id: string) => (dispatch: any): void => {
   taskApi.delete(id)
     .then(() => dispatch(fetchTasks()));
 };
@@ -58,6 +59,11 @@ export const fetchDeleteTask = (id: string) => (dispatch: any) => {
 export const setEditTask = (task: any) => ({
   type: EDIT_MODE,
   payload: task,
+});
+
+export const setInputValues = (payload: any) => ({
+  type: ON_INPUT_CHANGE,
+  payload,
 });
 
 export const setCancelEditMode = () => ({

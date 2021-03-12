@@ -1,5 +1,3 @@
-@import '../variables';
-
 .auth {
   display: flex;
   position: absolute;
@@ -11,3 +9,5 @@
   @import './auth/welcome';
   @import './auth/auth-form-fields';
 }
+
+.error { color: $redColor }

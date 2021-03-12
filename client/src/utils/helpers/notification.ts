@@ -1,5 +1,10 @@
 import { message } from 'antd';
 
-export const notification = ({ type, msg }: any): void => {
+interface INotificaction {
+  type: string;
+  msg: string;
+}
+
+export const notification = ({ type, msg }: INotificaction): void => {
   (message as any)[type](msg);
 };

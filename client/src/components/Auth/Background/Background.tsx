@@ -1,7 +1,8 @@
 import React from 'react';
-import TopRight from '../../assets/images/login-signup-top-right.png';
-import BottomRight from '../../assets/images/login-signup-bottom-right.png';
-import BottomLeft from '../../assets/images/login-signup-bottom-left.png';
+
+import TopRight from '../../../assets/images/login-signup-top-right.png';
+import BottomRight from '../../../assets/images/login-signup-bottom-right.png';
+import BottomLeft from '../../../assets/images/login-signup-bottom-left.png';
 
 interface ICSSPropertiesValue {
   bottom: string;
@@ -9,7 +10,7 @@ interface ICSSPropertiesValue {
   height: string;
 }
 
-export default () => {
+const Background: React.FC = () => {
   const imagesStyle = (cssPropertiesValue: ICSSPropertiesValue): React.CSSProperties => ({
     position: 'fixed',
     bottom: cssPropertiesValue.bottom,
@@ -25,3 +26,5 @@ export default () => {
     </>
   );
 };
+
+export default Background;

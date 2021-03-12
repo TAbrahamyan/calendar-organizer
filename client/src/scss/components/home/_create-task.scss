@@ -10,7 +10,7 @@
     button { margin-right: 0.8rem }
 
     .create-btn {
-      @include custom-btn($pinkColor, $darkBlueColor);
+      @include custom-btn($blueColor, $darkBlueColor);
     }
   }
 }

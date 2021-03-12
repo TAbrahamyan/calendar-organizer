@@ -1,7 +1,6 @@
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Home } from './pages/Home';
-import { Auth } from './pages/Auth';
+import { Auth, Home } from './pages';
 
 interface IRoutesProps {
   isAuth: boolean;
@@ -17,5 +16,5 @@ const Routes = ({ isAuth }: IRoutesProps) => {
 };
 
 export default connect(
-  (state: any) => ({ isAuth: state.user.isAuth }),
+  ({ user }: any) => ({ isAuth: user.isAuth }),
 )(Routes);

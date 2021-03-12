@@ -2,8 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import { checkAuth, validations } from '../middlewares';
-import { UserController } from '../controllers/UserController';
-import { TaskController } from '../controllers/TaskController';
+import { UserController, TaskController } from '../controllers';
 
 export default (app: express.Application): void => {
   app.use(morgan('dev'));

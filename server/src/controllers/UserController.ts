@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
+import { config } from '../config';
 import User, { IUser } from '../models/User';
 import Task from '../models/Task';
-import { config } from '../config';
 
-export class UserController {
+class UserController {
   static async signup(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -101,3 +101,5 @@ export class UserController {
     }
   }
 }
+
+export default UserController;

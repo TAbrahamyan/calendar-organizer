@@ -1,4 +1,4 @@
-export const daysOfMonth = (days: any, month: number): string[] => {
+export const daysOfMonth = (days: string[][], month: number): string[][] => {
   const lastDayOfMOnth: number = new Date(new Date().getFullYear(), month + 1, 0).getDate();
   let week: number = 0;
   days[week] = [];

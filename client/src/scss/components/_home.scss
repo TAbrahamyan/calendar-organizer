@@ -1,9 +1,16 @@
-@import '../variables';
-
 .home {
   @import './home/header';
   @import './home/calendar';
   @import './home/create-task';
   @import './home/tasks';
   @import './home/footer';
+}
+
+.header-menu {
+  width: 150px;
+
+  li {
+    padding: 0.6rem 1rem;
+    &:hover { color: $greenColor !important }
+  }
 }

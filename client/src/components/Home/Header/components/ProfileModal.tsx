@@ -3,8 +3,10 @@ import { connect, useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Row, Col, Modal, Button, Input, Popconfirm } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { fetchChangePassword, fetchDestroyAccount } from '../../utils/store/actions/user';
-import { notification } from '../../utils/helpers/notification';
+import moment from 'moment';
+
+import { notification } from '../../../../utils/helpers/notification';
+import { fetchChangePassword, fetchDestroyAccount } from '../../../../utils/store/actions/user';
 
 interface IProfileModal {
   user: any;
@@ -12,32 +14,40 @@ interface IProfileModal {
   setModalVisible: (modalVisible: boolean) => void;
 }
 
+interface IFormData {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
 const RULES = {
   password: { required: true, minLength: 3 },
 };
 
-const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) => {
+const ProfileModal: React.FC<IProfileModal> = ({ user, modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
-  const { control, errors, formState, handleSubmit } = useForm({ mode: 'onChange' });
+  const { control, errors, formState, handleSubmit, reset } = useForm<IFormData>({ mode: 'onChange' });
   const [ visibleForm, setVisibleForm ] = React.useState<boolean>(false);
   const profileInfo = [
     { id: 1, text: 'Email', data: user?.email },
     { id: 2, text: 'Full Name', data: user?.fullName },
-    { id: 3, text: 'Account created', data: user?.createdAt },
+    { id: 3, text: 'Account created', data: moment(user?.createdAt).format('MMMM DD, YYYY') },
   ];
 
-  const cancelModalHandler = React.useCallback((): void => {
+  const cancelModalHandler = (): void => {
+    reset();
     setModalVisible(false);
     setVisibleForm(false);
-  }, []);
+  };
 
   const changePassword = (formData: any): void => {
     if (formData.newPassword !== formData.confirmNewPassword) {
       return notification({ type: 'error', msg: 'Password confirmation is incorrect' });
     }
 
-    setVisibleForm(false);
     dispatch(fetchChangePassword(formData, user._id));
+    setVisibleForm(false);
+    reset();
   };
 
   const destroyAccount = (): void => {
@@ -124,5 +134,5 @@ const ProfileModal = ({ user, modalVisible, setModalVisible }: IProfileModal) =>
 };
 
 export default connect(
-  (state: any) => ({ user: state.user.user }),
+  ({ user: { user } }: any) => ({ user }),
 )(ProfileModal);

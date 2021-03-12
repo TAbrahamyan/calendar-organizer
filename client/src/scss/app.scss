@@ -1,0 +1,24 @@
+@import 'variables';
+@import 'mixins';
+@import 'fonts';
+@import './components/all';
+
+body {
+  margin: 0;
+  font-family: 'Heebo' !important;
+  background: #F4F7FA !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+
+  &-thumb {
+    border-radius: 6px;
+    background: $greenColor;
+    &:hover { background: $blueColor }
+  }
+}
+
+h1, h4, td, p, .ant-col { color: #42526E !important }
+.change-btn { @include custom-btn(#fb743e, $blueColor) }
+.cancel-btn { @include custom-btn($greenColor, $redColor) }

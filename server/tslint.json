@@ -3,7 +3,6 @@
   "extends": [ "tslint:recommended" ],
   "rules": {
     "no-console": false,
-    "no-any": true,
     "no-var-keyword": true,
     "no-unused-variable": true,
     "no-duplicate-variable": true,

@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Input } from 'antd';
-import { fetchCreateTask, fetchEditTask, setCancelEditMode } from '../../utils/store/actions/task';
-import { ON_INPUT_CHANGE } from '../../utils/constants/actionTypes';
-import { checkInvalidDays } from '../../utils/helpers/calendar';
 
-const CreateTaskForm: React.FC<any> = ({ calendar, createTaskForm, taskEditedMode, onInputChange }) => {
+import { checkInvalidDays } from '../../../utils/helpers/calendar';
+import { fetchCreateTask, fetchEditTask, setCancelEditMode, setInputValues } from '../../../utils/store/actions/task';
+
+const CreateTaskForm: React.FC<any> = ({ calendar, createTaskForm, taskEditedMode }) => {
   const dispatch = useDispatch();
   const disableButton: boolean = !(createTaskForm.title && createTaskForm.description);
 
-  const onChange = ({ target: t }: any) => onInputChange({ value: t.value, name: t.name });
+  const onChange = ({ target: t }: any) => dispatch(setInputValues({ value: t.value, name: t.name }));
 
   const createTaskHandler = (): void => {
     const { title, description } = createTaskForm;
@@ -72,14 +72,10 @@ const CreateTaskForm: React.FC<any> = ({ calendar, createTaskForm, taskEditedMod
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapState = (state: any) => ({
   calendar: state.calendar,
   createTaskForm: state.task.createTaskForm,
   taskEditedMode: state.task.taskEditedMode,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onInputChange: (payload: any) => dispatch({ type: ON_INPUT_CHANGE, payload }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskForm);
+export default connect(mapState)(CreateTaskForm);

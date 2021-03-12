@@ -2,8 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from 'antd';
-import { fetchUserLogin, fetchUserSignup } from '../../utils/store/actions/user';
-import { notification } from '../../utils/helpers/notification';
+
+import { notification } from '../../../utils/helpers/notification';
+import { fetchUserLogin, fetchUserSignup } from '../../../utils/store/actions/user';
 
 const RULES = {
   email: { required: true, pattern: /^\S+@\S+\.\S+$/ },
@@ -18,7 +19,7 @@ interface IFormData {
   confirmPassword: string;
 }
 
-export default () => {
+const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
   const [ isShowLoginForm, setIsShowLoginForm ] = React.useState<boolean>(true);
   const { control, errors, formState, reset, handleSubmit } = useForm<IFormData>({
@@ -49,8 +50,12 @@ export default () => {
     <section className="form-fields">
       <div className="form-fields__content">
         <div className="header">
-          <span onClick={() => isShowLoginFormHandler(true)} className={isShowLoginForm ? 'active' : undefined}>Login</span>
-          <span onClick={() => isShowLoginFormHandler(false)} className={isShowLoginForm ? undefined : 'active'}>Signup</span>
+          <span onClick={() => isShowLoginFormHandler(true)} className={isShowLoginForm ? 'active' : undefined}>
+            Login
+          </span>
+          <span onClick={() => isShowLoginFormHandler(false)} className={isShowLoginForm ? undefined : 'active'}>
+            Signup
+          </span>
         </div>
 
         <form onSubmit={handleSubmit(isShowLoginForm ? loginHandler : signupHandler)}>
@@ -110,3 +115,5 @@ export default () => {
     </section>
   );
 };
+
+export default AuthForm;

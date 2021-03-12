@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { List, Spin } from 'antd';
-import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../utils/store/actions/task';
-import ListItem from './ListItem';
+
+import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../../utils/store/actions/task';
+import { ListItem } from './components';
 
 const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => {
   const dispatch = useDispatch();
@@ -51,11 +52,11 @@ const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => 
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapState = (state: any) => ({
   taskEditedMode: state.task.taskEditedMode,
   isLoaded: state.task.isLoaded,
   tasks: state.task.tasks,
   calendar: state.calendar,
 });
 
-export default connect(mapStateToProps)(Tasks);
+export default connect(mapState)(Tasks);

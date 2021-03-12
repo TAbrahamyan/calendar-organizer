@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PageHeader, Dropdown } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import HeaderMenu from './HeaderMenu';
-import ProfileModal from './ProfileModal';
+
+import { HeaderMenu, ProfileModal } from './components';
 
 const Header: React.FC<any> = ({ user }) => {
   const [ modalVisible, setModalVisible ] = React.useState<boolean>(false);
