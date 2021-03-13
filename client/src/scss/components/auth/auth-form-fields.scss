@@ -1,32 +1,26 @@
 .form-fields {
   @include login-signup-section($whiteColor, 0, 25px, 25px, 0);
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 
-  &__content {
-    margin-top: 25%;
+  .header {
+    display: flex;
+    justify-content: space-around;
 
-    .header {
-      display: flex;
-      justify-content: space-around;
-
-      span {
-        font-size: 1.5em;
-        cursor: pointer;
-        transition: 0.3s ease-in-out;
-        &:hover { color: $pinkColor }
-      }
-
-      .active { color: $pinkColor }
+    span {
+      font-size: 1.5em;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+      &:hover { color: $pinkColor }
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      button, input { margin-top: 1rem }
+    .active { color: $pinkColor }
+  }
 
-      button {
-        @include custom-btn($pinkColor, $darkBlueColor);
-      }
-    }
+  form {
+    display: flex;
+    flex-direction: column;
+    button, input { margin-top: 1rem }
   }
 }

@@ -1,15 +1,15 @@
 .welcome {
   @include login-signup-section(#6930C3, 25px, 0, 0, 25px);
-  @include center-content;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
   flex-direction: column;
-  b { color: $whiteColor }
-  .text, .login-with { display: flex; flex-direction: column }
+  b { color: $whiteColor; vertical-align: super }
+  div { display: flex; flex-direction: column; margin: 1rem }
 
-  .ant-btn {
+  button {
     @include center-content;
-    width: 200px;
-    padding: 20px;
-    margin: 10px;
-    .anticon { font-size: 32px; margin-top: 8px }
+    margin: 0.5rem 1rem;
+    .anticon { font-size: 32px; margin-right: 10px }
   }
 }

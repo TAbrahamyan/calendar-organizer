@@ -8,9 +8,5 @@
     border-radius: 12px;
     input, textarea, button { margin: 0.8rem 0 }
     button { margin-right: 0.8rem }
-
-    .create-btn {
-      @include custom-btn($blueColor, $darkBlueColor);
-    }
   }
 }

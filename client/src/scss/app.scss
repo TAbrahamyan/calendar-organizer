@@ -20,5 +20,7 @@ body {
 }
 
 h1, h4, td, p, .ant-col { color: #42526E !important }
-.change-btn { @include custom-btn(#fb743e, $blueColor) }
-.cancel-btn { @include custom-btn($greenColor, $redColor) }
+.red-btn { @include custom-btn(#fb743e, $blueColor) }
+.green-btn { @include custom-btn($greenColor, $redColor) }
+.blue-btn { @include custom-btn($blueColor, $darkBlueColor) }
+.pink-btn { @include custom-btn($pinkColor, $darkBlueColor) }

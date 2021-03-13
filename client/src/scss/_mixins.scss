@@ -15,8 +15,8 @@
 @mixin login-signup-section($background, $topLeft, $topRight, $bottomRight, $bottomLeft) {
   background: $background;
   border-radius: $topLeft $topRight $bottomRight $bottomLeft;
-  height: 500px;
-  width: 450px;
+  width: 430px;
+  height: 430px;
 }
 
 @mixin custom-btn($background, $hoverColor, $padding: 0.3rem 1.7rem) {

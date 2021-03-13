@@ -61,11 +61,11 @@ const CreateTaskForm: React.FC<ICreateTaskFormProps> = ({ calendar, taskEditedMo
 
             {taskEditedMode.mode ? (
               <>
-                <button className="create-btn" onClick={saveEditedTaskHandler} disabled={disableButton}>Save</button>
-                <button className="cancel-btn" onClick={cancelEditMode}>Cancel</button>
+                <button className="blue-btn" onClick={saveEditedTaskHandler} disabled={disableButton}>Save</button>
+                <button className="green-btn" onClick={cancelEditMode}>Cancel</button>
               </>
             ) : (
-              <button className="create-btn" onClick={createTaskHandler} disabled={disableButton}>Create</button>
+              <button className="blue-btn" onClick={createTaskHandler} disabled={disableButton}>Create</button>
             )}
           </>
         ) : (

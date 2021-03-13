@@ -6,6 +6,32 @@
   transform: translate(-50%, -50%);
   z-index: 1;
 
+  @media (max-width: 769px) { flex-direction: column-reverse }
+
+  section {
+    @media (max-width: 1025px) {
+      width: 350px !important;
+    }
+
+    @media (max-width: 769px) {
+      height: 100% !important;
+      width: 400px !important;
+      border-radius: 0px !important;
+      background: white !important;
+      padding: 1rem !important;
+
+      b { font-size: 2em !important }
+      .text { display: none !important }
+
+      .login-with {
+        margin: 0 !important;
+        button { margin: 0.5rem 0 !important }
+      }
+    }
+
+    @media (max-width: 426px) { width: 310px !important }
+  }
+
   @import './auth/welcome';
   @import './auth/auth-form-fields';
 }
