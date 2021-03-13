@@ -1,12 +1,14 @@
 .tasks {
   background: $whiteColor;
   padding: 1rem;
-  margin: 1rem;
+  margin: 0 1rem;
   border-radius: 12px;
-  li { padding: 0.7rem; margin: 0.5rem 0 }
+  li { padding: 0.6rem; margin: 0.6rem 0; word-wrap: break-word }
   .delete-icon, .edit-icon { font-size: 1.5em; cursor: pointer }
   .delete-icon { color: $redColor }
   .edit-icon { color: $blueColor }
+
+  @media (max-width: 769px) { margin: 0 }
 
   .completed {
     background: $gray;

@@ -19,7 +19,7 @@ const Home: React.FC = () => {
       <div style={{ minHeight: 'calc(100vh - 3.55rem)' }}>
         <Header />
 
-        <div style={{ display: 'flex' }}>
+        <div className="calendar-create-task-form">
           <Calendar />
           <CreateTaskForm />
         </div>

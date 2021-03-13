@@ -1,4 +1,13 @@
 .home {
+  .calendar-create-task-form {
+    display: flex;
+
+    @media (max-width: 769px) {
+      flex-direction: column;
+      section { margin: 1rem 0 }
+    }
+  }
+
   @import './home/header';
   @import './home/calendar';
   @import './home/create-task';

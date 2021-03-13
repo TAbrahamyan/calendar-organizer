@@ -3,9 +3,13 @@
 @import 'fonts';
 @import './components/all';
 
-body {
+* {
   margin: 0;
   font-family: 'Heebo' !important;
+  box-sizing: border-box !important;
+}
+
+body {
   background: #F4F7FA !important;
 }
 

@@ -27,7 +27,7 @@ const ListItem: React.FC<IListItemProps> = React.memo(props => {
     >
       <List.Item.Meta
         avatar={<Checkbox
-          style={{ marginTop: '1rem' }}
+          style={{ marginTop: '0.2rem' }}
           checked={task.completed}
           onChange={() => completeTaskHandler(task.completed, task._id)}
         />}
