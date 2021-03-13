@@ -1,3 +1,5 @@
+import { ICalendar } from '../types';
+
 export const daysOfMonth = (days: string[][], month: number): string[][] => {
   const lastDayOfMOnth: number = new Date(new Date().getFullYear(), month + 1, 0).getDate();
   let week: number = 0;
@@ -40,7 +42,7 @@ export const months = (month: number): string => {
   return monthNames[month];
 };
 
-export const checkInvalidDays = (calendar: any): boolean => {
+export const checkInvalidDays = (calendar: ICalendar): boolean => {
   return new Date(`${calendar.month} ${calendar.selectedDay} ${calendar.year}`).getTime()
     >= new Date(new Date().toDateString()).getTime();
 };

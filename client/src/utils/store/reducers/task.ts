@@ -7,15 +7,23 @@ import {
   CANCEL_EDIT_MODE,
   IS_LOADED,
 } from '../../constants/actionTypes';
+import { ITasks, IAction } from '../../types';
 
-const initialState = {
+interface IInititalState {
+  tasks: ITasks[];
+  taskEditedMode: { mode: boolean; taskId: string };
+  createTaskForm: { title: string, description: string };
+  isLoaded: boolean;
+}
+
+const initialState: IInititalState = {
   tasks: [],
-  taskEditedMode: { mode: false, taskId: -1 },
+  taskEditedMode: { mode: false, taskId: '' },
   createTaskForm: { title: '', description: '' },
   isLoaded: false,
 };
 
-export default (state: any = initialState, action: any) => {
+export default (state: IInititalState = initialState, action: IAction) => {
   switch (action.type) {
     case ON_INPUT_CHANGE:
       return {
@@ -43,7 +51,7 @@ export default (state: any = initialState, action: any) => {
     case CANCEL_EDIT_MODE:
       return {
         ...state,
-        taskEditedMode: { mode: false, taskId: -1 },
+        taskEditedMode: { mode: false, taskId: '' },
         createTaskForm: { title: '', description: '' },
       };
     case IS_LOADED:

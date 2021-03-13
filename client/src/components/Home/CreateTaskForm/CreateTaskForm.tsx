@@ -4,8 +4,15 @@ import { Input } from 'antd';
 
 import { checkInvalidDays } from '../../../utils/helpers/calendar';
 import { fetchCreateTask, fetchEditTask, setCancelEditMode, setInputValues } from '../../../utils/store/actions/task';
+import { ICalendar } from '../../../utils/types';
 
-const CreateTaskForm: React.FC<any> = ({ calendar, createTaskForm, taskEditedMode }) => {
+interface ICreateTaskFormProps {
+  calendar: ICalendar;
+  taskEditedMode: { mode: boolean; taskId: string };
+  createTaskForm: { title: string, description: string };
+}
+
+const CreateTaskForm: React.FC<ICreateTaskFormProps> = ({ calendar, taskEditedMode, createTaskForm }) => {
   const dispatch = useDispatch();
   const disableButton: boolean = !(createTaskForm.title && createTaskForm.description);
 

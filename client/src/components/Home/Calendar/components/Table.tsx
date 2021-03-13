@@ -1,7 +1,15 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
 
-const Table: React.FC<any> = ({ calendar, selectDayHandler, daysClasses }) => {
+import { ICalendar } from '../../../../utils/types';
+
+interface ITableProps {
+  calendar: ICalendar;
+  selectDayHandler: (day: string, week: string[], dayIndex: number) => void;
+  daysClasses: (day: string) => string;
+}
+
+const Table: React.FC<ITableProps> = ({ calendar, selectDayHandler, daysClasses }) => {
   return (
     <table>
       <thead>
@@ -11,7 +19,7 @@ const Table: React.FC<any> = ({ calendar, selectDayHandler, daysClasses }) => {
       </thead>
 
       <tbody>
-        {calendar.days.map((week: any) => (
+        {calendar.days.map((week: string[]) => (
           <tr key={nanoid()}>
             {week.map((day: string, dayIndex: number) => (
               <td

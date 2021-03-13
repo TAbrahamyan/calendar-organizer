@@ -3,8 +3,22 @@ import { notification } from '../../helpers/notification';
 import userApi from '../../api/user';
 import history from '../../history';
 
-export const fetchUserLogin = (formData: any) => (): void => {
-  userApi.login(formData)
+interface IFetchUserLoginSignupFormData {
+  email: string;
+  fullName: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface IFetchChangePasswordFormData {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
+export const fetchUserLogin = (formData: IFetchUserLoginSignupFormData) => (): void => {
+  userApi
+    .login(formData)
     .then(({ data }) => {
       localStorage.setItem('token', data);
       (history as any).go('/');
@@ -12,25 +26,30 @@ export const fetchUserLogin = (formData: any) => (): void => {
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchUserSignup = (formData: any) => (): void => {
-  userApi.signup(formData)
+export const fetchUserSignup = (formData: IFetchUserLoginSignupFormData) => (): void => {
+  userApi
+    .signup(formData)
+    .then(() => window.location.reload())
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchUserData = () => (dispatch: any): void => {
-  userApi.getMe()
+  userApi
+    .getMe()
     .then(({ data }) => dispatch({ type: GET_ME, payload: data }))
     .catch(({ response }) => (response.status === 500 && fetchUserLogout()));
 };
 
-export const fetchChangePassword = (formData: any, id: string) => (): void => {
-  userApi.changePassword(formData, id)
+export const fetchChangePassword = (formData: IFetchChangePasswordFormData, id: string) => (): void => {
+  userApi
+    .changePassword(formData, id)
     .then(({ data }) => notification({ type: 'success', msg: data.msg }))
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchDestroyAccount = (id: string) => (): void => {
-  userApi.destroyAccount(id)
+  userApi
+    .destroyAccount(id)
     .then(() => fetchUserLogout());
 };
 

@@ -4,8 +4,14 @@ import { LeftCircleFilled, RightCircleFilled } from '@ant-design/icons';
 
 import { selectDay, changeMonth } from '../../../utils/store/actions/calendar';
 import { Table } from './components';
+import { ICalendar, ITasks } from '../../../utils/types';
 
-const Calendar: React.FC<any> = ({ calendar, tasks }) => {
+interface ICalendarRrops {
+  calendar: ICalendar;
+  tasks: ITasks[];
+}
+
+const Calendar: React.FC<ICalendarRrops> = ({ calendar, tasks }) => {
   const dispatch = useDispatch();
   const [ month, setMonth ] = React.useState<number>(new Date().getMonth());
 
@@ -31,7 +37,7 @@ const Calendar: React.FC<any> = ({ calendar, tasks }) => {
       return 'invalid-days';
     }
 
-    if (tasks.some((task: any) => task.createdDay === day && task.createdMonth === calendar.month)) {
+    if (tasks.some((task: ITasks) => task.createdDay === day && task.createdMonth === calendar.month)) {
       return 'task-days';
     }
 

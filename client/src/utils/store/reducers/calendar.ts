@@ -1,7 +1,8 @@
 import { SELECT_DAY, CHANGE_MONTH } from '../../constants/actionTypes';
 import { daysOfMonth, months } from '../../helpers/calendar';
+import { ICalendar, IAction } from '../../types';
 
-const initialState = {
+const initialState: ICalendar = {
   year: new Date().getFullYear(),
   weekdays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   selectedDay: `${new Date().getDate()}`,
@@ -9,7 +10,7 @@ const initialState = {
   days: daysOfMonth([], new Date().getMonth()),
 };
 
-export default (state: any = initialState, action: any) => {
+export default (state: ICalendar = initialState, action: IAction) => {
   switch (action.type) {
     case SELECT_DAY:
       return {

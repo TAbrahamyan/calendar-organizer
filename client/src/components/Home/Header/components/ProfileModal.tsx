@@ -7,9 +7,10 @@ import moment from 'moment';
 
 import { notification } from '../../../../utils/helpers/notification';
 import { fetchChangePassword, fetchDestroyAccount } from '../../../../utils/store/actions/user';
+import { IUser } from '../../../../utils/types';
 
-interface IProfileModal {
-  user: any;
+interface IProfileModalProps {
+  user: IUser;
   modalVisible: boolean;
   setModalVisible: (modalVisible: boolean) => void;
 }
@@ -20,15 +21,21 @@ interface IFormData {
   confirmNewPassword: string;
 }
 
+interface IProfileInfo {
+  id: number;
+  text: string;
+  data: string;
+}
+
 const RULES = {
   password: { required: true, minLength: 3 },
 };
 
-const ProfileModal: React.FC<IProfileModal> = ({ user, modalVisible, setModalVisible }) => {
+const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
   const { control, errors, formState, handleSubmit, reset } = useForm<IFormData>({ mode: 'onChange' });
   const [ visibleForm, setVisibleForm ] = React.useState<boolean>(false);
-  const profileInfo = [
+  const profileInfo: IProfileInfo[] = [
     { id: 1, text: 'Email', data: user?.email },
     { id: 2, text: 'Full Name', data: user?.fullName },
     { id: 3, text: 'Account created', data: moment(user?.createdAt).format('MMMM DD, YYYY') },
@@ -40,7 +47,7 @@ const ProfileModal: React.FC<IProfileModal> = ({ user, modalVisible, setModalVis
     setVisibleForm(false);
   };
 
-  const changePassword = (formData: any): void => {
+  const changePassword = (formData: IFormData): void => {
     if (formData.newPassword !== formData.confirmNewPassword) {
       return notification({ type: 'error', msg: 'Password confirmation is incorrect' });
     }
@@ -70,7 +77,7 @@ const ProfileModal: React.FC<IProfileModal> = ({ user, modalVisible, setModalVis
         </Popconfirm>,
       ]}
     >
-      {profileInfo.map((info: any) => (
+      {profileInfo.map((info: IProfileInfo) => (
         <Row key={info.id} justify="space-between" style={{ padding: '0.5rem 0' }}>
           <Col>{info.text}</Col>
           <Col>{info.data}</Col>
@@ -133,6 +140,15 @@ const ProfileModal: React.FC<IProfileModal> = ({ user, modalVisible, setModalVis
   );
 };
 
-export default connect(
-  ({ user: { user } }: any) => ({ user }),
-)(ProfileModal);
+interface IOwnProps {
+  modalVisible: boolean;
+  setModalVisible: (modalVisible: boolean) => void;
+}
+
+const mapState = (state: any, ownProps: IOwnProps) => ({
+  user: state.user.user,
+  modalVisible: ownProps.modalVisible,
+  setModalVisible: ownProps.setModalVisible,
+});
+
+export default connect(mapState)(ProfileModal);

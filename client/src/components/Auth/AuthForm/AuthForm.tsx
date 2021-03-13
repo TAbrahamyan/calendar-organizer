@@ -26,19 +26,16 @@ const AuthForm: React.FC = () => {
     mode: 'onChange',
   });
 
-  const loginHandler = (formData: any): void => {
+  const loginHandler = (formData: IFormData): void => {
     dispatch(fetchUserLogin(formData));
   };
 
-  const signupHandler = (formData: any): void => {
+  const signupHandler = (formData: IFormData): void => {
     if (formData.password !== formData.confirmPassword) {
       return notification({ type: 'error', msg: 'Password confirmation is incorrect' });
     }
 
     dispatch(fetchUserSignup(formData));
-    notification({ type: 'success', msg: 'Successful registration' });
-    setIsShowLoginForm(true);
-    reset();
   };
 
   const isShowLoginFormHandler = (bool: boolean): void => {

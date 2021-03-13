@@ -1,11 +1,12 @@
 import { Schema, model, Document } from 'mongoose';
+import { ITask } from './Task';
 
 export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
   isVerified: boolean;
-  tasks: any;
+  tasks: ITask;
 }
 
 const UserSchema = new Schema({

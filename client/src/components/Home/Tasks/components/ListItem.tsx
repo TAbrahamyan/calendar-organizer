@@ -3,8 +3,17 @@ import { List, Checkbox } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 import { checkInvalidDays } from '../../../../utils/helpers/calendar';
+import { ITasks, ICalendar } from '../../../../utils/types';
 
-const ListItem: React.FC<any> = React.memo(props => {
+interface IListItemProps {
+  calendar: ICalendar;
+  task: ITasks;
+  editTaskHandler: (task: ITasks) => void;
+  deleteTaskHandler: (id: string) => void;
+  completeTaskHandler: (completed: boolean, id: string) => void;
+}
+
+const ListItem: React.FC<IListItemProps> = React.memo(props => {
   const { calendar, task, editTaskHandler, deleteTaskHandler, completeTaskHandler } = props;
 
   return (

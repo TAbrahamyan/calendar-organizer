@@ -2,13 +2,21 @@ import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { List, Spin } from 'antd';
 
-import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../../utils/store/actions/task';
 import { ListItem } from './components';
+import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../../utils/store/actions/task';
+import { ITasks, ICalendar } from '../../../utils/types';
 
-const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => {
+interface ITasksProps {
+  tasks: ITasks[];
+  calendar: ICalendar;
+  isLoaded: boolean;
+  taskEditedMode: { mode: boolean; taskId: string };
+}
+
+const Tasks: React.FC<ITasksProps> = ({ calendar, tasks, taskEditedMode, isLoaded }) => {
   const dispatch = useDispatch();
 
-  const editTaskHandler = React.useCallback((task: any): void => {
+  const editTaskHandler = React.useCallback((task: ITasks): void => {
     dispatch(setEditTask(task));
   }, []);
 
@@ -28,10 +36,10 @@ const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => 
             <List
               className="tasks"
               itemLayout="horizontal"
-              dataSource={tasks.filter((task: any) => {
+              dataSource={tasks.filter((task: ITasks) => {
                 return task.createdDay === calendar.selectedDay && task.createdMonth === calendar.month;
               })}
-              renderItem={(task: any) => (
+              renderItem={(task: ITasks) => (
                 <ListItem
                   calendar={calendar}
                   task={task}
@@ -53,10 +61,10 @@ const Tasks: React.FC<any> = ({ taskEditedMode, isLoaded, tasks, calendar }) => 
 };
 
 const mapState = (state: any) => ({
+  calendar: state.calendar,
+  tasks: state.task.tasks,
   taskEditedMode: state.task.taskEditedMode,
   isLoaded: state.task.isLoaded,
-  tasks: state.task.tasks,
-  calendar: state.calendar,
 });
 
 export default connect(mapState)(Tasks);

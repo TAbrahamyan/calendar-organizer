@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 
 export interface ITask extends Document {
-  owner: any;
+  owner: { type: string; ref: string; };
   title: string;
   description: string;
   createdMonth: string;
