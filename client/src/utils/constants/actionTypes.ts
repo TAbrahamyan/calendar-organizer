@@ -1,5 +1,6 @@
 // User
 export const GET_ME = 'GET_ME';
+export const VERIFICATION_MODAL = 'VERIFICATION_MODAL';
 
 // Calendar
 export const SELECT_DAY = 'SELECT_DAY';

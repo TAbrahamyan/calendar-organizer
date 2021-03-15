@@ -4,7 +4,7 @@ import { AuthForm, Background, Welcome } from '../../components/Auth';
 
 const Auth: React.FC = () => {
   React.useEffect(() => {
-    document.title = 'Login';
+    document.title = 'Auth';
   }, []);
 
   return (

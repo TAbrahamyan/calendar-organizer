@@ -6,6 +6,7 @@ export interface IUser {
   password: string;
   createdAt: string;
   updatedAt: string;
+  emailToken: string | null;
   isVerified: boolean;
   tasks: ITasks;
 }

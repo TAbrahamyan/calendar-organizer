@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
 import Routes from './Routes';
@@ -10,10 +10,10 @@ import 'antd/dist/antd.css';
 import './scss/app.scss';
 
 ReactDOM.render(
-  <Provider store={store}>
+  <ReduxProvider store={store}>
     <Router history={history}>
       <Routes />
     </Router>
-  </Provider>,
+  </ReduxProvider>,
   document.getElementById('root'),
 );

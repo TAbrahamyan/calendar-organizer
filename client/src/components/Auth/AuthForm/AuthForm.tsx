@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from 'antd';
 
+import { VerificationModal } from './components';
 import { notification } from '../../../utils/helpers/notification';
 import { fetchUserLogin, fetchUserSignup } from '../../../utils/store/actions/user';
 
@@ -21,7 +22,7 @@ interface IFormData {
 
 const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
-  const [ isShowLoginForm, setIsShowLoginForm ] = React.useState<boolean>(true);
+  const [ isLogin, setIsLogin ] = React.useState<boolean>(true);
   const { control, errors, formState, reset, handleSubmit } = useForm<IFormData>({
     mode: 'onChange',
   });
@@ -38,23 +39,21 @@ const AuthForm: React.FC = () => {
     dispatch(fetchUserSignup(formData));
   };
 
-  const isShowLoginFormHandler = (bool: boolean): void => {
-    setIsShowLoginForm(bool);
+  const isLoginHandler = (bool: boolean): void => {
     reset();
+    setIsLogin(bool);
   };
 
   return (
     <section className="form-fields">
+      <VerificationModal />
+
       <div className="header">
-        <span onClick={() => isShowLoginFormHandler(true)} className={isShowLoginForm ? 'active' : undefined}>
-          Login
-        </span>
-        <span onClick={() => isShowLoginFormHandler(false)} className={isShowLoginForm ? undefined : 'active'}>
-          Signup
-        </span>
+        <span onClick={() => isLoginHandler(true)} className={isLogin ? 'active' : undefined}>Login</span>
+        <span onClick={() => isLoginHandler(false)} className={isLogin ? undefined : 'active'}>Signup</span>
       </div>
 
-      <form onSubmit={handleSubmit(isShowLoginForm ? loginHandler : signupHandler)}>
+      <form onSubmit={handleSubmit(isLogin ? loginHandler : signupHandler)}>
         <Controller
           control={control}
           rules={RULES.email}
@@ -66,7 +65,7 @@ const AuthForm: React.FC = () => {
         />
         {errors.email && <span className="error">Invalid email</span>}
 
-        {!isShowLoginForm && (
+        {!isLogin && (
           <>
             <Controller
               control={control}
@@ -92,7 +91,7 @@ const AuthForm: React.FC = () => {
         />
         {errors.password && <span className="error">Password minimum length is 3</span>}
 
-        {!isShowLoginForm && (
+        {!isLogin && (
           <>
             <Controller
               control={control}
@@ -108,7 +107,7 @@ const AuthForm: React.FC = () => {
         )}
 
         <button className="pink-btn" disabled={!formState.isValid}>
-          {isShowLoginForm ? 'Login' : 'Signup'}
+          {isLogin ? 'Login' : 'Signup'}
         </button>
       </form>
     </section>

@@ -8,7 +8,9 @@
   div { display: flex; flex-direction: column; margin: 1rem }
 
   button {
-    @include center-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0.5rem 1rem;
     .anticon { font-size: 32px; margin-right: 10px }
   }

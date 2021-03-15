@@ -9,6 +9,4 @@ const app: express.Application = express();
 
 createRoutes(app);
 
-app.listen(config.port, () => {
-  console.log(`Server = http://localhost:${config.port}`)
-});
+app.listen(config.port, () => console.log(`Server = http://localhost:${config.port}`));

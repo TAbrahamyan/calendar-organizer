@@ -3,17 +3,19 @@ import { ITask } from './Task';
 
 export interface IUser extends Document {
   fullName: string;
-  email: string;
   password: string;
+  email: string;
+  emailToken: string;
   isVerified: boolean;
   tasks: ITask;
 }
 
 const UserSchema = new Schema({
   fullName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
   password: { type: String, required: true, min: 3 },
-  isVerified: Boolean,
+  email: { type: String, required: true, unique: true },
+  emailToken: String,
+  isVerified: { type: Boolean, default: false },
   tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
 }, { timestamps: true });
 
