@@ -2,7 +2,7 @@ import Axios from 'axios';
 import { fetchUserLogout } from './store/actions/user';
 
 const axios = Axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: window.location.origin.includes('localhost') ? 'http://localhost:8000' : window.location.origin,
 });
 
 axios.interceptors.request.use((config) => {

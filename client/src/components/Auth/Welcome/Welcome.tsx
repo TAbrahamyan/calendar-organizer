@@ -1,6 +1,15 @@
-import { GoogleSquareFilled, FacebookFilled } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { GoogleLogin } from 'react-google-login';
+import { GoogleOutlined } from '@ant-design/icons';
+import { fetchLoginWithGoogle } from '../../../utils/store/actions/user';
 
 const Welcome: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const onSuccessHandler = ({ tokenId, googleId }: any): void => {
+    dispatch(fetchLoginWithGoogle(tokenId, googleId));
+  };
+
   return (
     <section className="welcome">
       <div className="text">
@@ -9,13 +18,17 @@ const Welcome: React.FC = () => {
       </div>
 
       <div className="login-with">
-        <button className="pink-btn">
-          <GoogleSquareFilled style={{ marginLeft: '-16px' }} /> Login with google
-        </button>
-
-        <button className="pink-btn">
-          <FacebookFilled /> Login with facebook
-        </button>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID ?? ''}
+          buttonText="Sign in with google"
+          onSuccess={onSuccessHandler}
+          cookiePolicy={'single_host_origin'}
+          render={renderProps => (
+            <button className="pink-btn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+              <GoogleOutlined /> Sign in with google
+            </button>
+          )}
+        />
       </div>
     </section>
   );

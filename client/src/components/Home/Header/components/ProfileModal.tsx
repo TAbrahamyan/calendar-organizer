@@ -69,7 +69,7 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       maskClosable={false}
       title={<p style={{ margin: '0' }}><UserOutlined/> Profile</p>}
       footer={[
-        <button key="cancel" className="green-btn" onClick={cancelModalHandler}>
+        <button key="cancel" style={{ marginRight: '1rem' }} className="green-btn" onClick={cancelModalHandler}>
           Cancel
         </button>,
         <Popconfirm key="destroy" placement="top" title="Are you sure?" onConfirm={destroyAccount} okText="Yes" cancelText="No">
@@ -84,7 +84,7 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
         </Row>
       ))}
 
-      {!visibleForm && (
+      {(!visibleForm && user.googleId === null) && (
         <button className="red-btn" onClick={() => setVisibleForm(true)}>
           Change password
         </button>

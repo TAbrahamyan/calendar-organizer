@@ -1,10 +1,12 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { validationResult } from 'express-validator';
 import crypto from 'crypto';
-import { config, sendEmail } from '../config';
-import User, { IUser } from '../models/User';
+import { OAuth2Client } from 'google-auth-library';
+import { config, createJWT, sendEmail } from '../config';
+import User from '../models/User';
 import Task from '../models/Task';
+
+const client = new OAuth2Client(config.googleClientId);
 
 class UserController {
   static async signup(req, res) {
@@ -15,15 +17,24 @@ class UserController {
 
     try {
       const { fullName, email, password } = req.body;
-      const candidate: IUser = await User.findOne({ email });
-      if (candidate) {
+      const user = await User.findOne({ email });
+      if (user && user.googleId !== null) {
+        return res.status(500).json({ msg: `Email ${email} already signed in with Google` });
+      }
+
+      if (user) {
         return res.status(500).json({ msg: `Email ${email} already exists` });
       }
 
       const hashedPassword: string = await bcrypt.hash(password, 10);
       const emailToken = crypto.randomBytes(64).toString('hex');
-      const newUser: IUser = new User({
-        fullName, email, emailToken, password: hashedPassword, isVerified: false,
+      const newUser = new User({
+        fullName,
+        email,
+        emailToken,
+        googleId: null,
+        password: hashedPassword,
+        isVerified: false,
       });
 
       await newUser.save();
@@ -53,35 +64,76 @@ class UserController {
 
     try {
       const { email, password } = req.body;
-      const user: IUser = await User.findOne({ email });
+      const user: any = await User.findOne({ email });
+      if (user && user.googleId !== null) {
+        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
+      }
+
       if (!user) {
-        return res.status(400).json({ msg: 'Incorrect password or email' });
+        return res.status(400).json({ msg: 'Incorrect Password or Email' });
       }
 
       const isMatch: boolean = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ msg: 'Incorrect password or email' });
+        return res.status(400).json({ msg: 'Incorrect Password or Email' });
       }
 
       if (user.isVerified === false) {
         return res.status(400).json({ msg: 'Account need verification. Check spam if not received' });
       }
 
-      const token = jwt.sign(
-        { userId: user.id },
-        config.jwtSecret,
-        { expiresIn: '1h' },
-      );
-
-      res.json(token);
+      res.json(createJWT(user._id));
     } catch {
       res.status(500).json({ msg: 'Error on login' });
     }
   }
 
+  static async loginWithGoogle(req, res) {
+    try {
+      const { tokenId, googleId } = req.body;
+
+      client
+        .verifyIdToken({
+          idToken: tokenId,
+          audience: config.googleClientId,
+        })
+        .then(async (response: any) => {
+          const { email_verified, name, email } = response.payload;
+
+          try {
+            const user = await User.findOne({ email });
+            if (user && user.googleId === null) {
+              return res.status(400).json({ msg: `Sorry this Email already signed in without Google` });
+            }
+
+            if (!user) {
+              const hashedPassword: string = await bcrypt.hash(email + name, 10);
+              const newUser = new User({
+                fullName: name,
+                email,
+                emailToken: null,
+                googleId,
+                password: hashedPassword,
+                isVerified: email_verified,
+              });
+
+              await newUser.save();
+              res.json(createJWT(newUser._id));
+            } else {
+              res.json(createJWT(user._id));
+            }
+          } catch {
+            res.status(400).json({ msg: 'Error on logging in with Google' });
+          }
+        });
+    } catch {
+      res.status(400).json({ msg: 'Something went wrong' });
+    }
+  }
+
   static async me(req, res) {
     try {
-      const user: IUser = await User.findById(req.userId);
+      const user = await User.findById(req.userId);
       res.json(user);
     } catch {
       res.status(401).json({ msg: 'Error in geting user' });
@@ -105,29 +157,28 @@ class UserController {
   static async changePassword(req, res) {
     try {
       const { oldPassword, newPassword } = req.body;
-      const user: IUser = await User.findOne({ _id: req.params.id });
+      const user: any = await User.findOne({ _id: req.params.id });
       const isMatch: boolean = await bcrypt.compare(oldPassword, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({ msg: 'Wrong old password!' });
+        return res.status(400).json({ msg: 'Wrong old Password' });
       }
 
-      const passwordChangedUser = await User.findByIdAndUpdate(
+      await User.findByIdAndUpdate(
         { _id: req.params.id },
         { $set: { password: await bcrypt.hash(newPassword, 10) } },
         { new: true },
       );
 
-      await passwordChangedUser.save();
       res.json({ msg: 'Password is succesfully changed' });
     } catch {
-      res.status(500).json({ msg: 'Failed on password changing' });
+      res.status(500).json({ msg: 'Failed on Password changing' });
     }
   }
 
   static async destroy(req, res) {
     try {
-      const userId: string = req.params.id;
+      const userId = req.params.id;
       await User.findByIdAndRemove(userId);
       await Task.deleteMany({ owner: userId });
       res.json({ msg: 'Account is succesfully destroyed' });

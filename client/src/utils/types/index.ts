@@ -7,6 +7,7 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   emailToken: string | null;
+  googleId: string | null;
   isVerified: boolean;
   tasks: ITasks;
 }

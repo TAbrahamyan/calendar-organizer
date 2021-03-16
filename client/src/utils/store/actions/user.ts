@@ -3,6 +3,13 @@ import { notification } from '../../helpers/notification';
 import userApi from '../../api/user';
 import history from '../../history';
 
+export const fetchUserSignup = (formData: IFetchUserLoginSignupFormData) => (dispatch: any): void => {
+  userApi
+    .signup(formData)
+    .then(() => dispatch({ type: VERIFICATION_MODAL, payload: true }))
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
+};
+
 export const fetchUserLogin = (formData: IFetchUserLoginSignupFormData) => (): void => {
   userApi
     .login(formData)
@@ -13,11 +20,14 @@ export const fetchUserLogin = (formData: IFetchUserLoginSignupFormData) => (): v
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchUserSignup = (formData: IFetchUserLoginSignupFormData) => (dispatch: any): void => {
+export const fetchLoginWithGoogle = (tokenId: string, googleId: string) => () => {
   userApi
-    .signup(formData)
-    .then(() => dispatch({ type: VERIFICATION_MODAL, payload: true }))
-    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
+    .loginWithGoogle({ tokenId, googleId })
+    .then(({ data }) => {
+      localStorage.setItem('token', data);
+      (history as any).go('/');
+    })
+    .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchUserData = () => (dispatch: any): void => {

@@ -8,7 +8,7 @@ export default (req, res, next) => {
       return res.status(401).json({ msg: 'Auth error' });
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded: any = jwt.verify(token, config.jwtSecret);
     req.userId = decoded.userId;
     next();
   } catch {
