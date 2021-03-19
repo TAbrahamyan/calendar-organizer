@@ -16,8 +16,8 @@ const Header: React.FC<any> = ({ user }) => {
         title="Hello"
         subTitle={user?.fullName}
         extra={!modalVisible && (
-          <Dropdown trigger={['click']} overlay={<HeaderMenu setModalVisible={setModalVisible} />}>
-            <UserOutlined />
+          <Dropdown trigger={['click']} overlay={<HeaderMenu user={user} setModalVisible={setModalVisible} />}>
+            {user.picture ? <img src={user.picture} className="user-picture" /> : <UserOutlined />}
           </Dropdown>
         )}
       />

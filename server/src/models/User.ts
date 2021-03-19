@@ -9,6 +9,7 @@ export interface IUser extends Document {
   googleId: string;
   facebookUserID: string;
   isVerified: boolean;
+  picture: string;
   tasks: ITask;
 }
 
@@ -20,6 +21,7 @@ const UserSchema = new Schema({
   googleId: { type: String, unique: true },
   facebookUserID: { type: String, unique: true },
   isVerified: { type: Boolean, default: false },
+  picture: String,
   tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
 }, { timestamps: true });
 

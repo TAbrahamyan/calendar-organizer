@@ -41,6 +41,7 @@ class UserController {
         facebookUserID: 'signed in without Facebook',
         password: hashedPassword,
         isVerified: false,
+        picture: '',
       });
 
       await newUser.save();
@@ -109,7 +110,7 @@ class UserController {
           audience: config.googleClientId,
         })
         .then(async (response: any) => {
-          const { name, email } = response.payload;
+          const { name, email, picture } = response.payload;
 
           try {
             const user: any = await User.findOne({ googleId });
@@ -128,6 +129,7 @@ class UserController {
                 facebookUserID: '',
                 password: hashedPassword,
                 isVerified: true,
+                picture,
               });
 
               await newUser.save();
@@ -146,7 +148,7 @@ class UserController {
 
   static async loginWithFacebook(req, res) {
     try {
-      const { name, email, userID } = req.body;
+      const { name, email, userID, picture } = req.body;
       const user: any = await User.findOne({ facebookUserID: userID });
 
       if (user?.facebookUserID === 'signed in without Facebook') {
@@ -163,6 +165,7 @@ class UserController {
           facebookUserID: userID,
           password: hashedPassword,
           isVerified: true,
+          picture,
         });
 
         await newUser.save();

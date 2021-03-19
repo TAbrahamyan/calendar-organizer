@@ -67,7 +67,11 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       centered={true}
       closable={false}
       maskClosable={false}
-      title={<p style={{ margin: '0' }}><UserOutlined/> Profile</p>}
+      title={(
+        <p style={{ margin: '0' }}>
+          {user.picture ? (<img src={user.picture} className="user-picture" />) : <UserOutlined />} Profile
+        </p>
+      )}
       footer={[
         <button key="cancel" style={{ marginRight: '1rem' }} className="green-btn" onClick={cancelModalHandler}>
           Cancel

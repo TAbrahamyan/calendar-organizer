@@ -16,6 +16,7 @@ const Welcome: React.FC = () => {
       name: response.name,
       email: response.email,
       userID: response.userID,
+      picture: response.data.url,
     }));
   };
 
@@ -41,7 +42,7 @@ const Welcome: React.FC = () => {
         <FacebookLogin
           appId="162099749068329"
           textButton="Sign in with Facebook"
-          fields="name,email"
+          fields="name,email,picture"
           callback={responseFacebookHandler}
           cssClass="pink-btn"
           icon={<FacebookFilled style={{ marginLeft: '18px' }} />}

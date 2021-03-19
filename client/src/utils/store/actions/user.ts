@@ -86,4 +86,5 @@ interface IFetchLoginWithFacebookResponse {
   name: string;
   email: string;
   userID: string;
+  picture: string;
 }

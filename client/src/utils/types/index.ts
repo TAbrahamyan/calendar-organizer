@@ -10,6 +10,7 @@ export interface IUser {
   googleId: string;
   facebookUserID: string;
   isVerified: boolean;
+  picture: '';
   tasks: ITasks;
 }
 
