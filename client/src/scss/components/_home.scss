@@ -23,3 +23,9 @@
     &:hover { color: $greenColor !important }
   }
 }
+
+.profile-modal > .ant-modal-content > .ant-modal-body {
+  display: flex;
+  justify-self: center;
+  flex-direction: column;
+}

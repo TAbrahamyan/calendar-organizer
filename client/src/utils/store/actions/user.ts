@@ -65,6 +65,13 @@ export const fetchChangeUserPicture = (picture: any) => (): void => {
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
+export const fetchDeleteUserPicture = () => (): void => {
+  userApi
+    .deleteUserPicture()
+    .then(() => window.location.reload())
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
+};
+
 export const fetchDestroyAccount = () => (): void => {
   userApi
     .destroyAccount()

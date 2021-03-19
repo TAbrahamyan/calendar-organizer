@@ -238,6 +238,20 @@ class UserController {
     }
   }
 
+  static async deleteUserPicture(req, res) {
+    try {
+      await User.findByIdAndUpdate(
+        { _id: req.userId },
+        { $set: { picture: '' } },
+        { new: true },
+      );
+
+      res.json({ msg: 'Picture succesfully deleted' });
+    } catch {
+      res.status(500).json({ msg: 'Failed to deleting picture' });
+    }
+  }
+
   static async destroy(req, res) {
     try {
       await User.findByIdAndRemove(req.userId);

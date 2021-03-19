@@ -2,11 +2,11 @@ import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Row, Col, Modal, Button, Input, Popconfirm } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, EditTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import moment from 'moment';
 
 import { notification } from '../../../../utils/helpers/notification';
-import { fetchChangePassword, fetchChangeUserPicture, fetchDestroyAccount } from '../../../../utils/store/actions/user';
+import { fetchChangePassword, fetchChangeUserPicture, fetchDeleteUserPicture, fetchDestroyAccount } from '../../../../utils/store/actions/user';
 import { IUser } from '../../../../utils/types';
 
 interface IProfileModalProps {
@@ -70,23 +70,31 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
     }
   };
 
+  const deletePicture = (): void => {
+    dispatch(fetchDeleteUserPicture());
+  };
+
   const destroyAccount = (): void => {
     dispatch(fetchDestroyAccount());
   };
 
+  const iconsStyles = {
+    fontSize: '30px',
+    margin: '0.5rem',
+    cursor: 'pointer',
+  };
+
   return (
     <Modal
+      className="profile-modal"
       visible={modalVisible}
       centered={true}
       closable={false}
       maskClosable={false}
       title={(
-        <>
-          <input type="file" ref={fileInputRef} onChange={changeProfilePictureHandler} hidden />
-          <p style={{ margin: '0', width: 'fit-content', cursor: 'pointer' }} onClick={() => fileInputRef.current.click()}>
-            {user.picture ? (<img src={user.picture} className="user-picture" />) : <UserOutlined />} Profile
-          </p>
-        </>
+        <p style={{ margin: '0' }}>
+          {user.picture ? <img src={user.picture} className="user-picture" /> : <UserOutlined />} Profile
+        </p>
       )}
       footer={[
         <button key="cancel" style={{ marginRight: '1rem' }} className="green-btn" onClick={cancelModalHandler}>
@@ -97,6 +105,21 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
         </Popconfirm>,
       ]}
     >
+      <input type="file" ref={fileInputRef} onChange={changeProfilePictureHandler} hidden />
+
+      <div style={{ margin: '0 auto' }}>
+        <EditTwoTone style={iconsStyles} onClick={() => fileInputRef.current.click()} />
+        {user.picture ? (
+          <img src={user.picture} style={{ width: '110px', height: '100px', cursor: 'inherit' }} className="user-picture" />
+        ) : (
+          <UserOutlined style={{ fontSize: '70px', cursor: 'inherit' }} />
+        )}
+
+        <Popconfirm key="destroy" placement="top" title="Are you sure to delete your picture?" onConfirm={deletePicture} okText="Yes" cancelText="No">
+          <CloseCircleTwoTone style={iconsStyles} />
+        </Popconfirm>
+      </div>
+
       {profileInfo.map((info: IProfileInfo) => (
         <Row key={info.id} justify="space-between" style={{ padding: '0.5rem 0' }}>
           <Col>{info.text}</Col>
@@ -105,7 +128,9 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       ))}
 
       {(!visibleForm && user.googleId !== '' && user.facebookUserID !== '') && (
-        <button className="red-btn" onClick={() => setVisibleForm(true)}>Change password</button>
+        <button className="red-btn" style={{ width: '180px' }} onClick={() => setVisibleForm(true)}>
+          Change password
+        </button>
       )}
 
       {visibleForm && (

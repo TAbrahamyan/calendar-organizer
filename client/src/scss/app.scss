@@ -24,7 +24,7 @@ body {
 }
 
 h1, h4, td, p, .ant-col { color: #42526E !important }
-.user-picture { width: 24px; height: 24px; border-radius: 24px; cursor: pointer }
+.user-picture { width: 24px; height: 24px; border-radius: 50%; cursor: pointer }
 .red-btn { @include custom-btn(#fb743e, $blueColor) }
 .green-btn { @include custom-btn($greenColor, $redColor) }
 .blue-btn { @include custom-btn($blueColor, $darkBlueColor) }
