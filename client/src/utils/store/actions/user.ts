@@ -30,6 +30,16 @@ export const fetchLoginWithGoogle = (tokenId: string, googleId: string) => () =>
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
+export const fetchLoginWithFacebook = (response: IFetchLoginWithFacebookResponse) => () => {
+  userApi
+    .loginWithFacebook(response)
+    .then(({ data }) => {
+      localStorage.setItem('token', data);
+      (history as any).go('/');
+    })
+    .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
+};
+
 export const fetchUserData = () => (dispatch: any): void => {
   userApi
     .getMe()
@@ -70,4 +80,10 @@ interface IFetchChangePasswordFormData {
   oldPassword: string;
   newPassword: string;
   confirmNewPassword: string;
+}
+
+interface IFetchLoginWithFacebookResponse {
+  name: string;
+  email: string;
+  userID: string;
 }

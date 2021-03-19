@@ -1,13 +1,22 @@
 import { useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
-import { GoogleOutlined } from '@ant-design/icons';
-import { fetchLoginWithGoogle } from '../../../utils/store/actions/user';
+import FacebookLogin from 'react-facebook-login';
+import { GoogleSquareFilled, FacebookFilled } from '@ant-design/icons';
+import { fetchLoginWithGoogle, fetchLoginWithFacebook } from '../../../utils/store/actions/user';
 
 const Welcome: React.FC = () => {
   const dispatch = useDispatch();
 
   const onSuccessHandler = ({ tokenId, googleId }: any): void => {
     dispatch(fetchLoginWithGoogle(tokenId, googleId));
+  };
+
+  const responseFacebookHandler = (response: any): void => {
+    dispatch(fetchLoginWithFacebook({
+      name: response.name,
+      email: response.email,
+      userID: response.userID,
+    }));
   };
 
   return (
@@ -20,14 +29,22 @@ const Welcome: React.FC = () => {
       <div className="login-with">
         <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID ?? ''}
-          buttonText="Sign in with google"
           onSuccess={onSuccessHandler}
           cookiePolicy={'single_host_origin'}
           render={renderProps => (
             <button className="pink-btn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-              <GoogleOutlined /> Sign in with google
+              <GoogleSquareFilled /> Sign in with Google
             </button>
           )}
+        />
+
+        <FacebookLogin
+          appId="162099749068329"
+          textButton="Sign in with Facebook"
+          fields="name,email"
+          callback={responseFacebookHandler}
+          cssClass="pink-btn"
+          icon={<FacebookFilled style={{ marginLeft: '18px' }} />}
         />
       </div>
     </section>

@@ -5,8 +5,9 @@ export interface IUser extends Document {
   fullName: string;
   password: string;
   email: string;
-  emailToken: string | null;
-  googleId: string | null;
+  emailToken: string;
+  googleId: string;
+  facebookUserID: string;
   isVerified: boolean;
   tasks: ITask;
 }
@@ -14,9 +15,10 @@ export interface IUser extends Document {
 const UserSchema = new Schema({
   fullName: { type: String, required: true },
   password: { type: String, required: true, min: 3 },
-  email: { type: String, required: true, unique: true },
-  emailToken: String,
-  googleId: String,
+  email: { type: String, required: true },
+  emailToken: { type: String },
+  googleId: { type: String, unique: true },
+  facebookUserID: { type: String, unique: true },
   isVerified: { type: Boolean, default: false },
   tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
 }, { timestamps: true });

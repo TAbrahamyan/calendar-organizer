@@ -14,6 +14,7 @@ export default (app: express.Application): void => {
   app.post('/api/user/signup', validations.signup, UserController.signup);
   app.post('/api/user/login', validations.login, UserController.login);
   app.post('/api/user/login-with-google', UserController.loginWithGoogle);
+  app.post('/api/user/login-with-facebook', UserController.loginWithFacebook);
   app.get('/api/user/me', checkAuth, UserController.me);
   app.get('/api/user/verify-email=:token', UserController.verifyEmail);
   app.patch('/api/user/:id', UserController.changePassword);

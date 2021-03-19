@@ -6,8 +6,9 @@ export interface IUser {
   password: string;
   createdAt: string;
   updatedAt: string;
-  emailToken: string | null;
-  googleId: string | null;
+  emailToken: string;
+  googleId: string;
+  facebookUserID: string;
   isVerified: boolean;
   tasks: ITasks;
 }

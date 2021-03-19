@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from '../config/config';
+import { config } from '../config';
 
 export default (req, res, next) => {
   try {

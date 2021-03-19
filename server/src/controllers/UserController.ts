@@ -17,22 +17,28 @@ class UserController {
 
     try {
       const { fullName, email, password } = req.body;
-      const user = await User.findOne({ email });
-      if (user && user.googleId !== null) {
-        return res.status(500).json({ msg: `Email ${email} already signed in with Google` });
+      const user: any = await User.findOne({ email });
+
+      if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
+        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
+      }
+
+      if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
+        return res.status(400).json({ msg: `Email ${email} already signed in with Facebook` });
       }
 
       if (user) {
-        return res.status(500).json({ msg: `Email ${email} already exists` });
+        return res.status(400).json({ msg: `Email ${email} already exists` });
       }
 
       const hashedPassword: string = await bcrypt.hash(password, 10);
-      const emailToken = crypto.randomBytes(64).toString('hex');
+      const emailToken: string = crypto.randomBytes(64).toString('hex');
       const newUser = new User({
         fullName,
         email,
         emailToken,
-        googleId: null,
+        googleId: 'signed in without Google',
+        facebookUserID: 'signed in without Facebook',
         password: hashedPassword,
         isVerified: false,
       });
@@ -65,12 +71,17 @@ class UserController {
     try {
       const { email, password } = req.body;
       const user: any = await User.findOne({ email });
-      if (user && user.googleId !== null) {
-        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
-      }
 
       if (!user) {
         return res.status(400).json({ msg: 'Incorrect Password or Email' });
+      }
+
+      if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
+        return res.status(400).json({ msg: `Email ${email} already signed in with Facebook` });
+      }
+
+      if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
+        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
       }
 
       const isMatch: boolean = await bcrypt.compare(password, user.password);
@@ -78,7 +89,7 @@ class UserController {
         return res.status(400).json({ msg: 'Incorrect Password or Email' });
       }
 
-      if (user.isVerified === false) {
+      if (!user.isVerified) {
         return res.status(400).json({ msg: 'Account need verification. Check spam if not received' });
       }
 
@@ -98,23 +109,25 @@ class UserController {
           audience: config.googleClientId,
         })
         .then(async (response: any) => {
-          const { email_verified, name, email } = response.payload;
+          const { name, email } = response.payload;
 
           try {
-            const user = await User.findOne({ email });
-            if (user && user.googleId === null) {
-              return res.status(400).json({ msg: `Sorry this Email already signed in without Google` });
+            const user: any = await User.findOne({ googleId });
+
+            if (user?.googleId === 'signed in without Google') {
+              return res.status(400).json({ msg: 'Sorry this Email already signed in without Google' });
             }
 
             if (!user) {
-              const hashedPassword: string = await bcrypt.hash(email + name, 10);
+              const hashedPassword: string = await bcrypt.hash(name + email + googleId, 10);
               const newUser = new User({
                 fullName: name,
                 email,
-                emailToken: null,
+                emailToken: '',
                 googleId,
+                facebookUserID: '',
                 password: hashedPassword,
-                isVerified: email_verified,
+                isVerified: true,
               });
 
               await newUser.save();
@@ -131,6 +144,37 @@ class UserController {
     }
   }
 
+  static async loginWithFacebook(req, res) {
+    try {
+      const { name, email, userID } = req.body;
+      const user: any = await User.findOne({ facebookUserID: userID });
+
+      if (user?.facebookUserID === 'signed in without Facebook') {
+        return res.status(400).json({ msg: 'Sorry this Email already signed in without Facebook' });
+      }
+
+      if (!user) {
+        const hashedPassword: string = await bcrypt.hash(name + email + userID, 10);
+        const newUser = new User({
+          fullName: name,
+          email,
+          emailToken: '',
+          googleId: '',
+          facebookUserID: userID,
+          password: hashedPassword,
+          isVerified: true,
+        });
+
+        await newUser.save();
+        res.json(createJWT(newUser._id));
+      } else {
+        res.json(createJWT(user._id));
+      }
+    } catch {
+      res.status(400).json({ msg: 'Error on logging in with Facebook' });
+    }
+  }
+
   static async me(req, res) {
     try {
       const user = await User.findById(req.userId);
@@ -144,13 +188,13 @@ class UserController {
     try {
       await User.findOneAndUpdate(
         { emailToken: req.params.token },
-        { $set: { emailToken: null, isVerified: true } },
+        { $set: { emailToken: '', isVerified: true } },
         { new: true },
       );
 
       res.status(200).json();
     } catch {
-      res.status(401).msg({ msg: 'Invalid token' });
+      res.status(401).json({ msg: 'Invalid token' });
     }
   }
 
