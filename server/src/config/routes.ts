@@ -17,8 +17,9 @@ export default (app: express.Application): void => {
   app.post('/api/user/login-with-facebook', UserController.loginWithFacebook);
   app.get('/api/user/me', checkAuth, UserController.me);
   app.get('/api/user/verify-email=:token', UserController.verifyEmail);
-  app.patch('/api/user/:id', UserController.changePassword);
-  app.delete('/api/user/:id', UserController.destroy);
+  app.patch('/api/user/change-password', checkAuth, UserController.changePassword);
+  app.put('/api/user/change-user-picture', checkAuth, UserController.changeUserPicture);
+  app.delete('/api/user/destroy-account', checkAuth, UserController.destroy);
 
   // Task api
   app.post('/api/task/create', checkAuth, TaskController.create);

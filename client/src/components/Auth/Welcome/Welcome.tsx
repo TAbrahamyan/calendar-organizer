@@ -16,7 +16,7 @@ const Welcome: React.FC = () => {
       name: response.name,
       email: response.email,
       userID: response.userID,
-      picture: response.data.url,
+      picture: response.picture.data.url,
     }));
   };
 

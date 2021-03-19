@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 import { notification } from '../../../../utils/helpers/notification';
-import { fetchChangePassword, fetchDestroyAccount } from '../../../../utils/store/actions/user';
+import { fetchChangePassword, fetchChangeUserPicture, fetchDestroyAccount } from '../../../../utils/store/actions/user';
 import { IUser } from '../../../../utils/types';
 
 interface IProfileModalProps {
@@ -33,6 +33,7 @@ const RULES = {
 
 const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
+  const fileInputRef = React.useRef<any>(null);
   const { control, errors, formState, handleSubmit, reset } = useForm<IFormData>({ mode: 'onChange' });
   const [ visibleForm, setVisibleForm ] = React.useState<boolean>(false);
   const profileInfo: IProfileInfo[] = [
@@ -52,13 +53,25 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       return notification({ type: 'error', msg: 'Password confirmation is incorrect' });
     }
 
-    dispatch(fetchChangePassword(formData, user._id));
+    dispatch(fetchChangePassword(formData));
     setVisibleForm(false);
     reset();
   };
 
+  const changeProfilePictureHandler = ({ target: { files } }: any): void => {
+    if (files && files[0]) {
+      const reader: FileReader = new FileReader();
+
+      reader.onload = (): void => {
+        dispatch(fetchChangeUserPicture(reader?.result));
+      };
+
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
   const destroyAccount = (): void => {
-    dispatch(fetchDestroyAccount(user._id));
+    dispatch(fetchDestroyAccount());
   };
 
   return (
@@ -68,9 +81,12 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       closable={false}
       maskClosable={false}
       title={(
-        <p style={{ margin: '0' }}>
-          {user.picture ? (<img src={user.picture} className="user-picture" />) : <UserOutlined />} Profile
-        </p>
+        <>
+          <input type="file" ref={fileInputRef} onChange={changeProfilePictureHandler} hidden />
+          <p style={{ margin: '0', width: 'fit-content', cursor: 'pointer' }} onClick={() => fileInputRef.current.click()}>
+            {user.picture ? (<img src={user.picture} className="user-picture" />) : <UserOutlined />} Profile
+          </p>
+        </>
       )}
       footer={[
         <button key="cancel" style={{ marginRight: '1rem' }} className="green-btn" onClick={cancelModalHandler}>
@@ -88,10 +104,8 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
         </Row>
       ))}
 
-      {(!visibleForm && user.googleId === null) && (
-        <button className="red-btn" onClick={() => setVisibleForm(true)}>
-          Change password
-        </button>
+      {(!visibleForm && user.googleId !== '' && user.facebookUserID !== '') && (
+        <button className="red-btn" onClick={() => setVisibleForm(true)}>Change password</button>
       )}
 
       {visibleForm && (

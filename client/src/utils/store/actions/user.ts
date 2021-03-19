@@ -51,16 +51,23 @@ export const fetchVerifyEmail = (token: string | null) => (): void => {
   userApi.emailVerify(token);
 };
 
-export const fetchChangePassword = (formData: IFetchChangePasswordFormData, id: string) => (): void => {
+export const fetchChangePassword = (formData: IFetchChangePasswordFormData) => (): void => {
   userApi
-    .changePassword(formData, id)
+    .changePassword(formData)
     .then(({ data }) => notification({ type: 'success', msg: data.msg }))
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchDestroyAccount = (id: string) => (): void => {
+export const fetchChangeUserPicture = (picture: any) => (): void => {
   userApi
-    .destroyAccount(id)
+    .changeUserPicture(picture)
+    .then(() => window.location.reload())
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
+};
+
+export const fetchDestroyAccount = () => (): void => {
+  userApi
+    .destroyAccount()
     .then(() => fetchUserLogout());
 };
 

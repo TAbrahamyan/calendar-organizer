@@ -7,6 +7,7 @@ export default {
   loginWithFacebook: (bodyData: any) => axios.post('/api/user/login-with-facebook', bodyData),
   getMe: () => axios.get('/api/user/me'),
   emailVerify: (token: string | null) => axios.get(`/api/user/verify-email=${token}`),
-  changePassword: (bodyData: any, id: string) => axios.patch(`/api/user/${id}`, bodyData),
-  destroyAccount: (id: string) => axios.delete(`/api/user/${id}`),
+  changePassword: (bodyData: any) => axios.patch('/api/user/change-password', bodyData),
+  changeUserPicture: (newPicture: any) => axios.put('/api/user/change-user-picture', { newPicture }),
+  destroyAccount: () => axios.delete('/api/user/destroy-account'),
 };

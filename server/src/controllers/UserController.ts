@@ -19,11 +19,11 @@ class UserController {
       const { fullName, email, password } = req.body;
       const user: any = await User.findOne({ email });
 
-      if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
+      if (user && user?.googleId !== 'signed in without Google' && user?.googleId !== '') {
         return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
       }
 
-      if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
+      if (user && user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
         return res.status(400).json({ msg: `Email ${email} already signed in with Facebook` });
       }
 
@@ -204,7 +204,7 @@ class UserController {
   static async changePassword(req, res) {
     try {
       const { oldPassword, newPassword } = req.body;
-      const user: any = await User.findOne({ _id: req.params.id });
+      const user: any = await User.findOne({ _id: req.userId });
       const isMatch: boolean = await bcrypt.compare(oldPassword, user.password);
 
       if (!isMatch) {
@@ -212,7 +212,7 @@ class UserController {
       }
 
       await User.findByIdAndUpdate(
-        { _id: req.params.id },
+        { _id: req.userId },
         { $set: { password: await bcrypt.hash(newPassword, 10) } },
         { new: true },
       );
@@ -223,11 +223,25 @@ class UserController {
     }
   }
 
+  static async changeUserPicture(req, res) {
+    try {
+
+      await User.findByIdAndUpdate(
+        { _id: req.userId },
+        { $set: { picture: req.body.newPicture } },
+        { new: true },
+      );
+
+      res.json({ msg: 'Profile picture succesfully changed' });
+    } catch {
+      res.status(500).json({ msg: 'Failed on Picture changing' });
+    }
+  }
+
   static async destroy(req, res) {
     try {
-      const userId = req.params.id;
-      await User.findByIdAndRemove(userId);
-      await Task.deleteMany({ owner: userId });
+      await User.findByIdAndRemove(req.userId);
+      await Task.deleteMany({ owner: req.userId });
       res.json({ msg: 'Account is succesfully destroyed' });
     } catch {
       res.status(500).json({ msg: 'Failed on account destroying' });
