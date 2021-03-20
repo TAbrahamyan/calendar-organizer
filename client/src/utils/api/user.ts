@@ -8,6 +8,7 @@ export const userApi = {
   getMe: () => axios.get('/api/user/me'),
   emailVerify: (token: string | null) => axios.get(`/api/user/verify-email=${token}`),
   changePassword: (bodyData: any) => axios.patch('/api/user/change-password', bodyData),
+  resetPassword: (email: string) => axios.patch('/api/user/reset-password', { email }),
   changeUserPicture: (newPicture: any) => axios.put('/api/user/change-user-picture', { newPicture }),
   deleteUserPicture: () => axios.delete('/api/user/delete-user-picture'),
   destroyAccount: () => axios.delete('/api/user/destroy-account'),

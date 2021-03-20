@@ -223,6 +223,44 @@ class UserController {
     }
   }
 
+  static async resetPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res.status(400).json({ msg: 'Sorry this email does not registered' });
+      }
+
+      if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
+        return res.status(400).json({ msg: `Sorry this email signed in with Facebook` });
+      }
+
+      if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
+        return res.status(400).json({ msg: `Sorry this email signed in with Google` });
+      }
+
+      const randomPassword: string = Math.random().toString(20).substr(2, 8);
+      const newPassword: string = await bcrypt.hash(randomPassword, 10);
+
+      await sendEmail({
+        to: email,
+        subject: 'Calendar Organizer - password is reseted',
+        html: `<p>Your new password is: <b>${randomPassword}</b></p>`,
+      });
+
+      await User.findOneAndUpdate(
+        { email },
+        { $set: { password: newPassword } },
+        { new: true },
+      );
+
+      res.json({ msg: 'Password succesfully reseted. Check your email' });
+    } catch {
+      res.status(500).json({ msg: 'Failed on Password reseting' });
+    }
+  }
+
   static async changeUserPicture(req, res) {
     try {
 

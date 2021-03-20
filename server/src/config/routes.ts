@@ -18,6 +18,7 @@ export default (app: express.Application): void => {
   app.get('/api/user/me', checkAuth, UserController.me);
   app.get('/api/user/verify-email=:token', UserController.verifyEmail);
   app.patch('/api/user/change-password', checkAuth, UserController.changePassword);
+  app.patch('/api/user/reset-password', UserController.resetPassword);
   app.put('/api/user/change-user-picture', checkAuth, UserController.changeUserPicture);
   app.delete('/api/user/delete-user-picture', checkAuth, UserController.deleteUserPicture);
   app.delete('/api/user/destroy-account', checkAuth, UserController.destroy);

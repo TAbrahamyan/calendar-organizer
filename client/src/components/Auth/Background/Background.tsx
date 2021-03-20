@@ -1,5 +1,4 @@
 import React from 'react';
-
 import TopRight from '../../../assets/images/login-signup-top-right.png';
 import BottomRight from '../../../assets/images/login-signup-bottom-right.png';
 import BottomLeft from '../../../assets/images/login-signup-bottom-left.png';

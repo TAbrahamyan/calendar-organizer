@@ -54,6 +54,13 @@ export const fetchChangePassword = (formData: IFetchChangePasswordFormData) => (
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
+export const fetchResetPassword = (email: string) => (): void => {
+  userApi
+    .resetPassword(email)
+    .then(() => window.location.reload())
+    .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
+};
+
 export const fetchChangeUserPicture = (picture: any) => (dispatch: any): void => {
   userApi
     .changeUserPicture(picture)

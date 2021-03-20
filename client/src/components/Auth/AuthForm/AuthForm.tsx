@@ -2,10 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Input } from 'antd';
-
-import { VerificationModal } from './components';
 import { notification } from '../../../utils/helpers/notification';
 import { fetchUserLogin, fetchUserSignup } from '../../../utils/store/actions/user';
+import { ForgotPasswordModal, VerificationModal } from './components';
 
 const RULES = {
   email: { required: true, pattern: /^\S+@\S+\.\S+$/ },
@@ -23,6 +22,7 @@ interface IFormData {
 const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
   const [ isLogin, setIsLogin ] = React.useState<boolean>(true);
+  const [ forgotPasswordModalVisible, setForgotPasswordModalVisible ] = React.useState<boolean>(false);
   const { control, errors, formState, reset, handleSubmit } = useForm<IFormData>({ mode: 'onChange' });
 
   const loginHandler = (formData: IFormData): void => {
@@ -45,6 +45,10 @@ const AuthForm: React.FC = () => {
   return (
     <section className="form-fields">
       <VerificationModal />
+      <ForgotPasswordModal
+        forgotPasswordModalVisible={forgotPasswordModalVisible}
+        setForgotPasswordModalVisible={setForgotPasswordModalVisible}
+      />
 
       <div className="header">
         <span onClick={() => isLoginHandler(true)} className={isLogin ? 'active' : undefined}>Login</span>
@@ -108,6 +112,8 @@ const AuthForm: React.FC = () => {
           {isLogin ? 'Login' : 'Signup'}
         </button>
       </form>
+
+      <p style={{ cursor: 'pointer' }} onClick={() => setForgotPasswordModalVisible(true)}>Forgot password?</p>
     </section>
   );
 };

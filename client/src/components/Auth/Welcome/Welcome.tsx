@@ -40,7 +40,7 @@ const Welcome: React.FC = () => {
         />
 
         <FacebookLogin
-          appId="162099749068329"
+          appId={process.env.REACT_APP_FACEBOOK_APP_ID ?? ''}
           textButton="Sign in with Facebook"
           fields="name,email,picture"
           callback={responseFacebookHandler}
