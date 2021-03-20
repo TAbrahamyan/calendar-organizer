@@ -1,6 +1,6 @@
 import axios from '../axios';
 
-export default {
+export const taskApi = {
   getAll: () => axios.get('/api/task/getAll'),
   create: (bodyData: any) => axios.post('/api/task/create', bodyData),
   delete: (id: string) => axios.delete(`/api/task/${id}`),

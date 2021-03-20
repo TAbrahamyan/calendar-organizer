@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-
 import { fetchVerifyEmail } from '../../utils/store/actions/user';
 import { useComponentWillMount } from '../../utils/hooks';
 

@@ -10,7 +10,7 @@ const initialState: ICalendar = {
   days: daysOfMonth([], new Date().getMonth()),
 };
 
-export default (state: ICalendar = initialState, action: IAction) => {
+const calendarReducer = (state: ICalendar = initialState, action: IAction) => {
   switch (action.type) {
     case SELECT_DAY:
       return {
@@ -27,3 +27,5 @@ export default (state: ICalendar = initialState, action: IAction) => {
       return state;
   }
 };
+
+export default calendarReducer;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { List, Checkbox } from 'antd';
 import { EditOutlined, CloseCircleOutlined } from '@ant-design/icons';
-
 import { checkInvalidDays } from '../../../../utils/helpers/calendar';
 import { ITasks, ICalendar } from '../../../../utils/types';
 

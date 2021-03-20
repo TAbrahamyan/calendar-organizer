@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-
 import { fetchTasks } from '../../utils/store/actions/task';
 import { fetchUserData } from '../../utils/store/actions/user';
 import { Calendar, CreateTaskForm, Tasks, Header, Footer } from '../../components/Home';
@@ -12,6 +11,7 @@ const Home: React.FC = () => {
     document.title = 'Calendar Organizer';
     dispatch(fetchTasks());
     dispatch(fetchUserData());
+    // eslint-disable-next-line
   }, []);
 
   return (

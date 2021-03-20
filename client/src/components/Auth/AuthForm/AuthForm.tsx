@@ -23,9 +23,7 @@ interface IFormData {
 const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
   const [ isLogin, setIsLogin ] = React.useState<boolean>(true);
-  const { control, errors, formState, reset, handleSubmit } = useForm<IFormData>({
-    mode: 'onChange',
-  });
+  const { control, errors, formState, reset, handleSubmit } = useForm<IFormData>({ mode: 'onChange' });
 
   const loginHandler = (formData: IFormData): void => {
     dispatch(fetchUserLogin(formData));
@@ -60,7 +58,7 @@ const AuthForm: React.FC = () => {
           name="email"
           defaultValue=""
           render={({ onChange, value }) => (
-            <Input placeholder="Email" value={value} onChange={onChange} />
+            <Input placeholder="Email" value={value} onChange={onChange} autoComplete="off" />
           )}
         />
         {errors.email && <span className="error">Invalid email</span>}
@@ -73,7 +71,7 @@ const AuthForm: React.FC = () => {
               defaultValue=""
               rules={RULES.fullName}
               render={({ onChange, value }) => (
-                <Input placeholder="Full name" value={value} onChange={onChange} />
+                <Input placeholder="Full name" value={value} onChange={onChange} autoComplete="off" />
               )}
             />
             {errors.fullName && <span className="error">Full name must not contain special symbols</span>}
@@ -86,7 +84,7 @@ const AuthForm: React.FC = () => {
           defaultValue=""
           rules={RULES.password}
           render={({ onChange, value }) => (
-            <Input placeholder="Password" type="password" value={value} onChange={onChange} />
+            <Input placeholder="Password" type="password" value={value} onChange={onChange} autoComplete="off" />
           )}
         />
         {errors.password && <span className="error">Password minimum length is 3</span>}
@@ -99,7 +97,7 @@ const AuthForm: React.FC = () => {
               defaultValue=""
               rules={RULES.password}
               render={({ onChange, value }) => (
-                <Input placeholder="Confirm password" type="password" value={value} onChange={onChange} />
+                <Input placeholder="Confirm password" type="password" value={value} onChange={onChange} autoComplete="off" />
               )}
             />
             {errors.confirmPassword && <span className="error">Confirm password minimum length is 3</span>}

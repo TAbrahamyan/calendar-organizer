@@ -1,6 +1,5 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
-
 import { ICalendar } from '../../../../utils/types';
 
 interface ITableProps {

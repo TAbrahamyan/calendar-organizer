@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Menu } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
-
 import { fetchUserLogout } from '../../../../utils/store/actions/user';
 import { IUser } from '../../../../utils/types';
 
@@ -18,7 +17,7 @@ const HeaderMenu: React.FC<IHeaderMenuProps> = ({ user, setModalVisible }) => {
       <Menu.Item
         key="1"
         icon={user.picture ? (
-          <img src={user.picture} className="user-picture" style={{ width: '16px', height: '16px' }} />
+          <img src={user.picture} className="user-picture" style={{ width: '16px', height: '16px' }} alt="" />
         ) : (
           <UserOutlined style={{ fontSize: '16px' }} />
         )}
@@ -26,6 +25,7 @@ const HeaderMenu: React.FC<IHeaderMenuProps> = ({ user, setModalVisible }) => {
       >
         <span>Profile</span>
       </Menu.Item>
+
       <Menu.Item
         key="2"
         icon={<LogoutOutlined style={{ fontSize: '16px' }} />}

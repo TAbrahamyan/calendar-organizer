@@ -1,6 +1,6 @@
 import axios from '../axios';
 
-export default {
+export const userApi = {
   signup: (bodyData: any) => axios.post('/api/user/signup', bodyData),
   login: (bodyData: any) => axios.post('/api/user/login', bodyData),
   loginWithGoogle: (bodyData: any) => axios.post('/api/user/login-with-google', bodyData),

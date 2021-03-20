@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { LeftCircleFilled, RightCircleFilled } from '@ant-design/icons';
-
 import { selectDay, changeMonth } from '../../../utils/store/actions/calendar';
-import { Table } from './components';
 import { ICalendar, ITasks } from '../../../utils/types';
+import { Table } from './components';
 
 interface ICalendarRrops {
   calendar: ICalendar;

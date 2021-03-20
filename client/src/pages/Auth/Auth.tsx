@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { AuthForm, Background, Welcome } from '../../components/Auth';
 
 const Auth: React.FC = () => {

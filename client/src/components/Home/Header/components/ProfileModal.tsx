@@ -3,11 +3,14 @@ import { connect, useDispatch } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import { Row, Col, Modal, Button, Input, Popconfirm } from 'antd';
 import { UserOutlined, EditTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
-import moment from 'moment';
-
-import { notification } from '../../../../utils/helpers/notification';
-import { fetchChangePassword, fetchChangeUserPicture, fetchDeleteUserPicture, fetchDestroyAccount } from '../../../../utils/store/actions/user';
 import { IUser } from '../../../../utils/types';
+import { notification } from '../../../../utils/helpers/notification';
+import {
+  fetchChangePassword,
+  fetchChangeUserPicture,
+  fetchDeleteUserPicture,
+  fetchDestroyAccount,
+} from '../../../../utils/store/actions/user';
 
 interface IProfileModalProps {
   user: IUser;
@@ -27,20 +30,34 @@ interface IProfileInfo {
   data: string;
 }
 
-const RULES = {
-  password: { required: true, minLength: 3 },
-};
+interface IChangePasswordForm {
+  id: number;
+  name: string;
+  placeholder: string;
+}
 
 const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setModalVisible }) => {
   const dispatch = useDispatch();
   const fileInputRef = React.useRef<any>(null);
-  const { control, errors, formState, handleSubmit, reset } = useForm<IFormData>({ mode: 'onChange' });
+  const { control, formState, handleSubmit, reset } = useForm<IFormData>({ mode: 'onChange' });
   const [ visibleForm, setVisibleForm ] = React.useState<boolean>(false);
+
   const profileInfo: IProfileInfo[] = [
     { id: 1, text: 'Email', data: user?.email },
     { id: 2, text: 'Full Name', data: user?.fullName },
-    { id: 3, text: 'Account created', data: moment(user?.createdAt).format('MMMM DD, YYYY') },
   ];
+
+  const changePasswordForm: IChangePasswordForm[] = [
+    { id: 1, name: 'oldPassword', placeholder: 'Old password' },
+    { id: 2, name: 'newPassword', placeholder: 'New password' },
+    { id: 3, name: 'confirmNewPassword', placeholder: 'Confirm new password' },
+  ];
+
+  const iconsStyles = {
+    fontSize: '30px',
+    margin: '0.5rem',
+    cursor: 'pointer',
+  };
 
   const cancelModalHandler = (): void => {
     reset();
@@ -78,12 +95,6 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
     dispatch(fetchDestroyAccount());
   };
 
-  const iconsStyles = {
-    fontSize: '30px',
-    margin: '0.5rem',
-    cursor: 'pointer',
-  };
-
   return (
     <Modal
       className="profile-modal"
@@ -93,7 +104,7 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
       maskClosable={false}
       title={(
         <p style={{ margin: '0' }}>
-          {user.picture ? <img src={user.picture} className="user-picture" /> : <UserOutlined />} Profile
+          {user.picture ? <img src={user.picture} className="user-picture" alt="" /> : <UserOutlined />} Profile
         </p>
       )}
       footer={[
@@ -107,17 +118,20 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
     >
       <input type="file" ref={fileInputRef} onChange={changeProfilePictureHandler} hidden />
 
-      <div style={{ margin: '0 auto' }}>
-        <EditTwoTone style={iconsStyles} onClick={() => fileInputRef.current.click()} />
+      <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto' }}>
         {user.picture ? (
-          <img src={user.picture} style={{ width: '110px', height: '100px', cursor: 'inherit' }} className="user-picture" />
+          <img src={user.picture} style={{ width: '140px', height: '130px', cursor: 'inherit' }} className="user-picture" alt="" />
         ) : (
           <UserOutlined style={{ fontSize: '70px', cursor: 'inherit' }} />
         )}
 
-        <Popconfirm key="destroy" placement="top" title="Are you sure to delete your picture?" onConfirm={deletePicture} okText="Yes" cancelText="No">
-          <CloseCircleTwoTone style={iconsStyles} />
-        </Popconfirm>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <EditTwoTone style={iconsStyles} onClick={() => fileInputRef.current.click()} />
+
+          <Popconfirm key="destroy" placement="top" title="Are you sure to delete your picture?" onConfirm={deletePicture} okText="Yes" cancelText="No">
+            <CloseCircleTwoTone style={iconsStyles} />
+          </Popconfirm>
+        </div>
       </div>
 
       {profileInfo.map((info: IProfileInfo) => (
@@ -135,46 +149,30 @@ const ProfileModal: React.FC<IProfileModalProps> = ({ user, modalVisible, setMod
 
       {visibleForm && (
         <form onSubmit={handleSubmit(changePassword)}>
-          <Controller
-            control={control}
-            name="oldPassword"
-            rules={RULES.password}
-            render={({ onChange, value }) => (
-              <Input.Password placeholder="Old password" value={value} onChange={onChange} />
-            )}
-          />
-
-          <div style={{ marginTop: '1rem' }}>
+          {changePasswordForm.map((input: IChangePasswordForm) => (
             <Controller
+              key={input.id}
               control={control}
-              name="newPassword"
-              rules={RULES.password}
+              name={input.name}
+              rules={{ required: true, minLength: 3 }}
               render={({ onChange, value }) => (
-                <Input.Password placeholder="New Password" value={value} onChange={onChange} />
+                <Input
+                  style={{ margin: '0.5rem 0' }}
+                  type="password"
+                  placeholder={input.placeholder}
+                  value={value}
+                  onChange={onChange}
+                  autoComplete="off"
+                />
               )}
             />
-
-            {errors.newPassword && <span className="error">Password minimum length is 3</span>}
-          </div>
-
-          <div style={{ margin: '1rem 0' }}>
-            <Controller
-              control={control}
-              name="confirmNewPassword"
-              rules={RULES.password}
-              render={({ onChange, value }) => (
-                <Input.Password placeholder="Confirm new password" value={value} onChange={onChange} />
-              )}
-            />
-
-            {errors.confirmNewPassword && <span className="error">Password minimum length is 3</span>}
-          </div>
+          ))}
 
           <button className="red-btn" disabled={!formState.isValid}>
             Change
           </button>
 
-          <button style={{ marginLeft: '1rem' }} className="green-btn" onClick={() => setVisibleForm(false)}>
+          <button style={{ marginLeft: '0.5rem' }} className="green-btn" onClick={() => setVisibleForm(false)}>
             Cancel
           </button>
         </form>

@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
-import user from './user';
-import calendar from './calendar';
-import task from './task';
+import userReducer from './user';
+import calendarReducer from './calendar';
+import taskReducer from './task';
 
 export default combineReducers({
-  user, calendar, task,
+  user: userReducer,
+  calendar: calendarReducer,
+  task: taskReducer,
 });

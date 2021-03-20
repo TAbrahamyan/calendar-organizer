@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { List, Spin } from 'antd';
-
-import { ListItem } from './components';
 import { fetchDeleteTask, fetchCompleteTask, setEditTask } from '../../../utils/store/actions/task';
 import { ITasks, ICalendar } from '../../../utils/types';
+import { ListItem } from './components';
 
 interface ITasksProps {
   tasks: ITasks[];
@@ -18,14 +17,17 @@ const Tasks: React.FC<ITasksProps> = ({ calendar, tasks, taskEditedMode, isLoade
 
   const editTaskHandler = React.useCallback((task: ITasks): void => {
     dispatch(setEditTask(task));
+    // eslint-disable-next-line
   }, []);
 
   const deleteTaskHandler = React.useCallback((id: string): void => {
     dispatch(fetchDeleteTask(id));
+    // eslint-disable-next-line
   }, []);
 
   const completeTaskHandler = React.useCallback((completed: boolean, id: string): void => {
     dispatch(fetchCompleteTask({ completed, id }));
+    // eslint-disable-next-line
   }, []);
 
   return (

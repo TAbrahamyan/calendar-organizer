@@ -23,7 +23,7 @@ const initialState: IInititalState = {
   isLoaded: false,
 };
 
-export default (state: IInititalState = initialState, action: IAction) => {
+const taskReducer = (state: IInititalState = initialState, action: IAction) => {
   switch (action.type) {
     case ON_INPUT_CHANGE:
       return {
@@ -63,3 +63,5 @@ export default (state: IInititalState = initialState, action: IAction) => {
       return state;
   }
 };
+
+export default taskReducer;

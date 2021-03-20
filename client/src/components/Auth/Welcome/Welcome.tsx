@@ -23,7 +23,7 @@ const Welcome: React.FC = () => {
   return (
     <section className="welcome">
       <div className="text">
-        <b style={{ fontSize: '3.3em', textAlign: 'center' }}>Welcome to</b>
+        <b style={{ fontSize: '3.3em' }}>Welcome to</b>
         <b style={{ fontSize: '2.3em' }}>Calendar Organizer</b>
       </div>
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Input } from 'antd';
-
 import { checkInvalidDays } from '../../../utils/helpers/calendar';
 import { fetchCreateTask, fetchEditTask, setCancelEditMode, setInputValues } from '../../../utils/store/actions/task';
 import { ICalendar } from '../../../utils/types';
@@ -20,6 +19,7 @@ const CreateTaskForm: React.FC<ICreateTaskFormProps> = ({ calendar, taskEditedMo
 
   const createTaskHandler = (): void => {
     const { title, description } = createTaskForm;
+
     dispatch(fetchCreateTask({
       title,
       description,
@@ -33,9 +33,9 @@ const CreateTaskForm: React.FC<ICreateTaskFormProps> = ({ calendar, taskEditedMo
     dispatch(fetchEditTask({ title, description, taskId: taskEditedMode.taskId }));
   };
 
-  const cancelEditMode = React.useCallback((): void => {
+  const cancelEditMode = (): void => {
     dispatch(setCancelEditMode());
-  }, []);
+  };
 
   return (
     <section className="create-task">

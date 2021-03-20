@@ -1,4 +1,5 @@
-import taskApi from '../../api/task';
+import { taskApi } from '../../api/task';
+import { ITasks } from '../../types';
 import {
   GET_ALL_TASKS,
   CREATE_TASK,
@@ -8,7 +9,6 @@ import {
   IS_LOADED,
   ON_INPUT_CHANGE,
 } from '../../constants/actionTypes';
-import { ITasks } from '../../types';
 
 export const fetchTasks = () => (dispatch: any): void => {
   dispatch({ type: IS_LOADED, payload: false });

@@ -1,7 +1,12 @@
 import { GET_ME, VERIFICATION_MODAL } from '../../constants/actionTypes';
 import { notification } from '../../helpers/notification';
-import userApi from '../../api/user';
+import { userApi } from '../../api/user';
 import history from '../../history';
+
+const login = (data: any): void => {
+  localStorage.setItem('token', data);
+  (history as any).go('/');
+};
 
 export const fetchUserSignup = (formData: IFetchUserLoginSignupFormData) => (dispatch: any): void => {
   userApi
@@ -13,30 +18,21 @@ export const fetchUserSignup = (formData: IFetchUserLoginSignupFormData) => (dis
 export const fetchUserLogin = (formData: IFetchUserLoginSignupFormData) => (): void => {
   userApi
     .login(formData)
-    .then(({ data }) => {
-      localStorage.setItem('token', data);
-      (history as any).go('/');
-    })
+    .then(({ data }) => login(data))
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchLoginWithGoogle = (tokenId: string, googleId: string) => () => {
   userApi
     .loginWithGoogle({ tokenId, googleId })
-    .then(({ data }) => {
-      localStorage.setItem('token', data);
-      (history as any).go('/');
-    })
+    .then(({ data }) => login(data))
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
 export const fetchLoginWithFacebook = (response: IFetchLoginWithFacebookResponse) => () => {
   userApi
     .loginWithFacebook(response)
-    .then(({ data }) => {
-      localStorage.setItem('token', data);
-      (history as any).go('/');
-    })
+    .then(({ data }) => login(data))
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
@@ -58,17 +54,17 @@ export const fetchChangePassword = (formData: IFetchChangePasswordFormData) => (
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchChangeUserPicture = (picture: any) => (): void => {
+export const fetchChangeUserPicture = (picture: any) => (dispatch: any): void => {
   userApi
     .changeUserPicture(picture)
-    .then(() => window.location.reload())
+    .then(() => dispatch(fetchUserData()))
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchDeleteUserPicture = () => (): void => {
+export const fetchDeleteUserPicture = () => (dispatch: any): void => {
   userApi
     .deleteUserPicture()
-    .then(() => window.location.reload())
+    .then(() => dispatch(fetchUserData()))
     .catch(({ response: { data } }) => data.msg && notification({ type: 'error', msg: data.msg }));
 };
 

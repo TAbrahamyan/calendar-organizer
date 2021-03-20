@@ -13,7 +13,7 @@ const initalState: IInitialState = {
   verificationModal: false,
 };
 
-export default (state: IInitialState = initalState, action: IAction) => {
+const userReducer = (state: IInitialState = initalState, action: IAction) => {
   switch (action.type) {
     case GET_ME:
       return {
@@ -30,3 +30,5 @@ export default (state: IInitialState = initalState, action: IAction) => {
       return state;
   }
 };
+
+export default userReducer;

@@ -7,10 +7,6 @@ interface IVerificationModalProps {
 }
 
 const VerificationModal: React.FC<IVerificationModalProps> = ({ verificationModal }) => {
-  const closeModal = (): void => {
-    window.location.reload();
-  };
-
   const styles = {
     margin: '0',
   };
@@ -22,7 +18,7 @@ const VerificationModal: React.FC<IVerificationModalProps> = ({ verificationModa
       closable={false}
       maskClosable={false}
       title={<p style={styles}><VerifiedOutlined /> Verify your account</p>}
-      footer={[ <button key="cancel" className="pink-btn" onClick={closeModal}>OK</button> ]}
+      footer={[ <button key="cancel" className="pink-btn" onClick={() => window.location.reload()}>OK</button> ]}
     >
       <p style={styles}>You need to verify your account before continue.</p>
       <p style={styles}>We've send the verification link to your inbox.</p>
