@@ -113,7 +113,11 @@ const AuthForm: React.FC = () => {
         </button>
       </form>
 
-      <p style={{ cursor: 'pointer' }} onClick={() => setForgotPasswordModalVisible(true)}>Forgot password?</p>
+      {isLogin && (
+        <p style={{ cursor: 'pointer', width: 'fit-content' }} onClick={() => setForgotPasswordModalVisible(true)}>
+          Forgot password?
+        </p>
+      )}
     </section>
   );
 };

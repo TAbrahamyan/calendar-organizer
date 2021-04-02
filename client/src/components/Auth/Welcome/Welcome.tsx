@@ -7,15 +7,20 @@ import { fetchLoginWithGoogle, fetchLoginWithFacebook } from '../../../utils/sto
 const Welcome: React.FC = () => {
   const dispatch = useDispatch();
 
-  const onSuccessHandler = ({ tokenId, googleId }: any): void => {
-    dispatch(fetchLoginWithGoogle(tokenId, googleId));
+  const successResponseGoogleHandler = ({ profileObj }: any): void => {
+    dispatch(fetchLoginWithGoogle({
+      name: profileObj.name,
+      email: profileObj.email,
+      googleId: profileObj.googleId,
+      picture: profileObj.imageUrl,
+    }));
   };
 
-  const responseFacebookHandler = (response: any): void => {
+  const sucessResponseFacebookHandler = (response: any): void => {
     dispatch(fetchLoginWithFacebook({
       name: response.name,
       email: response.email,
-      userID: response.userID,
+      facebookUserID: response.userID,
       picture: response.picture.data.url,
     }));
   };
@@ -30,7 +35,7 @@ const Welcome: React.FC = () => {
       <div className="login-with">
         <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID ?? ''}
-          onSuccess={onSuccessHandler}
+          onSuccess={successResponseGoogleHandler}
           cookiePolicy={'single_host_origin'}
           render={renderProps => (
             <button className="pink-btn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
@@ -43,7 +48,7 @@ const Welcome: React.FC = () => {
           appId={process.env.REACT_APP_FACEBOOK_APP_ID ?? ''}
           textButton="Sign in with Facebook"
           fields="name,email,picture"
-          callback={responseFacebookHandler}
+          callback={sucessResponseFacebookHandler}
           cssClass="pink-btn"
           icon={<FacebookFilled style={{ marginLeft: '18px' }} />}
         />

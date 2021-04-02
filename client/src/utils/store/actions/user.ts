@@ -22,9 +22,9 @@ export const fetchUserLogin = (formData: IFetchUserLoginSignupFormData) => (): v
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
 
-export const fetchLoginWithGoogle = (tokenId: string, googleId: string) => () => {
+export const fetchLoginWithGoogle = (response: IFetchLoginWithGoogleResponse) => () => {
   userApi
-    .loginWithGoogle({ tokenId, googleId })
+    .loginWithGoogle(response)
     .then(({ data }) => login(data))
     .catch(({ response: { data } }) => notification({ type: 'error', msg: data.msg }));
 };
@@ -99,9 +99,16 @@ interface IFetchChangePasswordFormData {
   confirmNewPassword: string;
 }
 
+interface IFetchLoginWithGoogleResponse {
+  name: string;
+  email: string;
+  googleId: string;
+  picture: string;
+}
+
 interface IFetchLoginWithFacebookResponse {
   name: string;
   email: string;
-  userID: string;
+  facebookUserID: string;
   picture: string;
 }

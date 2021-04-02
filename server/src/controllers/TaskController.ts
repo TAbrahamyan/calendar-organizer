@@ -14,7 +14,7 @@ class TaskController {
       });
 
       await newTask.save();
-      res.status(201).json({ msg: 'Task succesfuly created' });
+      res.status(201).json({ msg: 'Task successfully created' });
     } catch {
       res.status(400).json({ msg: 'Error on creating' });
     }
@@ -32,7 +32,7 @@ class TaskController {
   static async delete(req, res) {
     try {
       await Task.findByIdAndDelete({ _id: req.params.id });
-      res.json({ msg: 'Task succesfully deleted' });
+      res.json({ msg: 'Task successfully deleted' });
     } catch {
       res.status(400).json({ msg: 'Error on task deleting' });
     }
@@ -40,13 +40,15 @@ class TaskController {
 
   static async edit(req, res) {
     try {
+      const { title, description } = req.body;
+
       await Task.findByIdAndUpdate(
         { _id: req.params.id },
-        { $set: { title: req.body.newTitle, description: req.body.newDescription } },
+        { $set: { title, description } },
         { new: true },
       );
 
-      res.json({ msg: 'Task succesfully edited' });
+      res.json({ msg: 'Task successfully edited' });
     } catch {
       res.status(400).json({ msg: 'Error on task editing' });
     }
@@ -60,7 +62,7 @@ class TaskController {
         { new: true },
       );
 
-      res.json({ msg: 'Task succesfully completed' });
+      res.json({ msg: 'Task successfully completed' });
     } catch {
       res.status(400).json({ msg: 'Task completing is failed' });
     }

@@ -3,7 +3,6 @@ export default {
   isProduction: process.env.NODE_ENV,
   mongodbUrl: process.env.MONGODB_URL,
   jwtSecret: process.env.JWT_SECRET,
-  googleClientId: process.env.GOOGLE_CLIENT_ID,
   email: {
     service: process.env.EMAIL_SERVICE,
     username: process.env.EMAIL_USERNAME,

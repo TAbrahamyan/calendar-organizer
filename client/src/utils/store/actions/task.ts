@@ -40,7 +40,7 @@ export const fetchEditTask = (bodyData: IFetchEditTaskBodyData) => (dispatch: an
   const { title, description, taskId } = bodyData;
 
   taskApi
-    .edit({ newTitle: title, newDescription: description }, taskId)
+    .edit({ title, description }, taskId)
     .then(() => {
       dispatch({ type: CANCEL_EDIT_MODE });
       dispatch(fetchTasks());

@@ -1,12 +1,9 @@
 import bcrypt from 'bcrypt';
-import { validationResult } from 'express-validator';
 import crypto from 'crypto';
-import { OAuth2Client } from 'google-auth-library';
-import { config, createJWT, sendEmail } from '../config';
+import { validationResult } from 'express-validator';
+import { createJWT, sendEmail } from '../config';
 import User from '../models/User';
 import Task from '../models/Task';
-
-const client = new OAuth2Client(config.googleClientId);
 
 class UserController {
   static async signup(req, res) {
@@ -19,16 +16,18 @@ class UserController {
       const { fullName, email, password } = req.body;
       const user: any = await User.findOne({ email });
 
-      if (user && user?.googleId !== 'signed in without Google' && user?.googleId !== '') {
-        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
-      }
-
-      if (user && user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
-        return res.status(400).json({ msg: `Email ${email} already signed in with Facebook` });
-      }
-
       if (user) {
-        return res.status(400).json({ msg: `Email ${email} already exists` });
+        if (user.googleId === 'signed in without Google' || user.facebookUserID === 'signed in without Facebook') {
+          return res.status(400).json({ msg: 'This Email already exists' });
+        }
+
+        if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
+          return res.status(400).json({ msg: 'This Email already signed in with Google' });
+        }
+
+        if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
+          return res.status(400).json({ msg: 'This Email already signed in with Facebook' });
+        }
       }
 
       const hashedPassword: string = await bcrypt.hash(password, 10);
@@ -78,11 +77,11 @@ class UserController {
       }
 
       if (user.facebookUserID !== 'signed in without Facebook' && user.facebookUserID !== '') {
-        return res.status(400).json({ msg: `Email ${email} already signed in with Facebook` });
+        return res.status(400).json({ msg: 'This Email already signed in with Facebook' });
       }
 
       if (user.googleId !== 'signed in without Google' && user.googleId !== '') {
-        return res.status(400).json({ msg: `Email ${email} already signed in with Google` });
+        return res.status(400).json({ msg: 'This Email already signed in with Google' });
       }
 
       const isMatch: boolean = await bcrypt.compare(password, user.password);
@@ -102,67 +101,23 @@ class UserController {
 
   static async loginWithGoogle(req, res) {
     try {
-      const { tokenId, googleId } = req.body;
+      const { name, email, googleId, picture } = req.body;
+      const findedUserByEmail: any = await User.findOne({ email });
 
-      client
-        .verifyIdToken({
-          idToken: tokenId,
-          audience: config.googleClientId,
-        })
-        .then(async (response: any) => {
-          const { name, email, picture } = response.payload;
-
-          try {
-            const user: any = await User.findOne({ googleId });
-
-            if (user?.googleId === 'signed in without Google') {
-              return res.status(400).json({ msg: 'Sorry this Email already signed in without Google' });
-            }
-
-            if (!user) {
-              const hashedPassword: string = await bcrypt.hash(name + email + googleId, 10);
-              const newUser = new User({
-                fullName: name,
-                email,
-                emailToken: '',
-                googleId,
-                facebookUserID: '',
-                password: hashedPassword,
-                isVerified: true,
-                picture,
-              });
-
-              await newUser.save();
-              res.json(createJWT(newUser._id));
-            } else {
-              res.json(createJWT(user._id));
-            }
-          } catch {
-            res.status(400).json({ msg: 'Error on logging in with Google' });
-          }
-        });
-    } catch {
-      res.status(400).json({ msg: 'Something went wrong' });
-    }
-  }
-
-  static async loginWithFacebook(req, res) {
-    try {
-      const { name, email, userID, picture } = req.body;
-      const user: any = await User.findOne({ facebookUserID: userID });
-
-      if (user?.facebookUserID === 'signed in without Facebook') {
-        return res.status(400).json({ msg: 'Sorry this Email already signed in without Facebook' });
+      if (findedUserByEmail && findedUserByEmail.googleId === 'signed in without Google') {
+        return res.status(400).json({ msg: 'This Email already signed in without Google' });
       }
 
-      if (!user) {
-        const hashedPassword: string = await bcrypt.hash(name + email + userID, 10);
+      const findedUserByGoogleId: any = await User.findOne({ googleId });
+
+      if (!findedUserByGoogleId) {
+        const hashedPassword: string = await bcrypt.hash(name + email + googleId, 10);
         const newUser = new User({
           fullName: name,
           email,
           emailToken: '',
-          googleId: '',
-          facebookUserID: userID,
+          googleId,
+          facebookUserID: '',
           password: hashedPassword,
           isVerified: true,
           picture,
@@ -171,7 +126,41 @@ class UserController {
         await newUser.save();
         res.json(createJWT(newUser._id));
       } else {
-        res.json(createJWT(user._id));
+        res.json(createJWT(findedUserByGoogleId._id));
+      }
+    } catch {
+      res.status(400).json({ msg: 'Error on logging in with Google' });
+    }
+  }
+
+  static async loginWithFacebook(req, res) {
+    try {
+      const { name, email, facebookUserID, picture } = req.body;
+      const findedUserByEmail: any = await User.findOne({ email });
+
+      if (findedUserByEmail && findedUserByEmail.facebookUserID === 'signed in without Facebook') {
+        return res.status(400).json({ msg: 'This Email already signed in without Facebook' });
+      }
+
+      const findedUserByFacebookUserID: any = await User.findOne({ facebookUserID });
+
+      if (!findedUserByFacebookUserID) {
+        const hashedPassword: string = await bcrypt.hash(name + email + facebookUserID, 10);
+        const newUser = new User({
+          fullName: name,
+          email,
+          emailToken: '',
+          googleId: '',
+          facebookUserID,
+          password: hashedPassword,
+          isVerified: true,
+          picture,
+        });
+
+        await newUser.save();
+        res.json(createJWT(newUser._id));
+      } else {
+        res.json(createJWT(findedUserByFacebookUserID._id));
       }
     } catch {
       res.status(400).json({ msg: 'Error on logging in with Facebook' });
@@ -197,7 +186,7 @@ class UserController {
 
       res.status(200).json();
     } catch {
-      res.status(401).json({ msg: 'Invalid token' });
+      res.status(500).json({ msg: 'Invalid token' });
     }
   }
 
@@ -217,7 +206,7 @@ class UserController {
         { new: true },
       );
 
-      res.json({ msg: 'Password is succesfully changed' });
+      res.json({ msg: 'Password is successfully changed' });
     } catch {
       res.status(500).json({ msg: 'Failed on Password changing' });
     }
@@ -255,7 +244,7 @@ class UserController {
         { new: true },
       );
 
-      res.json({ msg: 'Password succesfully reseted. Check your email' });
+      res.json({ msg: 'Password successfully reseted. Check your email' });
     } catch {
       res.status(500).json({ msg: 'Failed on Password reseting' });
     }
@@ -266,11 +255,11 @@ class UserController {
 
       await User.findByIdAndUpdate(
         { _id: req.userId },
-        { $set: { picture: req.body.newPicture } },
+        { $set: { picture: req.body.picture } },
         { new: true },
       );
 
-      res.json({ msg: 'Profile picture succesfully changed' });
+      res.json({ msg: 'Profile picture successfully changed' });
     } catch {
       res.status(500).json({ msg: 'Failed on Picture changing' });
     }
@@ -284,7 +273,7 @@ class UserController {
         { new: true },
       );
 
-      res.json({ msg: 'Picture succesfully deleted' });
+      res.json({ msg: 'Picture successfully deleted' });
     } catch {
       res.status(500).json({ msg: 'Failed to deleting picture' });
     }
@@ -294,7 +283,7 @@ class UserController {
     try {
       await User.findByIdAndRemove(req.userId);
       await Task.deleteMany({ owner: req.userId });
-      res.json({ msg: 'Account is succesfully destroyed' });
+      res.json({ msg: 'Account is successfully destroyed' });
     } catch {
       res.status(500).json({ msg: 'Failed on account destroying' });
     }
